@@ -13,7 +13,7 @@ import {
   Course,
   PageId,
 } from '@/lib/academy-data';
-import TopBarAndNav from '@/components/TopBarAndNav';
+import TopBarAndNav, { ThemeClass } from '@/components/TopBarAndNav';
 import ResilientImage from '@/components/ResilientImage';
 import {
   CatalogueView,
@@ -81,6 +81,7 @@ export default function TrainingAfricaAcademyPlatform() {
   const [activeCourseFilter, setActiveCourseFilter] = useState<
     'all' | 'accredited' | 'short'
   >('all');
+  const [themeClass, setThemeClass] = useState<ThemeClass>('theme-crimson');
 
   const [courses, setCourses] = useState<Course[]>(INITIAL_COURSES);
   const [selectedCourseId, setSelectedCourseId] = useState<string>(
@@ -202,6 +203,12 @@ export default function TrainingAfricaAcademyPlatform() {
           if (Array.isArray(parsed.venueBookings)) {
             setVenueBookings(parsed.venueBookings);
           }
+          if (
+            parsed.themeClass === 'theme-crimson' ||
+            parsed.themeClass === 'theme-emerald'
+          ) {
+            setThemeClass(parsed.themeClass);
+          }
         }
       } catch {
         // Ignore storage read errors
@@ -225,6 +232,7 @@ export default function TrainingAfricaAcademyPlatform() {
         quotes,
         applications,
         venueBookings,
+        themeClass,
       });
       window.localStorage.setItem(STORAGE_KEY, payload);
     } catch {
@@ -238,6 +246,7 @@ export default function TrainingAfricaAcademyPlatform() {
     quotes,
     applications,
     venueBookings,
+    themeClass,
   ]);
 
   const handleResetDemoState = () => {
@@ -252,6 +261,7 @@ export default function TrainingAfricaAcademyPlatform() {
       'occ-cleaning-practitioner-nqf3',
     ]);
     setCompletedModuleIds(['ic-m1', 'cp-m1']);
+    setThemeClass('theme-crimson');
     setActivePage('home');
   };
 
@@ -323,7 +333,9 @@ export default function TrainingAfricaAcademyPlatform() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FCF9F8] text-[#1C1B1B] pb-16 md:pb-0">
+    <div
+      className={`${themeClass} min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] pb-16 md:pb-0`}
+    >
       <TopBarAndNav
         activePage={activePage}
         previousPage={previousPage}
@@ -339,6 +351,8 @@ export default function TrainingAfricaAcademyPlatform() {
           setCertificateModalOpen(true);
         }}
         onResetState={handleResetDemoState}
+        themeClass={themeClass}
+        onSelectThemeClass={setThemeClass}
       />
 
       {/* Interactive 4-Step Guided Onboarding Tour Bar */}

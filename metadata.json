@@ -1,0 +1,6 @@
+{
+  "name": "Training Africa Academy — Digital Learning & Workforce Platform",
+  "description": "QCTO & Services SETA-aligned digital learning, course discovery, corporate workforce training, learnership application, and assessment centre booking platform for Training Africa Academy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

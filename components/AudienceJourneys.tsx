@@ -263,20 +263,20 @@ export function EmployersView({
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-[#E5E7EB]">
         <div>
-          <p className="text-xs font-semibold text-[#059669] mb-2">
+          <p className="text-xs font-semibold text-[#D91B24] mb-2">
             06. Training for Employers · HR, L&D, WSP/ATR & Operations
           </p>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545] max-w-2xl">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B] max-w-2xl">
             Upskill Your Hygiene & Facility Teams Without Site Disruption
           </h1>
-          <p className="mt-3 text-base text-slate-600 max-w-2xl">
+          <p className="mt-3 text-base text-[#52525B] max-w-2xl">
             QCTO and Services SETA-aligned workforce training backed by Cleaning Africa Services. Train on-site or at our Randburg campus—with optional vetted Relief Staff at R380/day while your core team trains.
           </p>
         </div>
 
-        <div className="bg-[#0B2545] text-white p-4 rounded-xl text-xs space-y-1 shrink-0">
+        <div className="bg-[#1C1B1B] text-white p-4 rounded-xl text-xs space-y-1 shrink-0">
           <p className="text-[#F59E0B] font-semibold">
             B-BBEE & SETA Compliance Ready
           </p>
@@ -288,7 +288,7 @@ export function EmployersView({
 
       {/* Step 1: Industry Selector & Recommended Corporate Programmes */}
       <div>
-        <h2 className="text-lg font-bold text-[#0B2545] mb-3">
+        <h2 className="text-lg font-bold text-[#1C1B1B] mb-3">
           01. Select Your Industry or Operational Training Need
         </h2>
         <div className="flex flex-wrap gap-2">
@@ -299,8 +299,8 @@ export function EmployersView({
               onClick={() => setSelectedIndustry(ind)}
               className={`px-3.5 py-2 text-xs font-semibold rounded-lg border transition-colors cursor-pointer ${
                 selectedIndustry === ind
-                  ? 'bg-[#0B2545] text-white border-[#0B2545]'
-                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                  ? 'bg-[#1C1B1B] text-white border-[#1C1B1B]'
+                  : 'bg-white text-slate-700 border-[#E5E7EB] hover:bg-slate-50'
               }`}
             >
               {ind}
@@ -312,23 +312,23 @@ export function EmployersView({
           {courses.slice(0, 3).map((c) => (
             <div
               key={c.id}
-              className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between"
+              className="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between"
             >
               <div>
-                <p className="text-xs text-slate-500 font-mono">
+                <p className="text-xs text-[#52525B] font-mono">
                   {c.code} · {c.nqfLevel} · {c.credits} Credits
                 </p>
-                <h3 className="text-base font-bold text-[#0B2545] mt-1">
+                <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
                   {c.title}
                 </h3>
-                <p className="text-xs text-slate-600 mt-2">{c.shortSummary}</p>
+                <p className="text-xs text-[#52525B] mt-2">{c.shortSummary}</p>
               </div>
               <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
                 <div>
-                  <span className="text-xs text-slate-500 block">
+                  <span className="text-xs text-[#52525B] block">
                     Group Rate (5+)
                   </span>
-                  <span className="text-base font-bold font-mono text-[#059669] tabular-nums">
+                  <span className="text-base font-bold font-mono text-[#D91B24] tabular-nums">
                     R{c.groupPricePerLearnerZAR.toLocaleString('en-ZA')}/staff
                   </span>
                 </div>
@@ -336,7 +336,7 @@ export function EmployersView({
                   <button
                     type="button"
                     onClick={() => onOpenBrochure(c)}
-                    className="px-3 py-1.5 text-xs font-semibold text-[#0B2545] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center gap-1 cursor-pointer"
+                    className="px-3 py-1.5 text-xs font-semibold text-[#1C1B1B] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center gap-1 cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Brochure</span>
@@ -344,7 +344,7 @@ export function EmployersView({
                   <button
                     type="button"
                     onClick={() => onSelectCourse(c.id)}
-                    className="px-3 py-1.5 text-xs font-semibold text-white bg-[#0B2545] hover:bg-[#133B6E] rounded-lg cursor-pointer"
+                    className="px-3 py-1.5 text-xs font-semibold text-white bg-[#1C1B1B] hover:bg-[#27272A] rounded-lg cursor-pointer"
                   >
                     Details
                   </button>
@@ -356,18 +356,18 @@ export function EmployersView({
       </div>
 
       {/* NEW UX ENHANCEMENT: INTERACTIVE B-BBEE & SARS SECTION 12H ROI CALCULATOR */}
-      <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#E5E7EB]">
           <div className="flex items-start gap-3">
-            <Calculator className="w-6 h-6 text-[#059669] shrink-0 mt-0.5" />
+            <Calculator className="w-6 h-6 text-[#D91B24] shrink-0 mt-0.5" />
             <div>
-              <p className="text-xs font-semibold text-[#059669]">
+              <p className="text-xs font-semibold text-[#D91B24]">
                 Interactive Financial Justification Tool · SARS Section 12H & SETA Rebates
               </p>
-              <h2 className="text-xl font-bold text-[#0B2545]">
+              <h2 className="text-xl font-bold text-[#1C1B1B]">
                 02. Corporate B-BBEE, Section 12H Tax Allowance & Relief Staff ROI Calculator
               </h2>
-              <p className="text-xs text-slate-600 mt-1">
+              <p className="text-xs text-[#52525B] mt-1">
                 Model your gross training + relief staff expenditure against South African Section 12H corporate tax savings (27% corporate tax rate) and Services SETA grant recoveries.
               </p>
             </div>
@@ -380,7 +380,7 @@ export function EmployersView({
             <div>
               <label
                 htmlFor="roi-course-select"
-                className="block text-xs font-semibold text-[#0B2545] mb-1.5"
+                className="block text-xs font-semibold text-[#1C1B1B] mb-1.5"
               >
                 Select Accredited Qualification or Skills Programme
               </label>
@@ -388,7 +388,7 @@ export function EmployersView({
                 id="roi-course-select"
                 value={roiCourseId}
                 onChange={(e) => setRoiCourseId(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg text-[#0B2545] font-medium"
+                className="w-full px-3.5 py-2.5 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg text-[#1C1B1B] font-medium"
               >
                 {courses.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -399,10 +399,10 @@ export function EmployersView({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 bg-[#F8FAFC] border border-slate-200 rounded-lg">
+              <div className="p-4 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg">
                 <div className="flex justify-between text-xs font-medium text-slate-700 mb-1.5">
                   <label htmlFor="roi-learners">Total Staff Cohort</label>
-                  <span className="font-mono font-bold text-[#0B2545] tabular-nums">
+                  <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
                     {roiLearners}
                   </span>
                 </div>
@@ -417,14 +417,14 @@ export function EmployersView({
                     setRoiLearners(val);
                     if (roiDisabledCount > val) setRoiDisabledCount(val);
                   }}
-                  className="w-full accent-[#059669] cursor-pointer"
+                  className="w-full accent-[#D91B24] cursor-pointer"
                 />
               </div>
 
-              <div className="p-4 bg-[#F8FAFC] border border-slate-200 rounded-lg">
+              <div className="p-4 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg">
                 <div className="flex justify-between text-xs font-medium text-slate-700 mb-1.5">
                   <label htmlFor="roi-disabled">Learners w/ Disability</label>
-                  <span className="font-mono font-bold text-[#059669] tabular-nums">
+                  <span className="font-mono font-bold text-[#D91B24] tabular-nums">
                     {roiDisabledCount}
                   </span>
                 </div>
@@ -435,14 +435,14 @@ export function EmployersView({
                   max={roiLearners}
                   value={roiDisabledCount}
                   onChange={(e) => setRoiDisabledCount(Number(e.target.value))}
-                  className="w-full accent-[#059669] cursor-pointer"
+                  className="w-full accent-[#D91B24] cursor-pointer"
                 />
               </div>
 
-              <div className="p-4 bg-[#F8FAFC] border border-slate-200 rounded-lg">
+              <div className="p-4 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg">
                 <div className="flex justify-between text-xs font-medium text-slate-700 mb-1.5">
                   <label htmlFor="roi-relief">Relief Staff Days</label>
-                  <span className="font-mono font-bold text-[#0B2545] tabular-nums">
+                  <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
                     {roiReliefDays}d
                   </span>
                 </div>
@@ -453,14 +453,14 @@ export function EmployersView({
                   max={10}
                   value={roiReliefDays}
                   onChange={(e) => setRoiReliefDays(Number(e.target.value))}
-                  className="w-full accent-[#059669] cursor-pointer"
+                  className="w-full accent-[#D91B24] cursor-pointer"
                 />
               </div>
             </div>
           </div>
 
           {/* Right 5 Cols: Financial Ledger Output */}
-          <div className="lg:col-span-5 bg-[#0B2545] text-white rounded-xl p-6 space-y-3 text-xs">
+          <div className="lg:col-span-5 bg-[#1C1B1B] text-white rounded-xl p-6 space-y-3 text-xs">
             <p className="text-[#F59E0B] font-semibold">
               Corporate Financial & Tax Impact Breakdown ({roiLearners} Staff)
             </p>
@@ -478,13 +478,13 @@ export function EmployersView({
                 R{roiReliefTotal.toLocaleString('en-ZA')}
               </span>
             </div>
-            <div className="flex justify-between py-1.5 border-b border-white/10 text-emerald-300">
+            <div className="flex justify-between py-1.5 border-b border-white/10 text-red-300">
               <span>Est. Services SETA Grant Recovery (~25%)</span>
               <span className="font-mono font-semibold tabular-nums">
                 - R{estimatedSetaGrant.toLocaleString('en-ZA')}
               </span>
             </div>
-            <div className="flex justify-between py-1.5 border-b border-white/10 text-emerald-300">
+            <div className="flex justify-between py-1.5 border-b border-white/10 text-red-300">
               <span>
                 SARS Sec 12H Cash Tax Saving (27% of R
                 {total12HDeductionAllowance.toLocaleString('en-ZA')})
@@ -517,13 +517,13 @@ export function EmployersView({
       {/* Step 3 & 4: 3-Step Guided Group Quote Wizard & Multi-Staff Cohort Portal */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left 6 Cols: 3-Step Guided Group Quote Wizard */}
-        <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+        <div className="lg:col-span-6 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+          <div className="flex items-center justify-between pb-4 border-b border-[#E5E7EB]">
             <div>
-              <h2 className="text-xl font-bold text-[#0B2545]">
+              <h2 className="text-xl font-bold text-[#1C1B1B]">
                 03. Guided 3-Step Group Quote Builder
               </h2>
-              <p className="text-xs text-slate-600 mt-0.5">
+              <p className="text-xs text-[#52525B] mt-0.5">
                 Step {quoteStep} of 3 — Instant official quotation for procurement & WSP
               </p>
             </div>
@@ -535,10 +535,10 @@ export function EmployersView({
                   onClick={() => setQuoteStep(s as 1 | 2 | 3)}
                   className={`w-7 h-7 rounded-md font-bold cursor-pointer ${
                     quoteStep === s
-                      ? 'bg-[#0B2545] text-white'
+                      ? 'bg-[#1C1B1B] text-white'
                       : quoteStep > s
-                      ? 'bg-emerald-100 text-[#059669]'
-                      : 'bg-slate-100 text-slate-500'
+                      ? 'bg-[#FEF2F2] text-[#D91B24] border border-[#FECACA]'
+                      : 'bg-[#FCF9F8] text-[#52525B] border border-[#E5E7EB]'
                   }`}
                 >
                   {s}
@@ -561,7 +561,7 @@ export function EmployersView({
                     id="emp-course"
                     value={selectedCourseId}
                     onChange={(e) => setSelectedCourseId(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                    className="w-full px-3.5 py-2.5 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                   >
                     {courses.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -577,7 +577,7 @@ export function EmployersView({
                     <label htmlFor="emp-staff-slider">
                       2. Number of Employees to Train
                     </label>
-                    <span className="font-mono font-bold text-[#0B2545] tabular-nums">
+                    <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
                       {staffCount} Staff Members
                     </span>
                   </div>
@@ -588,20 +588,20 @@ export function EmployersView({
                     max={60}
                     value={staffCount}
                     onChange={(e) => setStaffCount(Number(e.target.value))}
-                    className="w-full accent-[#059669] cursor-pointer"
+                    className="w-full accent-[#D91B24] cursor-pointer"
                   />
                 </div>
 
-                <div className="p-3.5 bg-[#F8FAFC] border border-slate-200 rounded-lg">
+                <div className="p-3.5 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg">
                   <label className="flex items-start gap-2.5 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={includeRelief}
                       onChange={(e) => setIncludeRelief(e.target.checked)}
-                      className="mt-0.5 rounded border-slate-300 text-[#059669]"
+                      className="mt-0.5 rounded border-[#E5E7EB] text-[#D91B24]"
                     />
                     <span className="text-xs text-slate-700">
-                      <strong className="text-[#0B2545] block">
+                      <strong className="text-[#1C1B1B] block">
                         Include Cleaning Africa Services Relief Staff (R380/day per operative)
                       </strong>
                       Keep your buildings fully serviced while your staff complete practical training.
@@ -609,7 +609,7 @@ export function EmployersView({
                   </label>
                   {includeRelief && (
                     <div className="mt-2.5 pl-6 flex items-center gap-2">
-                      <span className="text-xs text-slate-600">Relief Days:</span>
+                      <span className="text-xs text-[#52525B]">Relief Days:</span>
                       {[1, 2, 3, 5].map((d) => (
                         <button
                           key={d}
@@ -617,8 +617,8 @@ export function EmployersView({
                           onClick={() => setReliefDays(d)}
                           className={`px-2.5 py-1 text-xs rounded font-mono cursor-pointer ${
                             reliefDays === d
-                              ? 'bg-[#0B2545] text-white font-semibold'
-                              : 'bg-white border border-slate-300 text-slate-700'
+                              ? 'bg-[#1C1B1B] text-white font-semibold'
+                              : 'bg-white border border-[#E5E7EB] text-slate-700'
                           }`}
                         >
                           {d}d
@@ -632,7 +632,7 @@ export function EmployersView({
                   <button
                     type="button"
                     onClick={() => setQuoteStep(2)}
-                    className="px-5 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+                    className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Next: Delivery & Schedule</span>
                     <ArrowRight className="w-4 h-4" />
@@ -654,7 +654,7 @@ export function EmployersView({
                     id="emp-delivery"
                     value={deliveryLocation}
                     onChange={(e) => setDeliveryLocation(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                    className="w-full px-3.5 py-2.5 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                   >
                     <option value="On-Site at Client Premises">
                       On-Site at Client Premises
@@ -679,7 +679,7 @@ export function EmployersView({
                     id="emp-month"
                     value={preferredMonth}
                     onChange={(e) => setPreferredMonth(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                    className="w-full px-3.5 py-2.5 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                   >
                     <option value="Immediate (Next 14 Days)">
                       Immediate (Next 14 Days)
@@ -697,7 +697,7 @@ export function EmployersView({
                   <button
                     type="button"
                     onClick={() => setQuoteStep(1)}
-                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-[#0B2545] inline-flex items-center gap-1 cursor-pointer"
+                    className="px-4 py-2 text-xs font-semibold text-[#52525B] hover:text-[#1C1B1B] inline-flex items-center gap-1 cursor-pointer"
                   >
                     <ArrowLeft className="w-4 h-4" />
                     <span>Back</span>
@@ -705,7 +705,7 @@ export function EmployersView({
                   <button
                     type="button"
                     onClick={() => setQuoteStep(3)}
-                    className="px-5 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+                    className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Next: Company Details</span>
                     <ArrowRight className="w-4 h-4" />
@@ -731,7 +731,7 @@ export function EmployersView({
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       placeholder="e.g. Growthpoint Properties"
-                      className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                      className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                     />
                   </div>
                   <div>
@@ -748,7 +748,7 @@ export function EmployersView({
                       value={contactPerson}
                       onChange={(e) => setContactPerson(e.target.value)}
                       placeholder="Full Name"
-                      className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                      className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                     />
                   </div>
                 </div>
@@ -767,11 +767,11 @@ export function EmployersView({
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
                     placeholder="hr@company.co.za"
-                    className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                    className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                   />
                 </div>
 
-                <div className="p-4 bg-[#0B2545] text-white rounded-lg flex items-center justify-between">
+                <div className="p-4 bg-[#1C1B1B] text-white rounded-lg flex items-center justify-between">
                   <div>
                     <span className="text-xs text-slate-300 block">
                       Total Corporate Quote ({staffCount} Staff · {preferredMonth})
@@ -790,7 +790,7 @@ export function EmployersView({
                     </button>
                     <button
                       type="submit"
-                      className="px-5 py-2.5 text-xs font-semibold bg-[#059669] hover:bg-[#047857] text-white rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                      className="px-5 py-2.5 text-xs font-semibold bg-[#D91B24] hover:bg-[#B91C1C] text-white rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                     >
                       Generate Official Quote
                     </button>
@@ -801,8 +801,8 @@ export function EmployersView({
           </form>
 
           {submittedQuote && (
-            <div className="mt-5 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-950 space-y-1">
-              <p className="font-bold text-sm text-emerald-900">
+            <div className="mt-5 p-4 bg-[#FEF2F2] border border-[#FECACA] rounded-lg text-xs text-[#991B1B] space-y-1">
+              <p className="font-bold text-sm text-[#991B1B]">
                 ✓ Formal Quotation Generated — Ref: {submittedQuote.id}
               </p>
               <p>
@@ -822,22 +822,22 @@ export function EmployersView({
         </div>
 
         {/* Right 6 Cols: Multi-Staff Enrolment & Authorised Cohort Progress Tracker */}
-        <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
+        <div className="lg:col-span-6 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E5E7EB]">
             <div>
-              <h2 className="text-xl font-bold text-[#0B2545]">
+              <h2 className="text-xl font-bold text-[#1C1B1B]">
                 04. Multi-Staff Cohort Enrolment & Authorised Progress Portal
               </h2>
-              <p className="text-xs text-slate-600 mt-1">
+              <p className="text-xs text-[#52525B] mt-1">
                 Enrol multiple employees with admin support and monitor real-time completion for WSP/ATR reporting.
               </p>
             </div>
             <button
               type="button"
               onClick={exportWspReport}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#0B2545] bg-slate-100 hover:bg-slate-200 rounded-lg whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#1C1B1B] bg-slate-100 hover:bg-slate-200 rounded-lg whitespace-nowrap shrink-0 cursor-pointer"
             >
-              <FileSpreadsheet className="w-4 h-4 text-[#059669]" />
+              <FileSpreadsheet className="w-4 h-4 text-[#D91B24]" />
               <span>Export WSP CSV</span>
             </button>
           </div>
@@ -851,25 +851,25 @@ export function EmployersView({
               placeholder="Employee Full Name *"
               value={newStaffName}
               onChange={(e) => setNewStaffName(e.target.value)}
-              className="sm:col-span-4 px-3 py-2 text-xs bg-[#F8FAFC] border border-slate-300 rounded-lg"
+              className="sm:col-span-4 px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
             />
             <input
               type="text"
               placeholder="SA ID / Passport *"
               value={newStaffId}
               onChange={(e) => setNewStaffId(e.target.value)}
-              className="sm:col-span-3 px-3 py-2 text-xs bg-[#F8FAFC] border border-slate-300 rounded-lg font-mono"
+              className="sm:col-span-3 px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg font-mono"
             />
             <input
               type="text"
               placeholder="Site Location"
               value={newStaffSite}
               onChange={(e) => setNewStaffSite(e.target.value)}
-              className="sm:col-span-3 px-3 py-2 text-xs bg-[#F8FAFC] border border-slate-300 rounded-lg"
+              className="sm:col-span-3 px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
             />
             <button
               type="submit"
-              className="sm:col-span-2 py-2 px-3 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center justify-center gap-1 cursor-pointer"
+              className="sm:col-span-2 py-2 px-3 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center justify-center gap-1 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Enrol</span>
@@ -877,7 +877,7 @@ export function EmployersView({
           </form>
 
           {batchMessage && (
-            <p className="mt-2 text-xs text-[#059669] font-medium">
+            <p className="mt-2 text-xs text-[#D91B24] font-medium">
               {batchMessage}
             </p>
           )}
@@ -885,7 +885,7 @@ export function EmployersView({
           <div className="mt-5 overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-200 text-slate-500">
+                <tr className="border-b border-[#E5E7EB] text-[#52525B]">
                   <th className="py-2.5 pr-3 font-semibold">Employee & ID</th>
                   <th className="py-2.5 px-3 font-semibold">Site</th>
                   <th className="py-2.5 px-3 font-semibold">Course</th>
@@ -899,18 +899,18 @@ export function EmployersView({
                 {staffRoster.map((st) => (
                   <tr key={st.id}>
                     <td className="py-3 pr-3">
-                      <p className="font-semibold text-[#0B2545]">
+                      <p className="font-semibold text-[#1C1B1B]">
                         {st.fullName}
                       </p>
-                      <p className="font-mono text-slate-500 tabular-nums">
+                      <p className="font-mono text-[#52525B] tabular-nums">
                         {st.idNumber}
                       </p>
                     </td>
-                    <td className="py-3 px-3 text-slate-600">{st.site}</td>
-                    <td className="py-3 px-3 font-mono text-[#0B2545]">
+                    <td className="py-3 px-3 text-[#52525B]">{st.site}</td>
+                    <td className="py-3 px-3 font-mono text-[#1C1B1B]">
                       {st.courseCode}
                     </td>
-                    <td className="py-3 px-3 font-mono font-bold text-[#059669] tabular-nums">
+                    <td className="py-3 px-3 font-mono font-bold text-[#D91B24] tabular-nums">
                       {st.progress}%
                     </td>
                     <td className="py-3 pl-3 text-slate-700 font-medium">
@@ -986,14 +986,14 @@ export function QualificationsView({
 
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-      <div className="pb-8 border-b border-slate-200">
-        <p className="text-xs font-semibold text-[#059669] mb-2">
+      <div className="pb-8 border-b border-[#E5E7EB]">
+        <p className="text-xs font-semibold text-[#D91B24] mb-2">
           07. Qualifications & Learnerships · QCTO & Services SETA Registered
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545] max-w-3xl">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B] max-w-3xl">
           National Occupational Qualifications & 12-Month Learnerships
         </h1>
-        <p className="mt-3 text-base text-slate-600 max-w-2xl">
+        <p className="mt-3 text-base text-[#52525B] max-w-2xl">
           Review entry criteria, SAQA credits, upcoming intake schedules, and submit your structured application online.
         </p>
       </div>
@@ -1002,44 +1002,44 @@ export function QualificationsView({
         {qualificationCourses.map((q) => (
           <div
             key={q.id}
-            className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between"
+            className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-col justify-between"
           >
             <div>
-              <div className="text-xs font-mono text-[#059669] mb-2">
+              <div className="text-xs font-mono text-[#D91B24] mb-2">
                 {q.saqaId} · {q.nqfLevel} · {q.credits} Credits
               </div>
-              <h2 className="text-lg font-bold text-[#0B2545]">{q.title}</h2>
-              <p className="text-sm text-slate-600 mt-2">{q.fullDescription}</p>
+              <h2 className="text-lg font-bold text-[#1C1B1B]">{q.title}</h2>
+              <p className="text-sm text-[#52525B] mt-2">{q.fullDescription}</p>
 
-              <div className="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+              <div className="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs text-[#52525B]">
                 <p>
-                  <strong className="text-[#0B2545]">Duration:</strong>{' '}
+                  <strong className="text-[#1C1B1B]">Duration:</strong>{' '}
                   {q.duration}
                 </p>
                 <p>
-                  <strong className="text-[#0B2545]">Next Intake:</strong>{' '}
+                  <strong className="text-[#1C1B1B]">Next Intake:</strong>{' '}
                   {q.nextIntake}
                 </p>
                 <p>
-                  <strong className="text-[#0B2545]">Entry Criteria:</strong>{' '}
+                  <strong className="text-[#1C1B1B]">Entry Criteria:</strong>{' '}
                   {q.prerequisites.join('; ')}
                 </p>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between">
+            <div className="mt-6 pt-4 border-t border-[#E5E7EB] flex items-center justify-between">
               <div>
-                <span className="text-xs text-slate-500 block">
+                <span className="text-xs text-[#52525B] block">
                   Learnership Tuition
                 </span>
-                <span className="font-mono text-lg font-bold text-[#0B2545] tabular-nums">
+                <span className="font-mono text-lg font-bold text-[#1C1B1B] tabular-nums">
                   R{q.priceZAR.toLocaleString('en-ZA')}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => onSelectCourse(q.id)}
-                className="px-4 py-2 text-xs font-semibold text-white bg-[#0B2545] hover:bg-[#133B6E] rounded-lg cursor-pointer"
+                className="px-4 py-2 text-xs font-semibold text-white bg-[#1C1B1B] hover:bg-[#27272A] rounded-lg cursor-pointer"
               >
                 View Modules
               </button>
@@ -1049,7 +1049,7 @@ export function QualificationsView({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div className="lg:col-span-5 bg-[#0B2545] text-white rounded-xl p-6 sm:p-8 space-y-6">
+        <div className="lg:col-span-5 bg-[#1C1B1B] text-white rounded-xl p-6 sm:p-8 space-y-6">
           <div>
             <p className="text-xs font-semibold text-[#F59E0B]">
               Mandatory Documentation & Intake Rules
@@ -1099,11 +1099,11 @@ export function QualificationsView({
           </div>
         </div>
 
-        <div className="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-          <h2 className="text-xl font-bold text-[#0B2545]">
+        <div className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-[#1C1B1B]">
             Submit Structured Learnership Application
           </h2>
-          <p className="text-sm text-slate-600 mt-1">
+          <p className="text-sm text-[#52525B] mt-1">
             Complete the form below to receive your official application reference and next-steps induction pack.
           </p>
 
@@ -1123,7 +1123,7 @@ export function QualificationsView({
                   value={applicantName}
                   onChange={(e) => setApplicantName(e.target.value)}
                   placeholder="e.g. Lerato Khumalo"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
               <div>
@@ -1140,7 +1140,7 @@ export function QualificationsView({
                   value={idNumber}
                   onChange={(e) => setIdNumber(e.target.value)}
                   placeholder="9605140291081"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg font-mono"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg font-mono"
                 />
               </div>
             </div>
@@ -1160,7 +1160,7 @@ export function QualificationsView({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="lerato@example.co.za"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
               <div>
@@ -1177,7 +1177,7 @@ export function QualificationsView({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+27 82 539 8605"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
             </div>
@@ -1200,7 +1200,7 @@ export function QualificationsView({
                         | 'Employer-Sponsored Cohort'
                     )
                   }
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 >
                   <option value="Individual Applicant">
                     Individual Self-Funded / Bursary Applicant
@@ -1221,7 +1221,7 @@ export function QualificationsView({
                   id="lsh-grade"
                   value={highestGrade}
                   onChange={(e) => setHighestGrade(e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 >
                   <option value="Grade 9 / ABET Level 4 (NQF 1)">
                     Grade 9 / ABET Level 4 (NQF 1)
@@ -1251,7 +1251,7 @@ export function QualificationsView({
                   id="lsh-qual"
                   value={selectedQualId}
                   onChange={(e) => setSelectedQualId(e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 >
                   {qualificationCourses.map((q) => (
                     <option key={q.id} value={q.id}>
@@ -1271,7 +1271,7 @@ export function QualificationsView({
                   id="lsh-intake"
                   value={intakeWindow}
                   onChange={(e) => setIntakeWindow(e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 >
                   <option value="January 2027 Q1 Intake">
                     January 2027 Q1 Intake
@@ -1288,15 +1288,15 @@ export function QualificationsView({
 
             <button
               type="submit"
-              className="w-full py-3 px-4 text-sm font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg transition-colors cursor-pointer"
+              className="w-full py-3 px-4 text-sm font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg transition-colors cursor-pointer"
             >
               Submit Learnership Application & Receive Next Steps
             </button>
           </form>
 
           {confirmation && (
-            <div className="mt-6 p-5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-950 space-y-2">
-              <p className="text-sm font-bold text-emerald-900">
+            <div className="mt-6 p-5 bg-[#FEF2F2] border border-[#FECACA] rounded-xl text-xs text-[#991B1B] space-y-2">
+              <p className="text-sm font-bold text-[#991B1B]">
                 ✓ Application Confirmed — Reference:{' '}
                 <span className="font-mono">{confirmation.id}</span>
               </p>
@@ -1306,8 +1306,8 @@ export function QualificationsView({
                 <strong>{confirmation.qualificationTitle}</strong> (
                 {confirmation.intakeWindow}).
               </p>
-              <div className="pt-2 border-t border-emerald-200">
-                <p className="font-semibold text-emerald-900 mb-1">
+              <div className="pt-2 border-t border-[#FECACA]">
+                <p className="font-semibold text-[#991B1B] mb-1">
                   Your Next Steps:
                 </p>
                 <p>
@@ -1345,14 +1345,14 @@ export function PathwaysView({
 }: PathwaysViewProps) {
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-      <div className="pb-8 border-b border-slate-200">
-        <p className="text-xs font-semibold text-[#059669] mb-2">
+      <div className="pb-8 border-b border-[#E5E7EB]">
+        <p className="text-xs font-semibold text-[#D91B24] mb-2">
           08. Career & Learning Pathways · Structured NQF Mobility
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545] max-w-3xl">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B] max-w-3xl">
           Map Your Career from Entry Operative to Supervisor or Business Owner
         </h1>
-        <p className="mt-3 text-base text-slate-600 max-w-2xl">
+        <p className="mt-3 text-base text-[#52525B] max-w-2xl">
           Choose your desired occupational destination below to see the exact sequence of accredited modules, durations, and earning benchmarks.
         </p>
       </div>
@@ -1361,21 +1361,21 @@ export function PathwaysView({
         {pathways.map((pathway) => (
           <section
             key={pathway.id}
-            className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8"
+            className="bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8"
           >
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#E5E7EB]">
               <div>
-                <h2 className="text-xl font-bold text-[#0B2545]">
+                <h2 className="text-xl font-bold text-[#1C1B1B]">
                   {pathway.title}
                 </h2>
-                <p className="text-sm text-slate-600 mt-1">
+                <p className="text-sm text-[#52525B] mt-1">
                   {pathway.subtitle}
                 </p>
               </div>
-              <div className="flex flex-wrap items-center gap-6 text-xs text-slate-600 shrink-0">
+              <div className="flex flex-wrap items-center gap-6 text-xs text-[#52525B] shrink-0">
                 <div>
                   <span className="block text-slate-400">Target Role</span>
-                  <strong className="text-[#0B2545]">
+                  <strong className="text-[#1C1B1B]">
                     {pathway.targetRole}
                   </strong>
                 </div>
@@ -1383,7 +1383,7 @@ export function PathwaysView({
                   <span className="block text-slate-400">
                     Typical Earnings / Revenue
                   </span>
-                  <strong className="font-mono text-[#059669]">
+                  <strong className="font-mono text-[#D91B24]">
                     {pathway.estimatedEarningsRange}
                   </strong>
                 </div>
@@ -1398,40 +1398,40 @@ export function PathwaysView({
                 return (
                   <div
                     key={step.stepNumber}
-                    className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-5 flex flex-col justify-between"
+                    className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between"
                   >
                     <div>
-                      <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-                        <span className="font-mono font-bold text-[#059669]">
+                      <div className="flex items-center justify-between text-xs text-[#52525B] mb-2">
+                        <span className="font-mono font-bold text-[#D91B24]">
                           {step.stepNumber}
                         </span>
                         <span>{step.nqf}</span>
                       </div>
-                      <h3 className="text-base font-bold text-[#0B2545]">
+                      <h3 className="text-base font-bold text-[#1C1B1B]">
                         {step.stageTitle}
                       </h3>
-                      <p className="text-xs text-slate-600 mt-2">
+                      <p className="text-xs text-[#52525B] mt-2">
                         {step.outcome}
                       </p>
                     </div>
 
                     {matchedCourse && (
-                      <div className="mt-5 pt-4 border-t border-slate-200/80 flex items-center justify-between">
-                        <span className="font-mono text-sm font-bold text-[#0B2545] tabular-nums">
+                      <div className="mt-5 pt-4 border-t border-[#E5E7EB]/80 flex items-center justify-between">
+                        <span className="font-mono text-sm font-bold text-[#1C1B1B] tabular-nums">
                           R{matchedCourse.priceZAR.toLocaleString('en-ZA')}
                         </span>
                         <div className="flex items-center gap-2">
                           <button
                             type="button"
                             onClick={() => onSelectCourse(matchedCourse.id)}
-                            className="text-xs font-semibold text-[#0B2545] hover:underline cursor-pointer"
+                            className="text-xs font-semibold text-[#1C1B1B] hover:underline cursor-pointer"
                           >
                             Curriculum
                           </button>
                           <button
                             type="button"
                             onClick={() => onEnrolCourse(matchedCourse)}
-                            className="px-3 py-1.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg cursor-pointer"
+                            className="px-3 py-1.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
                           >
                             Enrol
                           </button>
@@ -1554,31 +1554,31 @@ export function AssessmentCentreView({
 
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
         <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between">
           <div>
-            <p className="text-xs font-semibold text-[#059669] mb-2">
+            <p className="text-xs font-semibold text-[#D91B24] mb-2">
               09. Accredited Assessment Centre & Venue Hire · Northriding, Randburg
             </p>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545]">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B]">
               Purpose-Built Practical Simulation Bays, Solar Rigs & EISA Lecture Suites
             </h1>
-            <p className="mt-3 text-base text-slate-600">
+            <p className="mt-3 text-base text-[#52525B]">
               Located at Unit 14 Fancourt Office Park, Northriding, Randburg. Approved for QCTO External Integrated Summative Assessments (EISA), practical trade simulations, and external training provider venue hire.
             </p>
           </div>
-          <div className="mt-6 pt-6 border-t border-slate-200 grid grid-cols-3 gap-4 text-xs">
+          <div className="mt-6 pt-6 border-t border-[#E5E7EB] grid grid-cols-3 gap-4 text-xs">
             <div>
-              <span className="text-slate-500 block">Backup Power</span>
-              <strong className="text-[#0B2545]">100% Solar & Generator</strong>
+              <span className="text-[#52525B] block">Backup Power</span>
+              <strong className="text-[#1C1B1B]">100% Solar & Generator</strong>
             </div>
             <div>
-              <span className="text-slate-500 block">Assessment Scope</span>
-              <strong className="text-[#0B2545]">QCTO & Services SETA</strong>
+              <span className="text-[#52525B] block">Assessment Scope</span>
+              <strong className="text-[#1C1B1B]">QCTO & Services SETA</strong>
             </div>
             <div>
-              <span className="text-slate-500 block">Parking & Access</span>
-              <strong className="text-[#0B2545]">Secure Bus & Fleet Bay</strong>
+              <span className="text-[#52525B] block">Parking & Access</span>
+              <strong className="text-[#1C1B1B]">Secure Bus & Fleet Bay</strong>
             </div>
           </div>
         </div>
@@ -1595,7 +1595,7 @@ export function AssessmentCentreView({
         {/* Left 6 Cols: Select Facility & Interactive Monthly Calendar Grid */}
         <div className="lg:col-span-6 space-y-6">
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-[#0B2545]">
+            <h2 className="text-xl font-bold text-[#1C1B1B]">
               01. Select Assessment Bay or Training Suite
             </h2>
             {facilities.map((fac) => {
@@ -1606,36 +1606,36 @@ export function AssessmentCentreView({
                   onClick={() => setSelectedFacilityId(fac.id)}
                   className={`p-5 rounded-xl border transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-white border-[#059669] ring-1 ring-[#059669]'
-                      : 'bg-white border-slate-200 hover:border-slate-300'
+                      ? 'bg-white border-[#D91B24] ring-1 ring-[#D91B24]'
+                      : 'bg-white border-[#E5E7EB] hover:border-[#E5E7EB]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-xs font-semibold text-[#059669]">
+                      <p className="text-xs font-semibold text-[#D91B24]">
                         {fac.accreditationScope}
                       </p>
-                      <h3 className="text-base font-bold text-[#0B2545] mt-1">
+                      <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
                         {fac.name}
                       </h3>
-                      <p className="text-xs text-slate-500 mt-0.5">
+                      <p className="text-xs text-[#52525B] mt-0.5">
                         {fac.capacity}
                       </p>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="text-xs text-slate-500 block">
+                      <span className="text-xs text-[#52525B] block">
                         Full Day
                       </span>
-                      <span className="font-mono text-base font-bold text-[#0B2545] tabular-nums">
+                      <span className="font-mono text-base font-bold text-[#1C1B1B] tabular-nums">
                         R{fac.dailyHireRateZAR.toLocaleString('en-ZA')}
                       </span>
                     </div>
                   </div>
 
-                  <ul className="mt-3 pt-3 border-t border-slate-100 space-y-1 text-xs text-slate-600">
+                  <ul className="mt-3 pt-3 border-t border-slate-100 space-y-1 text-xs text-[#52525B]">
                     {fac.equipmentIncluded.map((eq, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#059669] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#D91B24] shrink-0 mt-0.5" />
                         <span>{eq}</span>
                       </li>
                     ))}
@@ -1646,22 +1646,22 @@ export function AssessmentCentreView({
           </div>
 
           {/* Interactive Calendar Grid for Randburg Venue Bookings */}
-          <div className="bg-white border border-slate-200 rounded-xl p-6">
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-200">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-[#E5E7EB]">
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#059669]" />
-                <h3 className="text-base font-bold text-[#0B2545]">
+                <Calendar className="w-4 h-4 text-[#D91B24]" />
+                <h3 className="text-base font-bold text-[#1C1B1B]">
                   02. Interactive Availability Calendar (Nov – Dec 2026)
                 </h3>
               </div>
-              <span className="text-xs font-mono text-[#059669] font-semibold">
+              <span className="text-xs font-mono text-[#D91B24] font-semibold">
                 {selectedDates.length} Date(s) Selected
               </span>
             </div>
 
-            <p className="text-xs text-slate-500 mt-3">
+            <p className="text-xs text-[#52525B] mt-3">
               Click one or multiple dates below to build a single-day or multi-day EISA assessment booking for{' '}
-              <strong className="text-[#0B2545]">{activeFacility.name}</strong>:
+              <strong className="text-[#1C1B1B]">{activeFacility.name}</strong>:
             </p>
 
             <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 gap-2">
@@ -1676,10 +1676,10 @@ export function AssessmentCentreView({
                     onClick={() => toggleCalendarDate(slot.dateStr)}
                     className={`p-2.5 rounded-lg border text-left transition-all ${
                       isBooked
-                        ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed'
+                        ? 'bg-slate-100 border-[#E5E7EB] text-slate-400 cursor-not-allowed'
                         : isPicked
-                        ? 'bg-[#0B2545] border-[#0B2545] text-white cursor-pointer'
-                        : 'bg-[#F8FAFC] border-slate-200 text-[#0B2545] hover:border-[#059669] cursor-pointer'
+                        ? 'bg-[#1C1B1B] border-[#1C1B1B] text-white cursor-pointer'
+                        : 'bg-[#FCF9F8] border-[#E5E7EB] text-[#1C1B1B] hover:border-[#D91B24] cursor-pointer'
                     }`}
                   >
                     <div className="flex items-center justify-between text-[10px] font-mono">
@@ -1690,7 +1690,7 @@ export function AssessmentCentreView({
                             ? 'text-[#F59E0B] font-bold'
                             : slot.status === 'limited'
                             ? 'text-amber-600'
-                            : 'text-[#059669]'
+                            : 'text-[#D91B24]'
                         }
                       >
                         {isBooked
@@ -1713,15 +1713,15 @@ export function AssessmentCentreView({
         </div>
 
         {/* Right 6 Cols: Booking & Quotation Request Form */}
-        <div className="lg:col-span-6 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-          <h2 className="text-xl font-bold text-[#0B2545]">
+        <div className="lg:col-span-6 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-[#1C1B1B]">
             03. Confirm Assessment Centre Booking & Instant Quotation
           </h2>
-          <p className="text-sm text-slate-600 mt-1">
+          <p className="text-sm text-[#52525B] mt-1">
             Selected Facility:{' '}
-            <strong className="text-[#0B2545]">{activeFacility.name}</strong>
+            <strong className="text-[#1C1B1B]">{activeFacility.name}</strong>
           </p>
-          <p className="text-xs font-mono text-[#059669] mt-1">
+          <p className="text-xs font-mono text-[#D91B24] mt-1">
             Selected Date(s): {selectedDates.join(' · ')} ({daysCount}{' '}
             {daysCount === 1 ? 'Day' : 'Days'})
           </p>
@@ -1742,7 +1742,7 @@ export function AssessmentCentreView({
                   value={orgName}
                   onChange={(e) => setOrgName(e.target.value)}
                   placeholder="Skills Development Provider / Employer"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
               <div>
@@ -1759,7 +1759,7 @@ export function AssessmentCentreView({
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder="Full Name"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
             </div>
@@ -1779,7 +1779,7 @@ export function AssessmentCentreView({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="assessments@organisation.co.za"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
               <div>
@@ -1799,7 +1799,7 @@ export function AssessmentCentreView({
                         | 'Half Day (08:00–12:30)'
                     )
                   }
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 >
                   <option value="Full Day (08:00–16:30)">
                     Full Day (08:00–16:30) — R
@@ -1825,7 +1825,7 @@ export function AssessmentCentreView({
                 id="ven-purpose"
                 value={purpose}
                 onChange={(e) => setPurpose(e.target.value)}
-                className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
               >
                 <option value="QCTO EISA Practical Assessment / Trade Test">
                   QCTO EISA Practical Assessment / Trade Test
@@ -1844,7 +1844,7 @@ export function AssessmentCentreView({
                 <label htmlFor="ven-candidates">
                   Number of Candidates / Delegates
                 </label>
-                <span className="font-mono font-bold text-[#0B2545] tabular-nums">
+                <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
                   {candidateCount} Candidates
                 </span>
               </div>
@@ -1855,7 +1855,7 @@ export function AssessmentCentreView({
                 max={32}
                 value={candidateCount}
                 onChange={(e) => setCandidateCount(Number(e.target.value))}
-                className="w-full accent-[#059669] cursor-pointer"
+                className="w-full accent-[#D91B24] cursor-pointer"
               />
             </div>
 
@@ -1864,14 +1864,14 @@ export function AssessmentCentreView({
                 type="checkbox"
                 checked={includeCatering}
                 onChange={(e) => setIncludeCatering(e.target.checked)}
-                className="rounded border-slate-300 text-[#059669]"
+                className="rounded border-[#E5E7EB] text-[#D91B24]"
               />
               <span>
                 Add Tea/Coffee & Working Lunch Catering (R145 per delegate/day)
               </span>
             </label>
 
-            <div className="p-4 bg-[#0B2545] text-white rounded-lg flex items-center justify-between">
+            <div className="p-4 bg-[#1C1B1B] text-white rounded-lg flex items-center justify-between">
               <div>
                 <span className="text-xs text-slate-300 block">
                   Total Venue Quotation ({daysCount}{' '}
@@ -1883,7 +1883,7 @@ export function AssessmentCentreView({
               </div>
               <button
                 type="submit"
-                className="px-5 py-2.5 text-xs font-semibold bg-[#059669] hover:bg-[#047857] text-white rounded-lg transition-colors cursor-pointer"
+                className="px-5 py-2.5 text-xs font-semibold bg-[#D91B24] hover:bg-[#B91C1C] text-white rounded-lg transition-colors cursor-pointer"
               >
                 Reserve Date(s) & Quote
               </button>
@@ -1891,8 +1891,8 @@ export function AssessmentCentreView({
           </form>
 
           {confirmedBooking && (
-            <div className="mt-5 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-950 space-y-1">
-              <p className="font-bold text-sm text-emerald-900">
+            <div className="mt-5 p-4 bg-[#FEF2F2] border border-[#FECACA] rounded-lg text-xs text-[#991B1B] space-y-1">
+              <p className="font-bold text-sm text-[#991B1B]">
                 ✓ Provisional Venue Booking & Quotation Issued — Ref:{' '}
                 {confirmedBooking.id}
               </p>

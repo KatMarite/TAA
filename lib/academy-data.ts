@@ -8,6 +8,8 @@ export type PageId =
   | 'qualifications'
   | 'pathways'
   | 'assessment-centre'
+  | 'other-services'
+  | 'gallery'
   | 'facilitators'
   | 'resources'
   | 'news'
@@ -911,3 +913,146 @@ export const SITEMAP_SPEC: {
     keyModules: ['Learner Progress & Certificate Hub', 'Next-Course Recommendation Engine', 'In-House Programme Expansion CMS + Nano Banana Studio'],
   },
 ];
+
+export interface OtherServiceItem {
+  id: string;
+  code: string;
+  title: string;
+  badge: string;
+  priceHighlight: string;
+  summary: string;
+  keyDeliverables: string[];
+  targetPage: PageId;
+  ctaLabel: string;
+}
+
+export const OTHER_SERVICES_LIST: OtherServiceItem[] = [
+  {
+    id: 'srv-relief-staff',
+    code: 'CAS-RELIEF-380',
+    title: 'Workplace Relief Staff Provision During Training',
+    badge: 'Exclusive Operational Guarantee',
+    priceHighlight: 'R380.00 / Operative / Day',
+    summary:
+      'Backed by our parent company Cleaning Africa Services (Pty) Ltd, we deploy vetted, uniformed, OHS-compliant temporary cleaners to your premises while your permanent staff attend classroom or practical training blocks.',
+    keyDeliverables: [
+      'Zero SLA disruption or uncleaned zones while core teams train',
+      'Full PPE, criminal clearance & supervisory sign-off included',
+      'Seamless handover synchronized with your training timetable',
+    ],
+    targetPage: 'employers',
+    ctaLabel: 'Calculate Quote with Relief Staff →',
+  },
+  {
+    id: 'srv-venue-hire',
+    code: 'TAA-VENUE-RBG',
+    title: 'Accredited Assessment Centre & Simulation Bay Hire',
+    badge: 'Northriding, Randburg Campus',
+    priceHighlight: 'From R2,400 Half-Day · R3,900 Full-Day',
+    summary:
+      'Hire our QCTO-compliant Practical Hygiene Simulation Bay (Bay A), Outdoor Solar PV & Water-Fed Pole Rig (Bay B), or 32-seat EISA Computer Assessment Suite with 100% solar/inverter backup.',
+    keyDeliverables: [
+      'Industrial rotary scrubbers, burnishers & SABS dosing bays included',
+      '12m carbon-fibre deionized pure-water poles & pitched solar test array',
+      'CCTV invigilation, uncapped fibre Wi-Fi & optional halaal catering',
+    ],
+    targetPage: 'assessment-centre',
+    ctaLabel: 'Check Venue Calendar & Book →',
+  },
+  {
+    id: 'srv-wsp-12h',
+    code: 'TAA-WSP-12H',
+    title: 'B-BBEE Skills Development, WSP/ATR & Section 12H Advisory',
+    badge: 'Corporate Tax & Grant Recovery',
+    priceHighlight: 'Up to R80,000 Section 12H Tax Allowance / Learner',
+    summary:
+      'End-to-end administration of Services SETA learnership agreements, Workplace Skills Plans (WSP), Annual Training Reports (ATR), and SARS Section 12H tax allowance compliance packs.',
+    keyDeliverables: [
+      'Tripartite SETA learnership registration & portfolio moderation',
+      'SARS IT180 Section 12H commencement & completion certificates',
+      'Enterprise & Supplier Development (ESD) contractor incubation',
+    ],
+    targetPage: 'employers',
+    ctaLabel: 'Open Section 12H ROI Calculator →',
+  },
+  {
+    id: 'srv-onsite-mobile',
+    code: 'TAA-ONSITE-SA',
+    title: 'Nationwide On-Site Mobile Workforce Training & Hygiene Audits',
+    badge: 'Cohorts of 8+ Staff Nationwide',
+    priceHighlight: 'Custom Group Rates · Gauteng & National',
+    summary:
+      'Our registered facilitators and assessors travel directly to your commercial office park, hospital, hotel, manufacturing plant, or solar estate to train staff on your actual equipment and SOPs.',
+    keyDeliverables: [
+      'Pre-training site chemical & colour-coding compliance audit',
+      'Multilingual instruction in 6 South African languages on your floor',
+      'Post-training SLA competency scorecard for facility management',
+    ],
+    targetPage: 'contact',
+    ctaLabel: 'Request On-Site Training Proposal →',
+  },
+];
+
+export interface GalleryItem {
+  id: string;
+  title: string;
+  category: 'Practical Hygiene Bays' | 'Solar PV & High-Reach' | 'Supervisory & Lectures' | 'Randburg Campus';
+  location: string;
+  image: string;
+  caption: string;
+  relatedCourseId?: string;
+}
+
+export const GALLERY_ITEMS: GalleryItem[] = [
+  {
+    id: 'gal-1',
+    title: 'Northriding Lecture & Interactive Theory Briefing',
+    category: 'Supervisory & Lectures',
+    location: 'Unit 14 Fancourt Office Park, Randburg',
+    image: BRAND_IMAGES.heroAcademy,
+    caption:
+      'Registered facilitator leading an interactive SABS colour-coding and OHS Act compliance session with commercial hygiene learners.',
+    relatedCourseId: 'occ-cleaning-practitioner-nqf3',
+  },
+  {
+    id: 'gal-2',
+    title: 'Industrial Rotary Scrubber & Floor-Care Simulation',
+    category: 'Practical Hygiene Bays',
+    location: 'Simulation Bay A · Randburg Assessment Centre',
+    image: BRAND_IMAGES.commercialHygiene,
+    caption:
+      'Hands-on practical assessment on walk-behind auto-scrubbers, chemical dilution dosing stations, and multi-surface floor maintenance.',
+    relatedCourseId: 'occ-commercial-cleaner-nqf1',
+  },
+  {
+    id: 'gal-3',
+    title: 'Deionized Water-Fed Pole & Rooftop Solar PV Array Rig',
+    category: 'Solar PV & High-Reach',
+    location: 'Outdoor Rig Bay B · Randburg Campus',
+    image: BRAND_IMAGES.solarSpecialized,
+    caption:
+      'Technicians practicing early-morning 0–10 ppm pure-water solar panel cleaning and thermal-shock prevention protocols.',
+    relatedCourseId: 'spec-solar-panel-cleaning',
+  },
+  {
+    id: 'gal-4',
+    title: 'Cleaning Practitioner NQF Level 3 Supervisory Workshop',
+    category: 'Supervisory & Lectures',
+    location: 'Executive Seminar Suite · Randburg',
+    image: BRAND_IMAGES.supervisoryManagement,
+    caption:
+      'Team leaders and aspiring cleaning entrepreneurs mastering shift scheduling, ISSA square-metre productivity rates, and BCCCI tender costing.',
+    relatedCourseId: 'short-business-startup',
+  },
+  {
+    id: 'gal-5',
+    title: 'QCTO EISA Accredited Assessment & Simulation Facility',
+    category: 'Randburg Campus',
+    location: 'Northriding, Randburg, Gauteng',
+    image: BRAND_IMAGES.assessmentCentre,
+    caption:
+      'Our purpose-built practical assessment bays equipped for carpet extraction, deep washroom descaling, and External Integrated Summative Assessments.',
+    relatedCourseId: 'short-deep-bathroom-carpet',
+  },
+];
+

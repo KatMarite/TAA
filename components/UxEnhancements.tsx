@@ -86,13 +86,13 @@ export function CourseFinderWizard({
   }, [courses, goalId, formatPref, budgetCap]);
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+    <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E5E7EB]">
         <div>
-          <p className="text-xs font-semibold text-[#059669]">
+          <p className="text-xs font-semibold text-[#D91B24]">
             Interactive Career & Course Matcher · 3-Step Guided Advisor
           </p>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#0B2545] mt-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1C1B1B] mt-1">
             Not Sure Where to Start? Match Your Ideal Programme in 30 Seconds
           </h2>
         </div>
@@ -110,10 +110,10 @@ export function CourseFinderWizard({
               onClick={() => setStep(s.n as 1 | 2 | 3)}
               className={`px-3 py-1.5 rounded-lg font-semibold transition-colors cursor-pointer ${
                 step === s.n
-                  ? 'bg-[#0B2545] text-white'
+                  ? 'bg-[#1C1B1B] text-white'
                   : step > s.n
-                  ? 'bg-emerald-50 text-[#059669]'
-                  : 'bg-slate-100 text-slate-500'
+                  ? 'bg-[#FEF2F2] text-[#D91B24]'
+                  : 'bg-slate-100 text-[#52525B]'
               }`}
             >
               {s.label}
@@ -138,8 +138,8 @@ export function CourseFinderWizard({
                   onClick={() => setGoalId(g.id)}
                   className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
                     active
-                      ? 'bg-[#0B2545] text-white border-[#0B2545]'
-                      : 'bg-[#F8FAFC] text-[#0B2545] border-slate-200 hover:border-[#059669]'
+                      ? 'bg-[#1C1B1B] text-white border-[#1C1B1B]'
+                      : 'bg-[#FCF9F8] text-[#1C1B1B] border-[#E5E7EB] hover:border-[#D91B24]'
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -148,7 +148,7 @@ export function CourseFinderWizard({
                   </div>
                   <p
                     className={`text-xs mt-1.5 leading-relaxed ${
-                      active ? 'text-slate-200' : 'text-slate-600'
+                      active ? 'text-slate-200' : 'text-[#52525B]'
                     }`}
                   >
                     {g.desc}
@@ -161,7 +161,7 @@ export function CourseFinderWizard({
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="px-6 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-2 cursor-pointer"
+              className="px-6 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-2 cursor-pointer"
             >
               <span>Next: Choose Delivery & Budget</span>
               <ArrowRight className="w-4 h-4" />
@@ -175,7 +175,7 @@ export function CourseFinderWizard({
         <div className="mt-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <p className="text-sm font-semibold text-[#0B2545] mb-3">
+              <p className="text-sm font-semibold text-[#1C1B1B] mb-3">
                 Preferred Learning Format
               </p>
               <div className="space-y-2">
@@ -189,8 +189,8 @@ export function CourseFinderWizard({
                     key={opt.id}
                     className={`flex items-center gap-3 p-3 rounded-lg border text-xs font-medium cursor-pointer ${
                       formatPref === opt.id
-                        ? 'border-[#059669] bg-emerald-50/50 text-[#0B2545] font-semibold'
-                        : 'border-slate-200 bg-[#F8FAFC] text-slate-700'
+                        ? 'border-[#D91B24] bg-[#FEF2F2]/50 text-[#1C1B1B] font-semibold'
+                        : 'border-[#E5E7EB] bg-[#FCF9F8] text-slate-700'
                     }`}
                   >
                     <input
@@ -198,7 +198,7 @@ export function CourseFinderWizard({
                       name="wizard-format"
                       checked={formatPref === opt.id}
                       onChange={() => setFormatPref(opt.id)}
-                      className="text-[#059669]"
+                      className="text-[#D91B24]"
                     />
                     <span>{opt.label}</span>
                   </label>
@@ -206,11 +206,11 @@ export function CourseFinderWizard({
               </div>
             </div>
 
-            <div className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
+            <div className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between text-xs font-semibold text-[#0B2545] mb-2">
+                <div className="flex items-center justify-between text-xs font-semibold text-[#1C1B1B] mb-2">
                   <label htmlFor="wizard-budget">Maximum Individual Fee Budget</label>
-                  <span className="font-mono text-base text-[#059669] tabular-nums">
+                  <span className="font-mono text-base text-[#D91B24] tabular-nums">
                     R{budgetCap.toLocaleString('en-ZA')}
                   </span>
                 </div>
@@ -222,17 +222,17 @@ export function CourseFinderWizard({
                   step={500}
                   value={budgetCap}
                   onChange={(e) => setBudgetCap(Number(e.target.value))}
-                  className="w-full accent-[#059669] cursor-pointer"
+                  className="w-full accent-[#D91B24] cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] font-mono text-slate-500 mt-1">
+                <div className="flex justify-between text-[11px] font-mono text-[#52525B] mt-1">
                   <span>R1,450 (Short Modules)</span>
                   <span>R4,250 (Startup)</span>
                   <span>R22,500 (Full NQF 4)</span>
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-slate-200 text-xs text-slate-600">
-                <p className="font-semibold text-[#0B2545]">
+              <div className="mt-6 pt-4 border-t border-[#E5E7EB] text-xs text-[#52525B]">
+                <p className="font-semibold text-[#1C1B1B]">
                   Live Match Preview: {matchedCourses.length} Recommended Programmes
                 </p>
                 <p className="mt-1">
@@ -246,7 +246,7 @@ export function CourseFinderWizard({
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-[#0B2545] inline-flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold text-[#52525B] hover:text-[#1C1B1B] inline-flex items-center gap-1.5 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Goal</span>
@@ -254,7 +254,7 @@ export function CourseFinderWizard({
             <button
               type="button"
               onClick={() => setStep(3)}
-              className="px-6 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-2 cursor-pointer"
+              className="px-6 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-2 cursor-pointer"
             >
               <span>Reveal {matchedCourses.length} Recommended Courses</span>
               <ArrowRight className="w-4 h-4" />
@@ -267,13 +267,13 @@ export function CourseFinderWizard({
       {step === 3 && (
         <div className="mt-6 space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-sm font-semibold text-[#0B2545]">
+            <p className="text-sm font-semibold text-[#1C1B1B]">
               Step 3 of 3 — Your Personalised Course Recommendations ({matchedCourses.length} Matches):
             </p>
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="text-xs font-semibold text-[#059669] hover:underline inline-flex items-center gap-1 cursor-pointer"
+              className="text-xs font-semibold text-[#D91B24] hover:underline inline-flex items-center gap-1 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Start Wizard Over</span>
@@ -284,30 +284,30 @@ export function CourseFinderWizard({
             {matchedCourses.slice(0, 3).map((c) => (
               <div
                 key={c.id}
-                className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-5 flex flex-col justify-between"
+                className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between"
               >
                 <div>
-                  <p className="text-xs font-mono text-[#059669] font-semibold">
+                  <p className="text-xs font-mono text-[#D91B24] font-semibold">
                     {c.code} · {c.nqfLevel} · {c.credits} Credits
                   </p>
-                  <h3 className="text-base font-bold text-[#0B2545] mt-1">{c.title}</h3>
-                  <p className="text-xs text-slate-600 mt-2">{c.shortSummary}</p>
-                  <p className="text-xs text-slate-500 mt-3">
-                    <strong className="text-[#0B2545]">Outcome:</strong> {c.careerOutcome}
+                  <h3 className="text-base font-bold text-[#1C1B1B] mt-1">{c.title}</h3>
+                  <p className="text-xs text-[#52525B] mt-2">{c.shortSummary}</p>
+                  <p className="text-xs text-[#52525B] mt-3">
+                    <strong className="text-[#1C1B1B]">Outcome:</strong> {c.careerOutcome}
                   </p>
                 </div>
 
-                <div className="mt-5 pt-4 border-t border-slate-200 space-y-3">
+                <div className="mt-5 pt-4 border-t border-[#E5E7EB] space-y-3">
                   <div className="flex items-baseline justify-between">
                     <div>
-                      <span className="text-[11px] text-slate-500 block">Single Fee</span>
-                      <span className="font-mono text-lg font-bold text-[#0B2545] tabular-nums">
+                      <span className="text-[11px] text-[#52525B] block">Single Fee</span>
+                      <span className="font-mono text-lg font-bold text-[#1C1B1B] tabular-nums">
                         R{c.priceZAR.toLocaleString('en-ZA')}
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-[11px] text-slate-500 block">Group (5+)</span>
-                      <span className="font-mono text-xs font-semibold text-[#059669] tabular-nums">
+                      <span className="text-[11px] text-[#52525B] block">Group (5+)</span>
+                      <span className="font-mono text-xs font-semibold text-[#D91B24] tabular-nums">
                         R{c.groupPricePerLearnerZAR.toLocaleString('en-ZA')}/staff
                       </span>
                     </div>
@@ -317,14 +317,14 @@ export function CourseFinderWizard({
                     <button
                       type="button"
                       onClick={() => onEnrolCourse(c)}
-                      className="flex-1 py-2 px-3 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg cursor-pointer"
+                      className="flex-1 py-2 px-3 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
                     >
                       Enrol Now
                     </button>
                     <button
                       type="button"
                       onClick={() => onSelectCourse(c.id)}
-                      className="py-2 px-3 text-xs font-semibold text-[#0B2545] bg-white border border-slate-300 hover:bg-slate-50 rounded-lg cursor-pointer"
+                      className="py-2 px-3 text-xs font-semibold text-[#1C1B1B] bg-white border border-[#E5E7EB] hover:bg-slate-50 rounded-lg cursor-pointer"
                     >
                       Curriculum
                     </button>
@@ -332,7 +332,7 @@ export function CourseFinderWizard({
                       type="button"
                       onClick={() => onOpenBrochure(c)}
                       title="Download Brochure"
-                      className="p-2 text-slate-600 bg-white border border-slate-300 hover:text-[#0B2545] rounded-lg cursor-pointer"
+                      className="p-2 text-[#52525B] bg-white border border-[#E5E7EB] hover:text-[#1C1B1B] rounded-lg cursor-pointer"
                     >
                       <Download className="w-3.5 h-3.5" />
                     </button>
@@ -441,8 +441,8 @@ Date of Issue:          10 November 2026
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-      <div className="bg-white border border-slate-200 rounded-xl max-w-2xl w-full overflow-hidden shadow-xl max-h-[90vh] flex flex-col">
-        <div className="bg-[#0B2545] text-white px-6 py-4 flex items-center justify-between shrink-0">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl max-w-2xl w-full overflow-hidden shadow-xl max-h-[90vh] flex flex-col">
+        <div className="bg-[#1C1B1B] text-white px-6 py-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
             <Award className="w-5 h-5 text-[#F59E0B]" />
             <div>
@@ -466,61 +466,61 @@ Date of Issue:          10 November 2026
 
         <div className="p-6 overflow-y-auto space-y-6">
           {/* Visual Certificate Document Frame */}
-          <div className="border-2 border-[#0B2545] rounded-xl p-6 sm:p-8 bg-[#F8FAFC] relative">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-300">
+          <div className="border-2 border-[#1C1B1B] rounded-xl p-6 sm:p-8 bg-[#FCF9F8] relative">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#E5E7EB]">
               <div>
-                <p className="text-xs font-bold tracking-wider text-[#059669] uppercase">
+                <p className="text-xs font-bold tracking-wider text-[#D91B24] uppercase">
                   Training Africa Academy · Cleaning Africa Services (Pty) Ltd
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-[#52525B]">
                   Northriding, Randburg Assessment Centre · Reg: 2000/018492/07
                 </p>
               </div>
-              <div className="text-left sm:text-right font-mono text-xs text-[#0B2545]">
+              <div className="text-left sm:text-right font-mono text-xs text-[#1C1B1B]">
                 <span className="block font-bold">{certReference}</span>
-                <span className="text-slate-500">Status: VERIFIED</span>
+                <span className="text-[#52525B]">Status: VERIFIED</span>
               </div>
             </div>
 
             <div className="py-6 text-center space-y-2">
-              <p className="text-xs text-slate-500 uppercase tracking-widest">
+              <p className="text-xs text-[#52525B] uppercase tracking-widest">
                 Statement of Competency & Programme Completion
               </p>
-              <p className="text-xs text-slate-600">This certifies that</p>
-              <p className="text-2xl sm:text-3xl font-bold text-[#0B2545]">
+              <p className="text-xs text-[#52525B]">This certifies that</p>
+              <p className="text-2xl sm:text-3xl font-bold text-[#1C1B1B]">
                 {learnerName}
               </p>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-[#52525B]">
                 has successfully satisfied both theoretical and practical simulation outcomes for
               </p>
-              <h3 className="text-lg sm:text-xl font-bold text-[#059669] max-w-lg mx-auto">
+              <h3 className="text-lg sm:text-xl font-bold text-[#D91B24] max-w-lg mx-auto">
                 {courseTitle}
               </h3>
-              <p className="text-xs font-mono text-slate-600">
+              <p className="text-xs font-mono text-[#52525B]">
                 {courseCode} · {courseNqf} · {courseCredits} Credits ·{' '}
                 {initialCourse?.accreditationBody || 'QCTO & Services SETA Aligned'}
               </p>
             </div>
 
-            <div className="pt-4 border-t border-slate-300 grid grid-cols-3 gap-4 text-xs">
+            <div className="pt-4 border-t border-[#E5E7EB] grid grid-cols-3 gap-4 text-xs">
               <div>
-                <p className="font-semibold text-[#0B2545]">Thabo Mokoena</p>
-                <p className="text-slate-500">Lead QCTO Assessor (SSETA-ASS-88412)</p>
+                <p className="font-semibold text-[#1C1B1B]">Thabo Mokoena</p>
+                <p className="text-[#52525B]">Lead QCTO Assessor (SSETA-ASS-88412)</p>
               </div>
               <div className="text-center">
-                <p className="font-semibold text-[#0B2545]">Sarah Molefe</p>
-                <p className="text-slate-500">Internal Moderator (SSETA-MOD-44910)</p>
+                <p className="font-semibold text-[#1C1B1B]">Sarah Molefe</p>
+                <p className="text-[#52525B]">Internal Moderator (SSETA-MOD-44910)</p>
               </div>
               <div className="text-right font-mono">
-                <p className="font-semibold text-[#0B2545]">10 Nov 2026</p>
-                <p className="text-[#059669] font-semibold">✓ NLRD Ready</p>
+                <p className="font-semibold text-[#1C1B1B]">10 Nov 2026</p>
+                <p className="text-[#D91B24] font-semibold">✓ NLRD Ready</p>
               </div>
             </div>
           </div>
 
           {/* Live Employer / Third-Party Certificate Lookup Tool */}
-          <div className="bg-white border border-slate-200 rounded-xl p-4">
-            <p className="text-xs font-bold text-[#0B2545] mb-2">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+            <p className="text-xs font-bold text-[#1C1B1B] mb-2">
               Employer & Regulator Credential Verification Lookup
             </p>
             <form onSubmit={handleVerifyLookup} className="flex flex-col sm:flex-row gap-2">
@@ -529,11 +529,11 @@ Date of Issue:          10 November 2026
                 value={lookupCode}
                 onChange={(e) => setLookupCode(e.target.value)}
                 placeholder="Enter Certificate Ref (e.g. TAA-CERT-2026-QCTO-CP-L3)"
-                className="flex-1 px-3 py-2 text-xs font-mono bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                className="flex-1 px-3 py-2 text-xs font-mono bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
               />
               <button
                 type="submit"
-                className="px-4 py-2 text-xs font-semibold text-white bg-[#0B2545] hover:bg-[#133B6E] rounded-lg cursor-pointer"
+                className="px-4 py-2 text-xs font-semibold text-white bg-[#1C1B1B] hover:bg-[#27272A] rounded-lg cursor-pointer"
               >
                 Verify Credential
               </button>
@@ -543,7 +543,7 @@ Date of Issue:          10 November 2026
               <div
                 className={`mt-3 p-3 rounded-lg border text-xs ${
                   verifiedStatus.valid
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-950'
+                    ? 'bg-[#FEF2F2] border-[#FECACA] text-[#991B1B]'
                     : 'bg-red-50 border-red-200 text-red-900'
                 }`}
               >
@@ -561,18 +561,18 @@ Date of Issue:          10 November 2026
             )}
           </div>
 
-          <div className="flex flex-wrap items-center justify-end gap-3 pt-2 border-t border-slate-200">
+          <div className="flex flex-wrap items-center justify-end gap-3 pt-2 border-t border-[#E5E7EB]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold text-[#52525B] hover:text-slate-900 cursor-pointer"
             >
               Close Preview
             </button>
             <button
               type="button"
               onClick={handleDownloadCertificate}
-              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-2 cursor-pointer"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-2 cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Download Official Statement (.TXT)</span>
@@ -637,7 +637,7 @@ export function GuidedOnboardingTour({
   const current = stops[tourStep];
 
   return (
-    <div className="bg-[#0F2C59] text-white border-b border-white/15">
+    <div className="bg-[#18181B] text-white border-b border-white/15">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="space-y-1 max-w-3xl">
@@ -652,7 +652,7 @@ export function GuidedOnboardingTour({
             <button
               type="button"
               onClick={() => onNavigate(current.targetPage)}
-              className="px-3.5 py-2 text-xs font-semibold bg-[#059669] hover:bg-[#047857] text-white rounded-lg cursor-pointer"
+              className="px-3.5 py-2 text-xs font-semibold bg-[#D91B24] hover:bg-[#B91C1C] text-white rounded-lg cursor-pointer"
             >
               {current.ctaLabel}
             </button>
@@ -669,7 +669,7 @@ export function GuidedOnboardingTour({
               <button
                 type="button"
                 onClick={() => setTourStep(tourStep + 1)}
-                className="px-3.5 py-2 text-xs font-semibold bg-[#F59E0B] text-[#0B2545] rounded-lg cursor-pointer"
+                className="px-3.5 py-2 text-xs font-semibold bg-[#F59E0B] text-[#1C1B1B] rounded-lg cursor-pointer"
               >
                 Next Stop →
               </button>
@@ -677,7 +677,7 @@ export function GuidedOnboardingTour({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-3.5 py-2 text-xs font-semibold bg-[#F59E0B] text-[#0B2545] rounded-lg cursor-pointer"
+                className="px-3.5 py-2 text-xs font-semibold bg-[#F59E0B] text-[#1C1B1B] rounded-lg cursor-pointer"
               >
                 Finish Tour ✓
               </button>
@@ -720,7 +720,7 @@ export function MobileThumbBar({
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-2 py-1.5">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E5E7EB] px-2 py-1.5">
       <div className="grid grid-cols-5 items-center gap-1">
         {navItems.map((item) => {
           const isActive = activePage === item.id;
@@ -730,7 +730,7 @@ export function MobileThumbBar({
               type="button"
               onClick={() => onNavigate(item.id)}
               className={`min-h-[44px] flex flex-col items-center justify-center rounded-lg transition-colors cursor-pointer ${
-                isActive ? 'text-[#059669] font-semibold' : 'text-slate-600'
+                isActive ? 'text-[#D91B24] font-semibold' : 'text-[#52525B]'
               }`}
             >
               {item.icon}
@@ -743,7 +743,7 @@ export function MobileThumbBar({
         <button
           type="button"
           onClick={onTriggerPrimaryAction}
-          className="min-h-[44px] px-2 bg-[#059669] text-white rounded-lg flex flex-col items-center justify-center font-semibold cursor-pointer"
+          className="min-h-[44px] px-2 bg-[#D91B24] text-white rounded-lg flex flex-col items-center justify-center font-semibold cursor-pointer"
         >
           <GraduationCap className="w-4 h-4" />
           <span className="text-[10px] mt-0.5 leading-none whitespace-nowrap">

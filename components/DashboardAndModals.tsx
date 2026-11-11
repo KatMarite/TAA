@@ -193,17 +193,17 @@ export function DashboardView({
 
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-[#E5E7EB]">
         <div>
-          <p className="text-xs font-semibold text-[#059669] mb-2">
+          <p className="text-xs font-semibold text-[#D91B24] mb-2">
             15. Authenticated Learner Dashboard & In-House Programme Expansion CMS
           </p>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545]">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B]">
             {activeTab === 'learner'
               ? 'Welcome Back, Learner — Active Courses & Progression'
               : 'In-House Programme Manager & Revenue Ledger'}
           </h1>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-[#52525B]">
             {activeTab === 'learner'
               ? 'Resume your self-paced online modules, preview & verify your QCTO/SETA statements of competency, and explore recommended next-stage courses.'
               : 'Structured for in-house programme expansion: add new accredited courses, generate Nano Banana visuals, and track live enrolments and quotes.'}
@@ -216,8 +216,8 @@ export function DashboardView({
             onClick={() => setActiveTab('learner')}
             className={`px-4 py-2 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
               activeTab === 'learner'
-                ? 'bg-[#0B2545] text-white shadow-xs'
-                : 'text-slate-700 hover:text-[#0B2545]'
+                ? 'bg-[#1C1B1B] text-white shadow-xs'
+                : 'text-slate-700 hover:text-[#1C1B1B]'
             }`}
           >
             Learner Dashboard ({enrolledCourses.length})
@@ -227,8 +227,8 @@ export function DashboardView({
             onClick={() => setActiveTab('cms')}
             className={`px-4 py-2 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
               activeTab === 'cms'
-                ? 'bg-[#059669] text-white shadow-xs'
-                : 'text-slate-700 hover:text-[#0B2545]'
+                ? 'bg-[#D91B24] text-white shadow-xs'
+                : 'text-slate-700 hover:text-[#1C1B1B]'
             }`}
           >
             In-House CMS & Revenue Ledger
@@ -239,7 +239,7 @@ export function DashboardView({
       {activeTab === 'learner' ? (
         <div className="space-y-10">
           <div>
-            <h2 className="text-xl font-bold text-[#0B2545] mb-4">
+            <h2 className="text-xl font-bold text-[#1C1B1B] mb-4">
               Your Enrolled Programmes
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -256,27 +256,27 @@ export function DashboardView({
                 return (
                   <div
                     key={course.id}
-                    className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between"
+                    className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-col justify-between"
                   >
                     <div>
-                      <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-                        <span className="font-mono font-semibold text-[#059669]">
+                      <div className="flex items-center justify-between text-xs text-[#52525B] mb-2">
+                        <span className="font-mono font-semibold text-[#D91B24]">
                           {course.code} · {course.nqfLevel}
                         </span>
-                        <span className="font-mono font-bold text-[#0B2545] tabular-nums">
+                        <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
                           {pct}% Complete
                         </span>
                       </div>
-                      <h3 className="text-lg font-bold text-[#0B2545]">
+                      <h3 className="text-lg font-bold text-[#1C1B1B]">
                         {course.title}
                       </h3>
                       <div className="mt-3 w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-[#059669] transition-all"
+                          className="h-full bg-[#D91B24] transition-all"
                           style={{ width: `${pct}%` }}
                         />
                       </div>
-                      <p className="text-xs text-slate-600 mt-3">
+                      <p className="text-xs text-[#52525B] mt-3">
                         Outcome: {course.careerOutcome}
                       </p>
                     </div>
@@ -285,7 +285,7 @@ export function DashboardView({
                       <button
                         type="button"
                         onClick={() => onLaunchOnlineCourse(course.id)}
-                        className="px-4 py-2 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+                        className="px-4 py-2 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                       >
                         <PlayCircle className="w-4 h-4" />
                         <span>Continue Online Learning</span>
@@ -293,7 +293,7 @@ export function DashboardView({
                       <button
                         type="button"
                         onClick={() => onOpenCertificateModal(course)}
-                        className="px-3.5 py-2 text-xs font-semibold text-[#0B2545] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+                        className="px-3.5 py-2 text-xs font-semibold text-[#1C1B1B] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                       >
                         <Award className="w-4 h-4 text-[#F59E0B]" />
                         <span>Preview & Verify Certificate</span>
@@ -305,46 +305,46 @@ export function DashboardView({
             </div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-            <p className="text-xs font-semibold text-[#059669]">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+            <p className="text-xs font-semibold text-[#D91B24]">
               Recommended Career Progression
             </p>
-            <h2 className="text-xl font-bold text-[#0B2545] mt-1">
+            <h2 className="text-xl font-bold text-[#1C1B1B] mt-1">
               Recommended Next Courses Based on Your Learning Profile
             </h2>
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
               {recommendedCourses.slice(0, 3).map((rec) => (
                 <div
                   key={rec.id}
-                  className="bg-[#F8FAFC] border border-slate-200 rounded-xl p-5 flex flex-col justify-between"
+                  className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between"
                 >
                   <div>
-                    <p className="text-xs font-mono text-slate-500">
+                    <p className="text-xs font-mono text-[#52525B]">
                       {rec.code} · {rec.nqfLevel}
                     </p>
-                    <h3 className="text-base font-bold text-[#0B2545] mt-1">
+                    <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
                       {rec.title}
                     </h3>
-                    <p className="text-xs text-slate-600 mt-2">
+                    <p className="text-xs text-[#52525B] mt-2">
                       {rec.shortSummary}
                     </p>
                   </div>
-                  <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between">
-                    <span className="font-mono text-sm font-bold text-[#0B2545] tabular-nums">
+                  <div className="mt-5 pt-3 border-t border-[#E5E7EB] flex items-center justify-between">
+                    <span className="font-mono text-sm font-bold text-[#1C1B1B] tabular-nums">
                       R{rec.priceZAR.toLocaleString('en-ZA')}
                     </span>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => onSelectCourse(rec.id)}
-                        className="text-xs font-semibold text-[#0B2545] hover:underline cursor-pointer"
+                        className="text-xs font-semibold text-[#1C1B1B] hover:underline cursor-pointer"
                       >
                         Inspect
                       </button>
                       <button
                         type="button"
                         onClick={() => onEnrolCourse(rec)}
-                        className="px-3 py-1.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg cursor-pointer"
+                        className="px-3 py-1.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
                       >
                         Enrol
                       </button>
@@ -357,14 +357,14 @@ export function DashboardView({
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-            <p className="text-xs font-semibold text-[#059669]">
+          <div className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+            <p className="text-xs font-semibold text-[#D91B24]">
               In-House Programme Expansion Studio
             </p>
-            <h2 className="text-xl font-bold text-[#0B2545] mt-1">
+            <h2 className="text-xl font-bold text-[#1C1B1B] mt-1">
               Publish a New Accredited Qualification or Short Course
             </h2>
-            <p className="text-xs text-slate-600 mt-1">
+            <p className="text-xs text-[#52525B] mt-1">
               New programmes added here immediately appear in the Course Catalogue, Employer Quote Calculator, and Homepage.
             </p>
 
@@ -384,7 +384,7 @@ export function DashboardView({
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
                     placeholder="e.g. Healthcare & Hospital Terminal Disinfection Certificate"
-                    className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                    className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                   />
                 </div>
                 <div>
@@ -399,7 +399,7 @@ export function DashboardView({
                     type="text"
                     value={newCode}
                     onChange={(e) => setNewCode(e.target.value)}
-                    className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg font-mono"
                   />
                 </div>
               </div>
@@ -418,7 +418,7 @@ export function DashboardView({
                     onChange={(e) =>
                       setNewCategory(e.target.value as CourseCategory)
                     }
-                    className="w-full px-3 py-2 text-xs bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                    className="w-full px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                   >
                     <option value="Specialized Hygiene & Technical">
                       Specialized Hygiene & Technical
@@ -446,7 +446,7 @@ export function DashboardView({
                     type="number"
                     value={newPrice}
                     onChange={(e) => setNewPrice(Number(e.target.value))}
-                    className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg font-mono"
                   />
                 </div>
                 <div>
@@ -461,7 +461,7 @@ export function DashboardView({
                     type="number"
                     value={newGroupPrice}
                     onChange={(e) => setNewGroupPrice(Number(e.target.value))}
-                    className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg font-mono"
                   />
                 </div>
               </div>
@@ -478,20 +478,20 @@ export function DashboardView({
                   rows={2}
                   value={newSummary}
                   onChange={(e) => setNewSummary(e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
 
-              <div className="p-4 bg-[#F8FAFC] border border-slate-200 rounded-xl space-y-3">
+              <div className="p-4 bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#0B2545]">
+                  <span className="text-xs font-bold text-[#1C1B1B]">
                     Nano Banana Course Imagery Generator (gemini-3.1-flash-lite-image)
                   </span>
                   <button
                     type="button"
                     onClick={handleGenerateNanoBananaImage}
                     disabled={isGeneratingImage}
-                    className="px-3 py-1.5 text-xs font-semibold text-white bg-[#0B2545] hover:bg-[#133B6E] rounded-lg inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="px-3 py-1.5 text-xs font-semibold text-white bg-[#1C1B1B] hover:bg-[#27272A] rounded-lg inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     {isGeneratingImage ? (
                       <>
@@ -512,14 +512,14 @@ export function DashboardView({
                   value={nanoPrompt}
                   onChange={(e) => setNanoPrompt(e.target.value)}
                   aria-label="Prompt for Nano Banana course visual"
-                  className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-[#E5E7EB] rounded-lg"
                 />
 
                 {genError && (
                   <p className="text-xs text-amber-700">{genError}</p>
                 )}
 
-                <div className="h-40 w-full rounded-lg overflow-hidden border border-slate-200">
+                <div className="h-40 w-full rounded-lg overflow-hidden border border-[#E5E7EB]">
                   <ResilientImage
                     src={generatedImageUrl}
                     alt="Course preview visual"
@@ -530,54 +530,54 @@ export function DashboardView({
 
               <button
                 type="submit"
-                className="w-full py-3 px-4 text-sm font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg cursor-pointer"
+                className="w-full py-3 px-4 text-sm font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
               >
                 Publish Programme to Live Platform
               </button>
             </form>
 
             {publishSuccess && (
-              <div className="mt-4 p-3.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-900">
+              <div className="mt-4 p-3.5 bg-[#FEF2F2] border border-[#FECACA] rounded-lg text-xs font-semibold text-[#991B1B]">
                 ✓ {publishSuccess}
               </div>
             )}
           </div>
 
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
-              <h2 className="text-base font-bold text-[#0B2545]">
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 space-y-4">
+              <h2 className="text-base font-bold text-[#1C1B1B]">
                 Live Platform Conversion & Revenue Ledger
               </h2>
 
               <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="p-3.5 rounded-lg bg-[#F8FAFC] border border-slate-200">
-                  <span className="text-slate-500 block">Online Enrolments</span>
-                  <strong className="text-xl font-bold font-mono text-[#0B2545] tabular-nums">
+                <div className="p-3.5 rounded-lg bg-[#FCF9F8] border border-[#E5E7EB]">
+                  <span className="text-[#52525B] block">Online Enrolments</span>
+                  <strong className="text-xl font-bold font-mono text-[#1C1B1B] tabular-nums">
                     {enrolments.length}
                   </strong>
                 </div>
-                <div className="p-3.5 rounded-lg bg-[#F8FAFC] border border-slate-200">
-                  <span className="text-slate-500 block">Employer Quotes</span>
-                  <strong className="text-xl font-bold font-mono text-[#059669] tabular-nums">
+                <div className="p-3.5 rounded-lg bg-[#FCF9F8] border border-[#E5E7EB]">
+                  <span className="text-[#52525B] block">Employer Quotes</span>
+                  <strong className="text-xl font-bold font-mono text-[#D91B24] tabular-nums">
                     {quotes.length}
                   </strong>
                 </div>
-                <div className="p-3.5 rounded-lg bg-[#F8FAFC] border border-slate-200">
-                  <span className="text-slate-500 block">Learnership Apps</span>
-                  <strong className="text-xl font-bold font-mono text-[#0B2545] tabular-nums">
+                <div className="p-3.5 rounded-lg bg-[#FCF9F8] border border-[#E5E7EB]">
+                  <span className="text-[#52525B] block">Learnership Apps</span>
+                  <strong className="text-xl font-bold font-mono text-[#1C1B1B] tabular-nums">
                     {applications.length}
                   </strong>
                 </div>
-                <div className="p-3.5 rounded-lg bg-[#F8FAFC] border border-slate-200">
-                  <span className="text-slate-500 block">Venue Bookings</span>
-                  <strong className="text-xl font-bold font-mono text-[#059669] tabular-nums">
+                <div className="p-3.5 rounded-lg bg-[#FCF9F8] border border-[#E5E7EB]">
+                  <span className="text-[#52525B] block">Venue Bookings</span>
+                  <strong className="text-xl font-bold font-mono text-[#D91B24] tabular-nums">
                     {venueBookings.length}
                   </strong>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 space-y-2 text-xs">
-                <p className="font-semibold text-[#0B2545]">
+              <div className="pt-3 border-t border-[#E5E7EB] space-y-2 text-xs">
+                <p className="font-semibold text-[#1C1B1B]">
                   Recent Enrolments & Quotes:
                 </p>
                 {enrolments.map((enr) => (
@@ -586,12 +586,12 @@ export function DashboardView({
                     className="flex items-center justify-between py-1.5 border-b border-slate-100"
                   >
                     <div>
-                      <p className="font-semibold text-[#0B2545]">
+                      <p className="font-semibold text-[#1C1B1B]">
                         {enr.learnerName}
                       </p>
-                      <p className="text-slate-500">{enr.courseTitle}</p>
+                      <p className="text-[#52525B]">{enr.courseTitle}</p>
                     </div>
-                    <span className="font-mono font-bold text-[#059669] tabular-nums">
+                    <span className="font-mono font-bold text-[#D91B24] tabular-nums">
                       R{enr.amountPaidZAR.toLocaleString('en-ZA')}
                     </span>
                   </div>
@@ -662,8 +662,8 @@ export function EnrolmentModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-      <div className="bg-white border border-slate-200 rounded-xl max-w-xl w-full overflow-hidden shadow-xl">
-        <div className="bg-[#0B2545] text-white px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl max-w-xl w-full overflow-hidden shadow-xl">
+        <div className="bg-[#1C1B1B] text-white px-6 py-4 flex items-center justify-between">
           <div>
             <p className="text-xs text-[#F59E0B] font-mono">
               Step {step} of 3 · {course.code} · {course.nqfLevel}
@@ -683,7 +683,7 @@ export function EnrolmentModal({
         </div>
 
         {/* 3-Step Progress Bar */}
-        <div className="bg-slate-100 px-6 py-2.5 border-b border-slate-200 grid grid-cols-3 gap-2 text-xs font-mono">
+        <div className="bg-slate-100 px-6 py-2.5 border-b border-[#E5E7EB] grid grid-cols-3 gap-2 text-xs font-mono">
           {[
             { n: 1, title: '01. Mode & Options' },
             { n: 2, title: '02. Learner Details' },
@@ -695,10 +695,10 @@ export function EnrolmentModal({
               onClick={() => setStep(item.n as 1 | 2 | 3)}
               className={`py-1 px-2 rounded text-center font-semibold cursor-pointer ${
                 step === item.n
-                  ? 'bg-[#0B2545] text-white'
+                  ? 'bg-[#1C1B1B] text-white'
                   : step > item.n
-                  ? 'text-[#059669]'
-                  : 'text-slate-500'
+                  ? 'text-[#D91B24]'
+                  : 'text-[#52525B]'
               }`}
             >
               {item.title}
@@ -708,15 +708,15 @@ export function EnrolmentModal({
 
         <form onSubmit={handleCheckout} className="p-6 space-y-5">
           {/* Course Summary Banner */}
-          <div className="p-3.5 bg-[#F8FAFC] border border-slate-200 rounded-lg flex items-center justify-between">
+          <div className="p-3.5 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-[#0B2545]">{course.title}</p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs font-bold text-[#1C1B1B]">{course.title}</p>
+              <p className="text-xs text-[#52525B]">
                 {course.duration} · {learnerQty}{' '}
                 {learnerQty === 1 ? 'Learner' : 'Learners'}
               </p>
             </div>
-            <span className="font-mono text-lg font-bold text-[#059669] tabular-nums">
+            <span className="font-mono text-lg font-bold text-[#D91B24] tabular-nums">
               R{grandTotalZAR.toLocaleString('en-ZA')}
             </span>
           </div>
@@ -734,7 +734,7 @@ export function EnrolmentModal({
                   id="wiz-delivery"
                   value={selectedDelivery}
                   onChange={(e) => setSelectedDelivery(e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 >
                   {course.deliveryModes.map((m) => (
                     <option key={m} value={m}>
@@ -747,7 +747,7 @@ export function EnrolmentModal({
               <div>
                 <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
                   <label htmlFor="wiz-qty">Number of Learners</label>
-                  <span className="font-mono font-bold text-[#0B2545] tabular-nums">
+                  <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
                     {learnerQty} ({learnerQty >= 5 ? 'Group Discount Active' : 'Standard Rate'})
                   </span>
                 </div>
@@ -758,21 +758,21 @@ export function EnrolmentModal({
                   max={25}
                   value={learnerQty}
                   onChange={(e) => setLearnerQty(Number(e.target.value))}
-                  className="w-full accent-[#059669] cursor-pointer"
+                  className="w-full accent-[#D91B24] cursor-pointer"
                 />
               </div>
 
               {course.reliefStaffAvailable && (
-                <div className="p-3 bg-[#F8FAFC] border border-slate-200 rounded-lg">
+                <div className="p-3 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg">
                   <label className="flex items-start gap-2 text-xs text-slate-700 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={addRelief}
                       onChange={(e) => setAddRelief(e.target.checked)}
-                      className="mt-0.5 rounded border-slate-300 text-[#059669]"
+                      className="mt-0.5 rounded border-[#E5E7EB] text-[#D91B24]"
                     />
                     <span>
-                      <strong className="text-[#0B2545] block">
+                      <strong className="text-[#1C1B1B] block">
                         Add Workplace Relief Staff (R380/day per operative)
                       </strong>
                       Keep your site staffed while employees attend practical training.
@@ -788,8 +788,8 @@ export function EnrolmentModal({
                           onClick={() => setReliefDays(d)}
                           className={`px-2 py-0.5 rounded font-mono cursor-pointer ${
                             reliefDays === d
-                              ? 'bg-[#0B2545] text-white'
-                              : 'bg-white border border-slate-300'
+                              ? 'bg-[#1C1B1B] text-white'
+                              : 'bg-white border border-[#E5E7EB]'
                           }`}
                         >
                           {d}d
@@ -804,7 +804,7 @@ export function EnrolmentModal({
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="px-5 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Next: Learner Details</span>
                   <ArrowRight className="w-4 h-4" />
@@ -829,7 +829,7 @@ export function EnrolmentModal({
                     required
                     value={learnerName}
                     onChange={(e) => setLearnerName(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                    className="w-full px-3 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                   />
                 </div>
                 <div>
@@ -845,7 +845,7 @@ export function EnrolmentModal({
                     required
                     value={idNumber}
                     onChange={(e) => setIdNumber(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg font-mono"
                   />
                 </div>
               </div>
@@ -863,7 +863,7 @@ export function EnrolmentModal({
                   required
                   value={learnerEmail}
                   onChange={(e) => setLearnerEmail(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
 
@@ -871,7 +871,7 @@ export function EnrolmentModal({
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-[#0B2545] inline-flex items-center gap-1 cursor-pointer"
+                  className="px-4 py-2 text-xs font-semibold text-[#52525B] hover:text-[#1C1B1B] inline-flex items-center gap-1 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
@@ -879,7 +879,7 @@ export function EnrolmentModal({
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className="px-5 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Next: Payment Method</span>
                   <ArrowRight className="w-4 h-4" />
@@ -901,7 +901,7 @@ export function EnrolmentModal({
                   id="chk-pay"
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3 py-2.5 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 >
                   <option value="Instant EFT / PayFast Secure">
                     Instant EFT / PayFast Secure (Immediate LMS Access)
@@ -915,7 +915,7 @@ export function EnrolmentModal({
                 </select>
               </div>
 
-              <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-950 space-y-1">
+              <div className="p-3.5 bg-[#FEF2F2] border border-[#FECACA] rounded-lg text-xs text-[#991B1B] space-y-1">
                 <p className="font-bold">✓ Enrolment Guarantee & Instant Unlock</p>
                 <p>
                   Completing checkout immediately unlocks{' '}
@@ -927,14 +927,14 @@ export function EnrolmentModal({
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:text-slate-900 inline-flex items-center gap-1 cursor-pointer"
+                  className="px-4 py-2.5 text-xs font-semibold text-[#52525B] hover:text-slate-900 inline-flex items-center gap-1 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-2 cursor-pointer"
                 >
                   <CreditCard className="w-4 h-4" />
                   <span>
@@ -1000,8 +1000,8 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-      <div className="bg-white border border-slate-200 rounded-xl max-w-xl w-full overflow-hidden shadow-xl">
-        <div className="bg-[#0B2545] text-white px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl max-w-xl w-full overflow-hidden shadow-xl">
+        <div className="bg-[#1C1B1B] text-white px-6 py-4 flex items-center justify-between">
           <div>
             <p className="text-xs text-[#F59E0B] font-mono">
               Official Course Brochure · {course.code}
@@ -1019,35 +1019,35 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
         </div>
 
         <div className="p-6 space-y-4 text-xs text-slate-700 max-h-[75vh] overflow-y-auto">
-          <div className="grid grid-cols-2 gap-3 p-3.5 bg-[#F8FAFC] border border-slate-200 rounded-lg">
+          <div className="grid grid-cols-2 gap-3 p-3.5 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg">
             <div>
-              <span className="text-slate-500 block">SAQA / NQF Status</span>
-              <strong className="text-[#0B2545]">
+              <span className="text-[#52525B] block">SAQA / NQF Status</span>
+              <strong className="text-[#1C1B1B]">
                 {course.saqaId} · {course.nqfLevel} ({course.credits} Credits)
               </strong>
             </div>
             <div>
-              <span className="text-slate-500 block">Fee Structure</span>
-              <strong className="font-mono text-[#059669]">
+              <span className="text-[#52525B] block">Fee Structure</span>
+              <strong className="font-mono text-[#D91B24]">
                 R{course.priceZAR.toLocaleString('en-ZA')} Single / R
                 {course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Group
               </strong>
             </div>
           </div>
 
-          <p className="text-sm leading-relaxed text-slate-600">
+          <p className="text-sm leading-relaxed text-[#52525B]">
             {course.fullDescription}
           </p>
 
           <div>
-            <p className="font-bold text-[#0B2545] mb-2">Curriculum Modules:</p>
+            <p className="font-bold text-[#1C1B1B] mb-2">Curriculum Modules:</p>
             <ul className="space-y-2">
               {course.modules.map((m) => (
                 <li
                   key={m.id}
-                  className="p-2.5 bg-[#F8FAFC] rounded border border-slate-200"
+                  className="p-2.5 bg-[#FCF9F8] rounded border border-[#E5E7EB]"
                 >
-                  <strong className="text-[#0B2545]">
+                  <strong className="text-[#1C1B1B]">
                     Module {m.number}: {m.title}
                   </strong>{' '}
                   ({m.duration}) — {m.summary}
@@ -1056,13 +1056,13 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
             </ul>
           </div>
 
-          <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+          <div className="pt-4 border-t border-[#E5E7EB] flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
               onClick={downloadSpecTxt}
-              className="px-4 py-2.5 text-xs font-semibold text-[#0B2545] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2.5 text-xs font-semibold text-[#1C1B1B] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
             >
-              <Download className="w-4 h-4 text-[#059669]" />
+              <Download className="w-4 h-4 text-[#D91B24]" />
               <span>Save Brochure File (.TXT)</span>
             </button>
             <button
@@ -1071,7 +1071,7 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
                 onClose();
                 onEnrol(course);
               }}
-              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg cursor-pointer"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
             >
               Enrol in This Course
             </button>

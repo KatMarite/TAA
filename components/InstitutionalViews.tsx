@@ -7,6 +7,8 @@ import {
   PageId,
   SITEMAP_SPEC,
   BRAND_IMAGES,
+  OTHER_SERVICES_LIST,
+  GALLERY_ITEMS,
 } from '@/lib/academy-data';
 import ResilientImage from './ResilientImage';
 import {
@@ -59,25 +61,25 @@ Telephone: +27 (0)11 794 6665 | Email: info@trainingafricaacademy.co.za
 
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white border border-slate-200 rounded-xl overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
         <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between">
           <div>
-            <p className="text-xs font-semibold text-[#059669] mb-2">
+            <p className="text-xs font-semibold text-[#D91B24] mb-2">
               02. About & Accreditations · Rooted in Cleaning Africa Services Since 2000
             </p>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545]">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B]">
               Industry-Born Vocational Training Built by South Africa’s Hygiene Leaders
             </h1>
-            <p className="mt-4 text-base text-slate-600 leading-relaxed">
+            <p className="mt-4 text-base text-[#52525B] leading-relaxed">
               Training Africa Academy is the dedicated education and workforce skills development division of{' '}
-              <strong className="text-[#0B2545]">Cleaning Africa Services (Pty) Ltd</strong>, operating across South Africa since 2000. Unlike theoretical colleges, our curricula, simulation bays, and enterprise courses are forged from 25+ years of managing real commercial, healthcare, industrial, and solar hygiene contracts.
+              <strong className="text-[#1C1B1B]">Cleaning Africa Services (Pty) Ltd</strong>, operating across South Africa since 2000. Unlike theoretical colleges, our curricula, simulation bays, and enterprise courses are forged from 25+ years of managing real commercial, healthcare, industrial, and solar hygiene contracts.
             </p>
           </div>
-          <div className="mt-8 pt-6 border-t border-slate-200 flex flex-wrap items-center gap-4">
+          <div className="mt-8 pt-6 border-t border-[#E5E7EB] flex flex-wrap items-center gap-4">
             <button
               type="button"
               onClick={downloadAccreditationSummary}
-              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg inline-flex items-center gap-2 cursor-pointer"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-2 cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Download Accreditation & WSP Verification Dossier</span>
@@ -85,7 +87,7 @@ Telephone: +27 (0)11 794 6665 | Email: info@trainingafricaacademy.co.za
             <button
               type="button"
               onClick={() => onNavigate('catalogue')}
-              className="px-5 py-2.5 text-xs font-semibold text-[#0B2545] bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer"
+              className="px-5 py-2.5 text-xs font-semibold text-[#1C1B1B] bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer"
             >
               Explore Accredited Courses
             </button>
@@ -102,38 +104,38 @@ Telephone: +27 (0)11 794 6665 | Email: info@trainingafricaacademy.co.za
 
       {/* Accreditation Matrix */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <p className="text-xs font-mono font-semibold text-[#059669]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <p className="text-xs font-mono font-semibold text-[#D91B24]">
             01. National Qualifications Framework (NQF)
           </p>
-          <h2 className="text-lg font-bold text-[#0B2545] mt-1">
+          <h2 className="text-lg font-bold text-[#1C1B1B] mt-1">
             QCTO & SAQA Registered Qualifications
           </h2>
-          <p className="text-sm text-slate-600 mt-2">
+          <p className="text-sm text-[#52525B] mt-2">
             Our flagship Commercial Cleaner (NQF Level 1, 120 Credits) and Cleaning Practitioner (NQF Level 3, 126 Credits) programmes integrate Knowledge, Practical Simulation, and Workplace Experience modules for national EISA certification.
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <p className="text-xs font-mono font-semibold text-[#059669]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <p className="text-xs font-mono font-semibold text-[#D91B24]">
             02. Sector Education & Training Authority
           </p>
-          <h2 className="text-lg font-bold text-[#0B2545] mt-1">
+          <h2 className="text-lg font-bold text-[#1C1B1B] mt-1">
             Services SETA Alignment & Assessor Governance
           </h2>
-          <p className="text-sm text-slate-600 mt-2">
+          <p className="text-sm text-[#52525B] mt-2">
             All formative and summative assessments are conducted by registered Constituent Assessors and Moderators, ensuring full compliance for corporate Workplace Skills Plans (WSP), Annual Training Reports (ATR), and B-BBEE verification.
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <p className="text-xs font-mono font-semibold text-[#059669]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <p className="text-xs font-mono font-semibold text-[#D91B24]">
             03. Eco-Hygiene & Industry Standards
           </p>
-          <h2 className="text-lg font-bold text-[#0B2545] mt-1">
+          <h2 className="text-lg font-bold text-[#1C1B1B] mt-1">
             SABS Colour-Coding, OHS & Green Cleaning
           </h2>
-          <p className="text-sm text-slate-600 mt-2">
+          <p className="text-sm text-[#52525B] mt-2">
             Every short course and qualification embeds South African Occupational Health and Safety (OHS Act 85 of 1993) protocols, MSDS chemical stewardship, and eco-certified biodegradable hygiene practices.
           </p>
         </div>
@@ -151,50 +153,50 @@ export function FacilitatorsView({
 }) {
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-      <div className="pb-8 border-b border-slate-200">
-        <p className="text-xs font-semibold text-[#059669] mb-2">
+      <div className="pb-8 border-b border-[#E5E7EB]">
+        <p className="text-xs font-semibold text-[#D91B24] mb-2">
           10. Facilitators & Training Approach · 70% Practical Simulation / 30% Theory
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545] max-w-3xl">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B] max-w-3xl">
           Practical, Multilingual Instruction by Registered Industry Practitioners
         </h1>
-        <p className="mt-3 text-base text-slate-600 max-w-2xl">
+        <p className="mt-3 text-base text-[#52525B] max-w-2xl">
           Adult vocational learners master skills by doing—not by memorising textbooks. Our methodology pairs concise digital theory with intensive hands-on equipment operation.
         </p>
       </div>
 
       {/* 3 Pillars of Training Approach */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <span className="text-xs font-mono font-bold text-[#059669]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <span className="text-xs font-mono font-bold text-[#D91B24]">
             Pillar 01 · Hands-On Equipment Mastery
           </span>
-          <h2 className="text-lg font-bold text-[#0B2545] mt-1">
+          <h2 className="text-lg font-bold text-[#1C1B1B] mt-1">
             70% Practical Bay & Workplace Application
           </h2>
-          <p className="text-sm text-slate-600 mt-2">
+          <p className="text-sm text-[#52525B] mt-2">
             Learners train directly on rotary single-disc scrubbers, ride-on auto-scrubbers, hot-water carpet extractors, and 12-metre deionized water-fed solar poles before signing off workplace logbooks.
           </p>
         </div>
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <span className="text-xs font-mono font-bold text-[#059669]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <span className="text-xs font-mono font-bold text-[#D91B24]">
             Pillar 02 · Inclusive Mother-Tongue Clarity
           </span>
-          <h2 className="text-lg font-bold text-[#0B2545] mt-1">
+          <h2 className="text-lg font-bold text-[#1C1B1B] mt-1">
             Multilingual Facilitation Across 6 SA Languages
           </h2>
-          <p className="text-sm text-slate-600 mt-2">
+          <p className="text-sm text-[#52525B] mt-2">
             While assessment portfolios are completed in English, our facilitators explain complex chemical dilution ratios, pH hazards, and OHS regulations in English, isiZulu, Sesotho, Setswana, isiXhosa, and Afrikaans.
           </p>
         </div>
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <span className="text-xs font-mono font-bold text-[#059669]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <span className="text-xs font-mono font-bold text-[#D91B24]">
             Pillar 03 · Zero Operational Downtime
           </span>
-          <h2 className="text-lg font-bold text-[#0B2545] mt-1">
+          <h2 className="text-lg font-bold text-[#1C1B1B] mt-1">
             Integrated Relief Staff Deployment (R380/Day)
           </h2>
-          <p className="text-sm text-slate-600 mt-2">
+          <p className="text-sm text-[#52525B] mt-2">
             Through Cleaning Africa Services, we deploy vetted temporary relief cleaners to your facility while your permanent employees attend classroom or simulation blocks.
           </p>
         </div>
@@ -202,29 +204,29 @@ export function FacilitatorsView({
 
       {/* Facilitator Profiles */}
       <div>
-        <h2 className="text-xl font-bold text-[#0B2545] mb-6">
+        <h2 className="text-xl font-bold text-[#1C1B1B] mb-6">
           Meet Our Lead Facilitators, Assessors & Moderators
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {facilitators.map((fac) => (
             <div
               key={fac.id}
-              className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between"
+              className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-col justify-between"
             >
               <div>
-                <p className="text-xs font-mono text-[#059669]">
+                <p className="text-xs font-mono text-[#D91B24]">
                   {fac.registrationCode} · {fac.yearsExperience} Years Experience
                 </p>
-                <h3 className="text-lg font-bold text-[#0B2545] mt-1">{fac.name}</h3>
-                <p className="text-xs font-semibold text-slate-500 mt-0.5">{fac.role}</p>
-                <p className="text-sm text-slate-600 mt-3">{fac.bio}</p>
+                <h3 className="text-lg font-bold text-[#1C1B1B] mt-1">{fac.name}</h3>
+                <p className="text-xs font-semibold text-[#52525B] mt-0.5">{fac.role}</p>
+                <p className="text-sm text-[#52525B] mt-3">{fac.bio}</p>
               </div>
-              <div className="mt-5 pt-4 border-t border-slate-100 text-xs text-slate-600 space-y-1">
+              <div className="mt-5 pt-4 border-t border-slate-100 text-xs text-[#52525B] space-y-1">
                 <p>
-                  <strong className="text-[#0B2545]">Specialisation:</strong> {fac.specialisation}
+                  <strong className="text-[#1C1B1B]">Specialisation:</strong> {fac.specialisation}
                 </p>
                 <p>
-                  <strong className="text-[#0B2545]">Languages:</strong> {fac.languages.join(' · ')}
+                  <strong className="text-[#1C1B1B]">Languages:</strong> {fac.languages.join(' · ')}
                 </p>
               </div>
             </div>
@@ -294,11 +296,11 @@ SABS COMMERCIAL HYGIENE COLOUR-CODING STANDARD:
 
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-      <div className="pb-8 border-b border-slate-200">
-        <p className="text-xs font-semibold text-[#059669] mb-2">
+      <div className="pb-8 border-b border-[#E5E7EB]">
+        <p className="text-xs font-semibold text-[#D91B24] mb-2">
           11. Resources, Toolkits & Frequently Asked Questions
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545]">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B]">
           Compliance Toolkits, Colour-Coding Guides & Learner FAQs
         </h1>
       </div>
@@ -321,19 +323,19 @@ SABS COMMERCIAL HYGIENE COLOUR-CODING STANDARD:
         ].map((res) => (
           <div
             key={res.title}
-            className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between"
+            className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-col justify-between"
           >
             <div>
-              <p className="text-xs font-semibold text-[#059669]">Free Technical Resource</p>
-              <h2 className="text-base font-bold text-[#0B2545] mt-1">{res.title}</h2>
-              <p className="text-xs text-slate-600 mt-2">{res.desc}</p>
+              <p className="text-xs font-semibold text-[#D91B24]">Free Technical Resource</p>
+              <h2 className="text-base font-bold text-[#1C1B1B] mt-1">{res.title}</h2>
+              <p className="text-xs text-[#52525B] mt-2">{res.desc}</p>
             </div>
             <button
               type="button"
               onClick={() => downloadResourceGuide(res.title)}
-              className="mt-5 py-2 px-3.5 text-xs font-semibold text-[#0B2545] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center justify-center gap-2 cursor-pointer"
+              className="mt-5 py-2 px-3.5 text-xs font-semibold text-[#1C1B1B] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5 text-[#059669]" />
+              <Download className="w-3.5 h-3.5 text-[#D91B24]" />
               <span>Download Guide</span>
             </button>
           </div>
@@ -341,9 +343,9 @@ SABS COMMERCIAL HYGIENE COLOUR-CODING STANDARD:
       </div>
 
       {/* FAQs */}
-      <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-200">
-          <h2 className="text-xl font-bold text-[#0B2545]">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#E5E7EB]">
+          <h2 className="text-xl font-bold text-[#1C1B1B]">
             Frequently Asked Questions
           </h2>
           <div className="flex flex-wrap gap-1.5 p-1 bg-slate-100 rounded-lg">
@@ -355,8 +357,8 @@ SABS COMMERCIAL HYGIENE COLOUR-CODING STANDARD:
                   onClick={() => setSelectedFaqCat(cat)}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md cursor-pointer ${
                     selectedFaqCat === cat
-                      ? 'bg-[#0B2545] text-white'
-                      : 'text-slate-600 hover:text-[#0B2545]'
+                      ? 'bg-[#1C1B1B] text-white'
+                      : 'text-[#52525B] hover:text-[#1C1B1B]'
                   }`}
                 >
                   {cat}
@@ -369,9 +371,9 @@ SABS COMMERCIAL HYGIENE COLOUR-CODING STANDARD:
         <div className="divide-y divide-slate-200 mt-2">
           {filteredFaqs.map((item, idx) => (
             <div key={idx} className="py-5">
-              <p className="text-xs font-semibold text-[#059669] mb-1">{item.cat}</p>
-              <h3 className="text-base font-bold text-[#0B2545]">{item.q}</h3>
-              <p className="text-sm text-slate-600 mt-2 leading-relaxed">{item.a}</p>
+              <p className="text-xs font-semibold text-[#D91B24] mb-1">{item.cat}</p>
+              <h3 className="text-base font-bold text-[#1C1B1B]">{item.q}</h3>
+              <p className="text-sm text-[#52525B] mt-2 leading-relaxed">{item.a}</p>
             </div>
           ))}
         </div>
@@ -391,11 +393,11 @@ export function NewsInsightsView({
 
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-      <div className="pb-8 border-b border-slate-200">
-        <p className="text-xs font-semibold text-[#059669] mb-2">
+      <div className="pb-8 border-b border-[#E5E7EB]">
+        <p className="text-xs font-semibold text-[#D91B24] mb-2">
           12. News, Regulatory Briefs & Hygiene Industry Insights
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545]">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B]">
           Insights on QCTO Accreditation, Solar Maintenance & Cleaning Entrepreneurship
         </h1>
       </div>
@@ -410,11 +412,11 @@ export function NewsInsightsView({
                 onClick={() => setActiveArticle(art)}
                 className={`p-5 rounded-xl border transition-colors cursor-pointer ${
                   isSelected
-                    ? 'bg-[#0B2545] text-white border-[#0B2545]'
-                    : 'bg-white text-[#0B2545] border-slate-200 hover:border-slate-300'
+                    ? 'bg-[#1C1B1B] text-white border-[#1C1B1B]'
+                    : 'bg-white text-[#1C1B1B] border-[#E5E7EB] hover:border-[#E5E7EB]'
                 }`}
               >
-                <div className={`text-xs ${isSelected ? 'text-[#F59E0B]' : 'text-slate-500'}`}>
+                <div className={`text-xs ${isSelected ? 'text-[#F59E0B]' : 'text-[#52525B]'}`}>
                   <span>{art.category}</span>
                   <span aria-hidden="true"> · </span>
                   <span>{art.date}</span>
@@ -422,7 +424,7 @@ export function NewsInsightsView({
                   <span>{art.readTime}</span>
                 </div>
                 <h2 className="text-base font-bold mt-1.5">{art.title}</h2>
-                <p className={`text-xs mt-2 line-clamp-2 ${isSelected ? 'text-slate-300' : 'text-slate-600'}`}>
+                <p className={`text-xs mt-2 line-clamp-2 ${isSelected ? 'text-slate-300' : 'text-[#52525B]'}`}>
                   {art.excerpt}
                 </p>
               </div>
@@ -430,15 +432,15 @@ export function NewsInsightsView({
           })}
         </div>
 
-        <article className="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 sm:p-10">
-          <div className="text-xs text-slate-500 mb-2">
-            <span className="text-[#059669] font-semibold">{activeArticle.category}</span>
+        <article className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-10">
+          <div className="text-xs text-[#52525B] mb-2">
+            <span className="text-[#D91B24] font-semibold">{activeArticle.category}</span>
             <span aria-hidden="true"> · </span>
             <span>{activeArticle.date}</span>
             <span aria-hidden="true"> · </span>
             <span>{activeArticle.author}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#0B2545]">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#1C1B1B]">
             {activeArticle.title}
           </h2>
           <div className="mt-6 space-y-4 text-slate-700 text-base leading-relaxed">
@@ -446,14 +448,14 @@ export function NewsInsightsView({
               <p key={i}>{para}</p>
             ))}
           </div>
-          <div className="mt-8 pt-6 border-t border-slate-200 flex items-center justify-between">
-            <span className="text-xs text-slate-500">
+          <div className="mt-8 pt-6 border-t border-[#E5E7EB] flex items-center justify-between">
+            <span className="text-xs text-[#52525B]">
               Want to apply these insights in your organisation or career?
             </span>
             <button
               type="button"
               onClick={() => onNavigate('catalogue')}
-              className="px-4 py-2 text-xs font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
             >
               Browse Relevant Courses
             </button>
@@ -479,46 +481,46 @@ export function ContactLocationsView() {
 
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-      <div className="pb-8 border-b border-slate-200">
-        <p className="text-xs font-semibold text-[#059669] mb-2">
+      <div className="pb-8 border-b border-[#E5E7EB]">
+        <p className="text-xs font-semibold text-[#D91B24] mb-2">
           13. Contact & Locations · Northriding, Randburg & Nationwide On-Site Teams
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545]">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B]">
           Visit Our Randburg Campus or Schedule On-Site Workplace Training
         </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-5 space-y-6">
-          <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
-            <h2 className="text-lg font-bold text-[#0B2545]">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 space-y-4">
+            <h2 className="text-lg font-bold text-[#1C1B1B]">
               Head Office & Accredited Assessment Centre
             </h2>
-            <div className="text-sm text-slate-600 space-y-3">
+            <div className="text-sm text-[#52525B] space-y-3">
               <p>
-                <strong className="text-[#0B2545] block">Physical Address:</strong>
+                <strong className="text-[#1C1B1B] block">Physical Address:</strong>
                 Unit 14 Fancourt Office Park, Corner Northumberland & Felstead Rd, Northriding, Randburg, 2188, Gauteng, South Africa
               </p>
               <p>
-                <strong className="text-[#0B2545] block">Telephone:</strong>
+                <strong className="text-[#1C1B1B] block">Telephone:</strong>
                 <span className="font-mono">+27 (0)11 794 6665</span>
               </p>
               <p>
-                <strong className="text-[#0B2545] block">Mobile / WhatsApp Desk:</strong>
+                <strong className="text-[#1C1B1B] block">Mobile / WhatsApp Desk:</strong>
                 <span className="font-mono">+27 (0)82 539 8605</span>
               </p>
               <p>
-                <strong className="text-[#0B2545] block">Email Directory:</strong>
+                <strong className="text-[#1C1B1B] block">Email Directory:</strong>
                 <span className="font-mono">info@trainingafricaacademy.co.za</span>
               </p>
               <p>
-                <strong className="text-[#0B2545] block">Operating Hours:</strong>
+                <strong className="text-[#1C1B1B] block">Operating Hours:</strong>
                 Monday – Friday: 07:30 – 16:30 · Saturday Practicals: 08:00 – 13:00
               </p>
             </div>
           </div>
 
-          <div className="bg-[#0B2545] text-white rounded-xl p-6 text-xs space-y-2">
+          <div className="bg-[#1C1B1B] text-white rounded-xl p-6 text-xs space-y-2">
             <p className="text-[#F59E0B] font-semibold">
               National Mobile Facilitator Coverage
             </p>
@@ -528,8 +530,8 @@ export function ContactLocationsView() {
           </div>
         </div>
 
-        <div className="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
-          <h2 className="text-xl font-bold text-[#0B2545]">
+        <div className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-[#1C1B1B]">
             Send a Direct Enquiry to Our Academic & Corporate Desk
           </h2>
           <form onSubmit={handleSubmit} className="mt-5 space-y-4">
@@ -545,7 +547,7 @@ export function ContactLocationsView() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Full Name"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
               <div>
@@ -559,7 +561,7 @@ export function ContactLocationsView() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@domain.co.za"
-                  className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                  className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
                 />
               </div>
             </div>
@@ -572,7 +574,7 @@ export function ContactLocationsView() {
                 id="cnt-type"
                 value={enquiryType}
                 onChange={(e) => setEnquiryType(e.target.value)}
-                className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
               >
                 <option value="Individual Course Enquiry">Individual Course Enquiry</option>
                 <option value="Corporate Training & Relief Staff Quote">Corporate Training & Relief Staff Quote</option>
@@ -591,20 +593,20 @@ export function ContactLocationsView() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Tell us which courses, dates, or staff numbers you are planning for..."
-                className="w-full px-3.5 py-2 text-sm bg-[#F8FAFC] border border-slate-300 rounded-lg"
+                className="w-full px-3.5 py-2 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg"
               />
             </div>
 
             <button
               type="submit"
-              className="px-6 py-3 text-sm font-semibold text-white bg-[#059669] hover:bg-[#047857] rounded-lg cursor-pointer"
+              className="px-6 py-3 text-sm font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
             >
               Submit Enquiry
             </button>
           </form>
 
           {sent && (
-            <div className="mt-5 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-900 font-medium">
+            <div className="mt-5 p-4 bg-[#FEF2F2] border border-[#FECACA] rounded-lg text-xs text-[#991B1B] font-medium">
               ✓ Thank you, {name}. Your enquiry ({enquiryType}) has been logged with our Northriding Randburg desk (Ref: TAA-{4200 + name.length * 13}).
             </div>
           )}
@@ -617,48 +619,48 @@ export function ContactLocationsView() {
 export function PoliciesView() {
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      <div className="pb-8 border-b border-slate-200">
-        <p className="text-xs font-semibold text-[#059669] mb-2">
+      <div className="pb-8 border-b border-[#E5E7EB]">
+        <p className="text-xs font-semibold text-[#D91B24] mb-2">
           14. Privacy, Terms & Learner Policies · Institutional Governance
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545]">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B]">
           POPIA Data Protection, Enrolment Terms, RPL & Assessment Appeals
         </h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <h2 className="text-lg font-bold text-[#0B2545]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <h2 className="text-lg font-bold text-[#1C1B1B]">
             01. POPIA Compliance & Learner Data Privacy
           </h2>
-          <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+          <p className="text-sm text-[#52525B] mt-2 leading-relaxed">
             In strict compliance with the Protection of Personal Information Act (POPIA, Act 4 of 2013), Training Africa Academy collects SA ID numbers, academic transcripts, and Portfolio of Evidence (PoE) records solely for mandatory QCTO, Services SETA, and SAQA National Learner Records Database (NLRD) uploads. Employer progress updates are shared strictly where authorised by the sponsoring employer agreement.
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <h2 className="text-lg font-bold text-[#0B2545]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <h2 className="text-lg font-bold text-[#1C1B1B]">
             02. Enrolment, Deferral & Refund Policy
           </h2>
-          <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+          <p className="text-sm text-[#52525B] mt-2 leading-relaxed">
             Single-learner and corporate bookings may be deferred to a subsequent intake date at zero penalty if requested in writing at least 5 business days prior to course commencement. Cancellations received more than 7 business days before start qualify for a 90% refund (less R150 admin fee). Digital self-paced courses become non-refundable once module assessments are unlocked.
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <h2 className="text-lg font-bold text-[#0B2545]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <h2 className="text-lg font-bold text-[#1C1B1B]">
             03. Recognition of Prior Learning (RPL) Policy
           </h2>
-          <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+          <p className="text-sm text-[#52525B] mt-2 leading-relaxed">
             Experienced hygiene operatives and supervisors with 3+ years of verifiable workplace experience may apply for Recognition of Prior Learning (RPL) diagnostic assessments at our Randburg centre to fast-track credit accumulation toward NQF Level 1 or NQF Level 3 occupational qualifications.
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <h2 className="text-lg font-bold text-[#0B2545]">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
+          <h2 className="text-lg font-bold text-[#1C1B1B]">
             04. Assessment Moderation & Learner Appeals Procedure
           </h2>
-          <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+          <p className="text-sm text-[#52525B] mt-2 leading-relaxed">
             Every learner assessed as &ldquo;Not Yet Competent&rdquo; (NYC) on a formative or practical simulation task is entitled to one free remediation coaching session and re-assessment within 14 days. Formal appeals are reviewed independently by our registered Internal Moderator within 10 business days.
           </p>
         </div>
@@ -674,14 +676,14 @@ export function SitemapArchitectureView({
 }) {
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-      <div className="pb-8 border-b border-slate-200">
-        <p className="text-xs font-semibold text-[#059669] mb-2">
+      <div className="pb-8 border-b border-[#E5E7EB]">
+        <p className="text-xs font-semibold text-[#D91B24] mb-2">
           Platform Sitemap & Conversion Blueprint
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B2545]">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1B1B]">
           Complete 15-Page Information Architecture & Audience Conversion Matrix
         </h1>
-        <p className="mt-2 text-sm text-slate-600 max-w-3xl">
+        <p className="mt-2 text-sm text-[#52525B] max-w-3xl">
           Every required page template below is live and interactive. Click any row to open and test that template directly.
         </p>
       </div>
@@ -690,19 +692,19 @@ export function SitemapArchitectureView({
         {SITEMAP_SPEC.map((node) => (
           <div
             key={node.id}
-            className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-[#059669] transition-colors"
+            className="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between hover:border-[#D91B24] transition-colors"
           >
             <div>
-              <div className="flex items-center justify-between text-xs font-mono text-slate-500 mb-2">
-                <span className="font-bold text-[#059669]">Template {node.number}</span>
+              <div className="flex items-center justify-between text-xs font-mono text-[#52525B] mb-2">
+                <span className="font-bold text-[#D91B24]">Template {node.number}</span>
                 <span>{node.urlPath}</span>
               </div>
-              <h2 className="text-base font-bold text-[#0B2545]">{node.title}</h2>
-              <p className="text-xs text-slate-500 mt-1">
+              <h2 className="text-base font-bold text-[#1C1B1B]">{node.title}</h2>
+              <p className="text-xs text-[#52525B] mt-1">
                 <strong className="text-slate-700">Audience:</strong> {node.primaryAudience}
               </p>
-              <p className="text-xs text-slate-600 mt-2">{node.conversionGoal}</p>
-              <div className="mt-3 pt-3 border-t border-slate-100 text-xs text-slate-500">
+              <p className="text-xs text-[#52525B] mt-2">{node.conversionGoal}</p>
+              <div className="mt-3 pt-3 border-t border-slate-100 text-xs text-[#52525B]">
                 {node.keyModules.join(' · ')}
               </div>
             </div>
@@ -710,7 +712,7 @@ export function SitemapArchitectureView({
             <button
               type="button"
               onClick={() => onNavigate(node.id)}
-              className="mt-5 w-full py-2 px-3 text-xs font-semibold text-white bg-[#0B2545] hover:bg-[#059669] rounded-lg transition-colors cursor-pointer"
+              className="mt-5 w-full py-2 px-3 text-xs font-semibold text-white bg-[#18181B] hover:bg-brand rounded-lg transition-colors cursor-pointer"
             >
               Open {node.title} →
             </button>
@@ -720,3 +722,209 @@ export function SitemapArchitectureView({
     </div>
   );
 }
+
+export function OtherServicesView({
+  onNavigate,
+}: {
+  onNavigate: (page: PageId) => void;
+}) {
+  return (
+    <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <div className="pb-8 border-b border-[#E5E7EB] flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-brand-soft text-brand text-xs font-bold border border-brand-soft mb-3">
+            Cleaning Africa Services (Pty) Ltd Operational Backing
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#1C1B1B] max-w-3xl">
+            Specialist Workforce, Relief Staffing, Venue Hire & B-BBEE Advisory Services
+          </h1>
+          <p className="mt-3 text-base text-[#52525B] max-w-2xl">
+            Beyond accredited qualifications and short courses, Training Africa Academy provides turnkey operational support so South African employers can train staff with zero site downtime.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => onNavigate('employers')}
+          className="px-5 py-3 text-sm font-bold text-white bg-brand rounded-lg transition-colors cursor-pointer shrink-0"
+        >
+          Open Corporate Quote & ROI Portal
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {OTHER_SERVICES_LIST.map((srv) => (
+          <div
+            key={srv.id}
+            className="course-card-elevated p-6 sm:p-8 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <span className="px-2.5 py-1 rounded-md bg-[#18181B] text-white text-xs font-bold">
+                  {srv.badge}
+                </span>
+                <span className="text-xs font-mono font-bold text-brand">
+                  {srv.code}
+                </span>
+              </div>
+              <h2 className="text-xl font-bold text-[#1C1B1B]">{srv.title}</h2>
+              <p className="mt-2 text-sm font-mono font-bold text-brand">
+                {srv.priceHighlight}
+              </p>
+              <p className="mt-3 text-sm text-[#52525B] leading-relaxed">
+                {srv.summary}
+              </p>
+              <ul className="mt-5 space-y-2 border-t border-[#E5E7EB] pt-4 text-xs text-[#1C1B1B]">
+                {srv.keyDeliverables.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-brand shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-[#E5E7EB] flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => onNavigate(srv.targetPage)}
+                className="text-xs font-bold text-brand hover:underline cursor-pointer"
+              >
+                {srv.ctaLabel}
+              </button>
+              <button
+                type="button"
+                onClick={() => onNavigate('contact')}
+                className="px-4 py-2 text-xs font-bold text-white bg-[#18181B] hover:bg-brand rounded-lg transition-colors cursor-pointer"
+              >
+                Enquire Now
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function GalleryView({
+  onNavigate,
+  onSelectCourse,
+}: {
+  onNavigate: (page: PageId) => void;
+  onSelectCourse: (courseId: string) => void;
+}) {
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const categories = [
+    'All',
+    'Practical Hygiene Bays',
+    'Solar PV & High-Reach',
+    'Supervisory & Lectures',
+    'Randburg Campus',
+  ];
+
+  const filteredGallery =
+    selectedCategory === 'All'
+      ? GALLERY_ITEMS
+      : GALLERY_ITEMS.filter((g) => g.category === selectedCategory);
+
+  return (
+    <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+      <div className="pb-8 border-b border-[#E5E7EB] flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-brand-soft text-brand text-xs font-bold border border-brand-soft mb-3">
+            Northriding, Randburg Campus & On-Site Practicals
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#1C1B1B]">
+            Training Facilities, Simulation Bays & Practical Gallery
+          </h1>
+          <p className="mt-3 text-base text-[#52525B] max-w-2xl">
+            Inspect our QCTO-accredited practical floor-care bays, 12-metre deionized water-fed solar PV training rigs, and lecture rooms in Northriding, Randburg.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => onNavigate('assessment-centre')}
+          className="px-5 py-3 text-sm font-bold text-white bg-brand rounded-lg transition-colors cursor-pointer shrink-0"
+        >
+          Book a Campus Tour or Bay Hire
+        </button>
+      </div>
+
+      {/* Category Filter Buttons */}
+      <div className="flex flex-wrap items-center gap-2">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => setSelectedCategory(cat)}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors cursor-pointer border ${
+              selectedCategory === cat
+                ? 'bg-[#18181B] text-white border-[#18181B]'
+                : 'bg-white text-[#52525B] border-[#E5E7EB] hover:text-[#1C1B1B]'
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* 3-Column Elevated Gallery Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filteredGallery.map((item) => (
+          <article
+            key={item.id}
+            className="course-card-elevated overflow-hidden flex flex-col justify-between"
+          >
+            <div>
+              <div className="relative aspect-video w-full overflow-hidden bg-zinc-100">
+                <ResilientImage
+                  src={item.image}
+                  alt={item.title}
+                  fallbackTitle={item.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-3 left-3">
+                  <span className="px-2.5 py-1 rounded-md bg-[#18181B]/90 text-white text-[11px] font-bold">
+                    {item.category}
+                  </span>
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-xs font-mono text-brand font-semibold">
+                  {item.location}
+                </p>
+                <h2 className="text-lg font-bold text-[#1C1B1B] mt-1">
+                  {item.title}
+                </h2>
+                <p className="text-sm text-[#52525B] mt-2 leading-relaxed">
+                  {item.caption}
+                </p>
+              </div>
+            </div>
+            {item.relatedCourseId && (
+              <div className="px-6 py-4 bg-[#FCF9F8] border-t border-[#E5E7EB] flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (item.relatedCourseId) onSelectCourse(item.relatedCourseId);
+                  }}
+                  className="text-xs font-bold text-brand hover:underline cursor-pointer"
+                >
+                  View Related Programme →
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('assessment-centre')}
+                  className="text-xs font-semibold text-[#52525B] hover:text-[#1C1B1B] cursor-pointer"
+                >
+                  Facility Specs
+                </button>
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+

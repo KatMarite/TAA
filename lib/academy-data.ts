@@ -72,6 +72,7 @@ export interface Course {
   nextIntake: string;
   featured: boolean;
   onlineEligible: boolean;
+  quoteOnly?: boolean;
   recommendedNextCourseIds: string[];
   modules: CourseModule[];
 }
@@ -155,7 +156,7 @@ export const INITIAL_COURSES: Course[] = [
     nqfLevel: 'NQF Level 3',
     credits: 126,
     saqaId: 'SAQA 118707',
-    accreditationBody: 'QCTO & Services SETA Accredited',
+    accreditationBody: 'QCTO & Services SETA Accredited (NQF Level 3)',
     duration: '12 Months (Learnership / Blended)',
     deliveryModes: [
       'Blended (Online + Practical)',
@@ -250,7 +251,7 @@ export const INITIAL_COURSES: Course[] = [
     nqfLevel: 'NQF Level 1',
     credits: 120,
     saqaId: 'SAQA 118708',
-    accreditationBody: 'QCTO & Services SETA Accredited',
+    accreditationBody: 'QCTO & Services SETA Accredited (NQF Level 1)',
     duration: '12 Months (120 Credits)',
     deliveryModes: [
       'Classroom & Assessment Bay (Randburg)',
@@ -299,10 +300,10 @@ export const INITIAL_COURSES: Course[] = [
       'South Africa’s commercial rooftop solar boom requires certified technicians who understand photovoltaic glass coatings, early-morning thermal shock prevention, deionized (DI) resin filtration, and safe roof-access protocols. Ideal for cleaning contractors expanding into high-margin technical services and facility maintenance teams.',
     category: 'Specialized Hygiene & Technical',
     careerOutcome: 'Certified Solar PV & High-Access Hygiene Technician',
-    nqfLevel: 'Skills Programme (NQF Level 2 Aligned)',
+    nqfLevel: 'Non-Accredited Skills Short Course',
     credits: 12,
     saqaId: 'SP-SOLAR-2026',
-    accreditationBody: 'Services SETA Aligned Skills Programme',
+    accreditationBody: 'Non-Accredited Skills Short Course · Certificate of Completion',
     duration: '3 Days (1 Day Online Theory + 2 Days Practical Rig)',
     deliveryModes: [
       'Blended (Online + Practical)',
@@ -364,10 +365,10 @@ export const INITIAL_COURSES: Course[] = [
       'Our most popular rapid-onboarding course for individuals seeking immediate employment in the cleaning sector and employers onboarding new contract staff. Combines Intro to Cleaning Module 1 (Principles, Colour-Coding, Chemical Safety) and Module 2 (Deep Bathroom Sanitation, Dusting, Floor Maintenance).',
     category: 'Foundational Cleaning Modules',
     careerOutcome: 'Entry-Level Commercial & Hospitality Cleaner',
-    nqfLevel: 'Foundational Skills Certificate (NQF 1 Aligned)',
+    nqfLevel: 'Non-Accredited Skills Short Course',
     credits: 8,
     saqaId: 'TAA-MOD-101',
-    accreditationBody: 'Training Africa Academy & Services SETA Aligned',
+    accreditationBody: 'Non-Accredited Skills Short Course · Certificate of Completion',
     duration: '2 Days (or 8 Hours Self-Paced Online)',
     deliveryModes: [
       'Self-Paced Online',
@@ -434,10 +435,10 @@ export const INITIAL_COURSES: Course[] = [
       'Created for aspiring South African cleaning entrepreneurs and SMME owners. Combines our acclaimed Business Startup Course and Business Marketing Course into an actionable blueprint: CIPC/CSD compliance, BCCCI (Bargaining Council for the Contract Cleaning Industry) wage costing, equipment selection, B-BBEE positioning, and corporate client acquisition.',
     category: 'Business & Entrepreneurship',
     careerOutcome: 'Cleaning & Hygiene Business Owner / Contractor',
-    nqfLevel: 'Entrepreneurship Programme (NQF 4 Aligned)',
+    nqfLevel: 'Non-Accredited Skills Short Course',
     credits: 16,
     saqaId: 'TAA-ENT-201',
-    accreditationBody: 'Services SETA New Venture Aligned',
+    accreditationBody: 'Non-Accredited Skills Short Course · Certificate of Completion',
     duration: '5 Days (Self-Paced Online or Hybrid)',
     deliveryModes: ['Self-Paced Online', 'Blended (Online + Practical)', 'Classroom & Assessment Bay (Randburg)'],
     priceZAR: 4250,
@@ -460,6 +461,24 @@ export const INITIAL_COURSES: Course[] = [
         type: 'Theory & Interactive Video',
         summary: 'How to cost commercial cleaning contracts per m² without underquoting statutory labour, UIF, COIDA, and chemical overheads.',
         keyTopics: ['BCCCI minimum wage & levy tables', 'Bill of quantities (BoQ) pricing', 'COIDA & CSD registration'],
+        onlineContent: {
+          videoDuration: '31 mins',
+          readingNotes:
+            'Every compliant contract cleaning quote in South Africa must incorporate Bargaining Council for the Contract Cleaning Industry (BCCCI) minimum hourly wage rates, statutory levies (UIF, COIDA, Skills Development Levy), provident fund contributions, relief provision for annual/sick leave, chemical dilution cost per m², and a sustainable net operating margin.',
+          practicalChecklist: [
+            'Verify CIPC registration, SARS Tax Clearance PIN, and Central Supplier Database (CSD) profile',
+            'Calculate fully-loaded hourly labour rate including BCCCI levies, UIF (1%), and COIDA',
+            'Measure site square meterage by floor type and apply ISSA productivity rates (m²/hour)',
+          ],
+          quizQuestion: 'When costing a commercial cleaning tender in South Africa, which statutory labour framework governs minimum hourly wages and levies for contract cleaning operatives?',
+          quizOptions: [
+            'BCCCI (Bargaining Council for the Contract Cleaning Industry) Sectoral Determination',
+            'Informal verbal daily wage agreements without UIF or COIDA',
+            'Flat per-room pricing ignoring square meterage and shift hours',
+            'Chemical supplier retail price list only',
+          ],
+          correctOptionIndex: 0,
+        },
       },
       {
         id: 'biz-m2',
@@ -469,6 +488,24 @@ export const INITIAL_COURSES: Course[] = [
         type: 'Online Assessment',
         summary: 'Positioning your cleaning business for property managers, schools, clinics, and body corporates.',
         keyTopics: ['Site inspection walkthroughs', 'SLA KPI templates', 'Recurring contract retention'],
+        onlineContent: {
+          videoDuration: '26 mins',
+          readingNotes:
+            'High-retention commercial cleaning contracts rely on measurable Service Level Agreements (SLAs) rather than vague promises. Structure every client proposal around zoned colour-coding compliance, monthly supervisor audit scorecards, and guaranteed relief staff backup.',
+          practicalChecklist: [
+            'Conduct a 15-point site walkthrough audit before submitting any commercial quote',
+            'Draft a zone-by-zone SLA schedule (Daily, Weekly, and Monthly deep-clean tasks)',
+            'Establish a 24-hour client escalation and relief staff deployment protocol',
+          ],
+          quizQuestion: 'What is the most effective tool for retaining commercial property management cleaning contracts over multiple years?',
+          quizOptions: [
+            'Skipping supervisor inspections to reduce travel costs',
+            'A measurable Service Level Agreement (SLA) with monthly quality audit scorecards and relief staff guarantees',
+            'Using unlabelled household detergents on commercial floors',
+            'Bidding below statutory minimum wage',
+          ],
+          correctOptionIndex: 1,
+        },
       },
     ],
   },
@@ -482,10 +519,10 @@ export const INITIAL_COURSES: Course[] = [
       'Equip your hygiene team or yourself with high-demand specialist skills: textile pH testing, spotting kit chemistry (tannin, protein, oil, and dye stains), rotary bonnet maintenance, hot-water spray extraction, and deep washroom descaling.',
     category: 'Specialized Hygiene & Technical',
     careerOutcome: 'Carpet, Upholstery & Deep-Hygiene Specialist',
-    nqfLevel: 'Skills Programme (NQF Level 2 Aligned)',
+    nqfLevel: 'Non-Accredited Skills Short Course',
     credits: 10,
     saqaId: 'SP-HYG-105',
-    accreditationBody: 'Training Africa Academy Certified',
+    accreditationBody: 'Non-Accredited Skills Short Course · Certificate of Completion',
     duration: '2 Days Practical / Blended',
     deliveryModes: [
       'Classroom & Assessment Bay (Randburg)',
@@ -528,7 +565,7 @@ export const INITIAL_COURSES: Course[] = [
     nqfLevel: 'NQF Level 4',
     credits: 149,
     saqaId: 'SAQA 66249',
-    accreditationBody: 'Services SETA Accredited',
+    accreditationBody: 'QCTO & Services SETA Accredited (NQF Level 4)',
     duration: '12 Months (Learnership / ESD Cohort)',
     deliveryModes: ['Blended (Online + Practical)', 'Classroom & Assessment Bay (Randburg)'],
     priceZAR: 22500,
@@ -541,6 +578,7 @@ export const INITIAL_COURSES: Course[] = [
     nextIntake: '01 February 2027 · Corporate ESD Intakes Anytime',
     featured: false,
     onlineEligible: true,
+    quoteOnly: true,
     recommendedNextCourseIds: ['short-business-startup'],
     modules: [
       {

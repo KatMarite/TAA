@@ -57,7 +57,7 @@ import {
   Mail,
 } from 'lucide-react';
 
-const STORAGE_KEY = 'taa_platform_state_v2';
+const STORAGE_KEY = 'taa_platform_state_v3';
 
 export default function TrainingAfricaAcademyPlatform() {
   const hasHydratedRef = useRef<boolean>(false);
@@ -86,10 +86,14 @@ export default function TrainingAfricaAcademyPlatform() {
   // Learner & Conversion State (Initialized deterministically to prevent SSR/Client hydration mismatch)
   const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>([
     'short-intro-cleaning-1-2',
+    'short-business-startup',
     'occ-cleaning-practitioner-nqf3',
   ]);
   const [completedModuleIds, setCompletedModuleIds] = useState<string[]>([
     'ic-m1',
+    'ic-m2',
+    'biz-m1',
+    'biz-m2',
     'cp-m1',
   ]);
   const [enrolments, setEnrolments] = useState<EnrolmentRecord[]>([
@@ -103,6 +107,17 @@ export default function TrainingAfricaAcademyPlatform() {
       paymentMethod: 'Instant EFT / PayFast Secure',
       amountPaidZAR: 1450,
       enrolledAt: '02 Nov 2026',
+    },
+    {
+      id: 'ENR-84925',
+      courseId: 'short-business-startup',
+      courseTitle:
+        'Cleaning Enterprise Startup, Tendering & Marketing Masterclass',
+      learnerName: 'Thabo Molefe',
+      learnerEmail: 'thabo.molefe@example.co.za',
+      paymentMethod: 'Instant EFT / PayFast Secure',
+      amountPaidZAR: 2650,
+      enrolledAt: '04 Nov 2026',
     },
   ]);
 
@@ -252,9 +267,10 @@ export default function TrainingAfricaAcademyPlatform() {
     setCourses(INITIAL_COURSES);
     setEnrolledCourseIds([
       'short-intro-cleaning-1-2',
+      'short-business-startup',
       'occ-cleaning-practitioner-nqf3',
     ]);
-    setCompletedModuleIds(['ic-m1', 'cp-m1']);
+    setCompletedModuleIds(['ic-m1', 'ic-m2', 'biz-m1', 'biz-m2', 'cp-m1']);
     setThemeClass('theme-crimson');
     setActivePage('home');
   };

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { generateRecordId, getCurrentFormattedDate } from '@/lib/utils';
 import { AssessmentFacility, BRAND_IMAGES } from '@/lib/academy-data';
 import ResilientImage from '../ResilientImage';
-import { CheckCircle2, Calendar } from 'lucide-react';
+import { CheckCircle2, Calendar, ShieldCheck } from 'lucide-react';
 import { VenueBookingRecord } from '../AudienceJourneys';
 
 export interface AssessmentCentreViewProps {
@@ -120,6 +120,14 @@ export function AssessmentCentreView({
             <p className="mt-3 text-base text-[#52525B]">
               Located at Unit 14 Fancourt Office Park, Northriding, Randburg. Approved for QCTO External Integrated Summative Assessments (EISA), practical trade simulations, and external training provider venue hire.
             </p>
+
+            {/* Approved Scope Guardrail Callout (RFQ F10) */}
+            <div className="mt-5 p-3.5 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2.5 text-xs text-amber-950">
+              <ShieldCheck className="w-4 h-4 text-[#D91B24] shrink-0 mt-0.5" />
+              <p className="italic leading-relaxed">
+                <strong>Approved Scope Notice:</strong> Assessment centre bookings are subject to availability and strictly limited to Training Africa Academy&apos;s currently valid SETA/QCTO accreditation letters and approved assessment scope.
+              </p>
+            </div>
           </div>
           <div className="mt-6 pt-6 border-t border-[#E5E7EB] grid grid-cols-3 gap-4 text-xs">
             <div>
@@ -190,7 +198,10 @@ export function AssessmentCentreView({
                           Full Day
                         </span>
                         <span className="font-mono text-base font-bold text-[#1C1B1B] tabular-nums">
-                          R{fac.dailyHireRateZAR.toLocaleString('en-ZA')}
+                          R{fac.dailyHireRateZAR.toLocaleString('en-ZA')}{' '}
+                          <span className="text-[11px] font-normal text-[#52525B]">
+                            Incl. VAT
+                          </span>
                         </span>
                       </div>
                     </div>
@@ -279,7 +290,7 @@ export function AssessmentCentreView({
         {/* Right 6 Cols: Booking Form */}
         <div className="lg:col-span-6 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-8">
           <h2 className="text-xl font-bold text-[#1C1B1B]">
-            03. Confirm Assessment Centre Booking & Instant Quotation
+            03. Check Venue Calendar & Book — Instant Quotation
           </h2>
           <p className="text-sm text-[#52525B] mt-1">
             Selected Facility:{' '}
@@ -289,6 +300,15 @@ export function AssessmentCentreView({
             Selected Date(s): {selectedDates.join(' · ')} ({daysCount}{' '}
             {daysCount === 1 ? 'Day' : 'Days'})
           </p>
+
+          {/* Approved Scope Notice inside the Booking Form (RFQ F10) */}
+          <div className="mt-4 p-3.5 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg flex items-start gap-2.5 text-xs text-[#52525B]">
+            <ShieldCheck className="w-4 h-4 text-[#D91B24] shrink-0 mt-0.5" />
+            <p className="italic leading-relaxed">
+              <strong className="text-[#1C1B1B]">Approved Scope Notice:</strong>{' '}
+              Assessment centre bookings are subject to availability and strictly limited to Training Africa Academy&apos;s currently valid SETA/QCTO accreditation letters and approved assessment scope.
+            </p>
+          </div>
 
           <form onSubmit={handleBookingSubmit} className="mt-5 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -367,12 +387,13 @@ export function AssessmentCentreView({
                 >
                   <option value="Full Day (08:00–16:30)">
                     Full Day (08:00–16:30) — R
-                    {activeFacility.dailyHireRateZAR.toLocaleString('en-ZA')}
-                    /day
+                    {activeFacility.dailyHireRateZAR.toLocaleString('en-ZA')}{' '}
+                    Incl. VAT/day
                   </option>
                   <option value="Half Day (08:00–12:30)">
                     Half Day (08:00–12:30) — R
-                    {activeFacility.halfDayRateZAR.toLocaleString('en-ZA')}/day
+                    {activeFacility.halfDayRateZAR.toLocaleString('en-ZA')}{' '}
+                    Incl. VAT/day
                   </option>
                 </select>
               </div>
@@ -431,7 +452,7 @@ export function AssessmentCentreView({
                 className="rounded border-[#E5E7EB] text-[#D91B24]"
               />
               <span>
-                Add Tea/Coffee & Working Lunch Catering (R145 per delegate/day)
+                Add Tea/Coffee & Working Lunch Catering (R145 Incl. VAT per delegate/day)
               </span>
             </label>
 
@@ -442,7 +463,10 @@ export function AssessmentCentreView({
                   {daysCount === 1 ? 'Day' : 'Days'})
                 </span>
                 <span className="text-2xl font-bold font-mono tabular-nums">
-                  R{totalVenueQuote.toLocaleString('en-ZA')}
+                  R{totalVenueQuote.toLocaleString('en-ZA')}{' '}
+                  <span className="text-xs font-normal text-slate-300">
+                    Incl. VAT
+                  </span>
                 </span>
               </div>
               <button
@@ -470,7 +494,7 @@ export function AssessmentCentreView({
               <p>
                 Total Quoted:{' '}
                 <strong className="font-mono">
-                  R{confirmedBooking.quotedAmountZAR.toLocaleString('en-ZA')}
+                  R{confirmedBooking.quotedAmountZAR.toLocaleString('en-ZA')} Incl. VAT
                 </strong>{' '}
                 · Saved to persistent Admin Ledger.
               </p>

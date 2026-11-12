@@ -276,7 +276,9 @@ export function CatalogueView({
                 </div>
                 <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
                   <span className="font-mono text-sm font-bold text-white tabular-nums">
-                    R{c.priceZAR.toLocaleString('en-ZA')}
+                    {c.quoteOnly
+                      ? 'Variable / Corporate Quote-Only'
+                      : `R${c.priceZAR.toLocaleString('en-ZA')} Incl. VAT`}
                   </span>
                   <button
                     type="button"
@@ -296,10 +298,14 @@ export function CatalogueView({
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredCourses.map((course) => {
           const isCompared = compareIds.includes(course.id);
-          const badgeLabel =
-            course.category === 'Occupational Qualifications'
-              ? course.nqfLevel
-              : `Short Course · ${course.nqfLevel.split(' ')[0] === 'Skills' ? 'NQF 2' : 'Certified'}`;
+          const isAccreditedQual =
+            course.category === 'Occupational Qualifications';
+          const badgeLabel = isAccreditedQual
+            ? `QCTO & Services SETA Accredited (${course.nqfLevel})`
+            : 'Non-Accredited Skills Short Course';
+          const secondaryBadge = isAccreditedQual
+            ? `${course.credits} Credits`
+            : 'Certificate of Completion';
 
           return (
             <article
@@ -315,13 +321,17 @@ export function CatalogueView({
                     fallbackTitle={course.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="px-2.5 py-1 rounded-md bg-brand text-white text-xs font-bold shadow-xs">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                  <div className="absolute top-3 left-3 right-3 flex flex-wrap items-center gap-1.5">
+                    <span
+                      className={`px-2.5 py-1 rounded-md text-white text-[11px] font-bold shadow-xs ${
+                        isAccreditedQual ? 'bg-brand' : 'bg-[#18181B]/95 border border-white/15'
+                      }`}
+                    >
                       {badgeLabel}
                     </span>
-                    <span className="px-2.5 py-1 rounded-md bg-[#18181B]/90 text-white text-xs font-mono font-semibold">
-                      {course.credits} Credits
+                    <span className="px-2 py-1 rounded-md bg-[#18181B]/90 text-amber-300 text-[11px] font-mono font-semibold">
+                      {secondaryBadge}
                     </span>
                   </div>
                   <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white text-xs font-mono">
@@ -331,9 +341,14 @@ export function CatalogueView({
                 </div>
 
                 <div className="p-6">
-                  <p className="text-xs font-bold text-brand mb-1.5">
-                    {course.category}
-                  </p>
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                    <p className="text-xs font-bold text-brand">
+                      {course.category}
+                    </p>
+                    <span className="text-[11px] font-mono text-[#52525B]">
+                      {isAccreditedQual ? course.saqaId : 'Certificate of Completion'}
+                    </span>
+                  </div>
 
                   <h2 className="text-lg font-bold text-[#1C1B1B] leading-snug">
                     <button
@@ -363,20 +378,44 @@ export function CatalogueView({
               </div>
 
               <div className="px-6 pb-6 pt-4 bg-[#FCF9F8] border-t border-[#E5E7EB]">
-                <div className="flex items-baseline justify-between mb-4">
-                  <div>
-                    <span className="text-xs text-[#52525B] block">Individual Fee</span>
-                    <span className="text-xl font-extrabold font-mono text-[#1C1B1B] tabular-nums">
-                      R{course.priceZAR.toLocaleString('en-ZA')}
-                    </span>
+                {course.quoteOnly ? (
+                  <div className="flex items-baseline justify-between mb-4">
+                    <div>
+                      <span className="text-xs text-[#52525B] block">
+                        Pricing Model
+                      </span>
+                      <span className="text-sm font-extrabold font-mono text-[#1C1B1B]">
+                        Variable / Corporate Quote-Only
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs text-[#52525B] block">
+                        Est. Cohort (5+)
+                      </span>
+                      <span className="text-xs font-bold font-mono text-brand tabular-nums">
+                        R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Incl. VAT / staff
+                      </span>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <span className="text-xs text-[#52525B] block">Employer Group (5+)</span>
-                    <span className="text-sm font-bold font-mono text-brand tabular-nums">
-                      R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} / staff
-                    </span>
+                ) : (
+                  <div className="flex items-baseline justify-between mb-4">
+                    <div>
+                      <span className="text-xs text-[#52525B] block">Individual Fee</span>
+                      <span className="text-lg sm:text-xl font-extrabold font-mono text-[#1C1B1B] tabular-nums">
+                        R{course.priceZAR.toLocaleString('en-ZA')}{' '}
+                        <span className="text-xs font-semibold text-[#52525B]">
+                          Incl. VAT
+                        </span>
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs text-[#52525B] block">Employer Group (5+)</span>
+                      <span className="text-xs sm:text-sm font-bold font-mono text-brand tabular-nums">
+                        R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Incl. VAT / staff
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="flex items-center justify-between pt-3 border-t border-[#E5E7EB]">
                   <button
@@ -399,9 +438,13 @@ export function CatalogueView({
                     <button
                       type="button"
                       onClick={() => onEnrolCourse(course)}
-                      className="px-3.5 py-2 text-xs font-bold text-white bg-brand rounded-lg transition-colors cursor-pointer"
+                      className={`px-3.5 py-2 text-xs font-bold text-white rounded-lg transition-colors cursor-pointer ${
+                        course.quoteOnly
+                          ? 'bg-[#18181B] hover:bg-brand'
+                          : 'bg-brand'
+                      }`}
                     >
-                      Enrol Now
+                      {course.quoteOnly ? 'Request Group Quote' : 'Enrol Now'}
                     </button>
                   </div>
                 </div>
@@ -417,7 +460,9 @@ export function CatalogueView({
                     <span>Compare course</span>
                   </label>
                   {course.reliefStaffAvailable && (
-                    <span className="font-medium text-[#1C1B1B]">Relief Staff: R380/day</span>
+                    <span className="font-medium text-[#1C1B1B]">
+                      Relief Staff: R380/day Excl. VAT
+                    </span>
                   )}
                 </div>
               </div>
@@ -646,6 +691,14 @@ export function CourseDetailView({
                 </div>
               ))}
             </div>
+
+            {/* Online Theory vs. Practical/EISA Guardrail Callout (RFQ Section 6) */}
+            <div className="mt-6 p-4 sm:p-5 rounded-xl bg-[#FEF2F2] border border-[#FECACA] text-xs sm:text-sm text-[#991B1B] leading-relaxed">
+              <strong className="font-bold text-[#1C1B1B] block mb-1">
+                Delivery & Assessment Notice:
+              </strong>
+              Online modules cover theoretical knowledge only. Accredited NQF certification requires completion of mandatory supervised practical hours at our Randburg Simulation Bays and an External Integrated Summative Assessment (EISA) at an approved assessment centre.
+            </div>
           </div>
 
           {/* Next-Course Recommendations */}
@@ -665,7 +718,7 @@ export function CourseDetailView({
                   >
                     <div>
                       <p className="text-xs text-[#52525B]">
-                        {rec.nqfLevel} · {rec.duration}
+                        {rec.accreditationBody} · {rec.duration}
                       </p>
                       <h3 className="text-sm font-bold text-[#1C1B1B] mt-1">
                         {rec.title}
@@ -673,7 +726,9 @@ export function CourseDetailView({
                     </div>
                     <div className="mt-4 pt-3 border-t border-[#E5E7EB]/80 flex items-center justify-between">
                       <span className="font-mono text-sm font-bold text-[#1C1B1B] tabular-nums">
-                        R{rec.priceZAR.toLocaleString('en-ZA')}
+                        {rec.quoteOnly
+                          ? 'Variable / Corporate Quote-Only'
+                          : `R${rec.priceZAR.toLocaleString('en-ZA')} Incl. VAT`}
                       </span>
                       <button
                         type="button"
@@ -694,23 +749,32 @@ export function CourseDetailView({
         <div className="lg:col-span-4 space-y-6">
           <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
             <p className="text-xs font-semibold text-[#D91B24] mb-1">
-              Transparent Fee Calculator
+              Transparent Fee Calculator (Incl. VAT)
             </p>
             <h2 className="text-xl font-bold text-[#1C1B1B]">
-              Enrol Online or Calculate Team Cost
+              {course.quoteOnly
+                ? 'Corporate Quote & ESD Cohort Calculator'
+                : 'Enrol Online or Calculate Team Cost'}
             </h2>
 
             <div className="mt-5 p-4 bg-[#FCF9F8] rounded-lg border border-[#E5E7EB]">
-              <div className="flex items-baseline justify-between">
-                <span className="text-xs text-[#52525B]">Rate per Learner</span>
-                <span className="text-2xl font-bold font-mono text-[#1C1B1B] tabular-nums">
-                  R{unitRate.toLocaleString('en-ZA')}
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="text-xs text-[#52525B]">
+                  {course.quoteOnly ? 'Est. Cohort Rate' : 'Rate per Learner'}
+                </span>
+                <span className="text-xl sm:text-2xl font-bold font-mono text-[#1C1B1B] tabular-nums">
+                  R{unitRate.toLocaleString('en-ZA')}{' '}
+                  <span className="text-xs font-semibold text-[#52525B]">
+                    Incl. VAT
+                  </span>
                 </span>
               </div>
               <p className="text-xs text-[#52525B] mt-1">
-                {learnerCount >= 5
+                {course.quoteOnly
+                  ? 'Variable / Corporate Quote-Only programme — customised for Enterprise & Supplier Development (ESD) and learnership cohorts.'
+                  : learnerCount >= 5
                   ? 'Corporate Cohort Discount Applied (5+ Staff)'
-                  : `Enrol 5+ staff to unlock R${course.groupPricePerLearnerZAR.toLocaleString('en-ZA')}/learner rate`}
+                  : `Enrol 5+ staff to unlock R${course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Incl. VAT/learner rate`}
               </p>
             </div>
 
@@ -745,7 +809,7 @@ export function CourseDetailView({
                   />
                   <span className="text-xs text-slate-700">
                     <strong className="text-[#1C1B1B] block">
-                      Include Vetted Relief Staff (R{course.reliefStaffRatePerDayZAR}/day)
+                      Include Vetted Relief Staff (R{course.reliefStaffRatePerDayZAR}/day Excl. VAT)
                     </strong>
                     We supply trained temporary cleaners on your site while your core employees attend practical training.
                   </span>
@@ -773,18 +837,18 @@ export function CourseDetailView({
             {/* Total Breakdown */}
             <div className="mt-5 pt-4 border-t border-[#E5E7EB] space-y-2 text-xs">
               <div className="flex justify-between text-[#52525B]">
-                <span>Tuition ({learnerCount} × R{unitRate.toLocaleString('en-ZA')})</span>
-                <span className="font-mono tabular-nums">R{tuitionSubtotal.toLocaleString('en-ZA')}</span>
+                <span>Tuition ({learnerCount} × R{unitRate.toLocaleString('en-ZA')} Incl. VAT)</span>
+                <span className="font-mono tabular-nums">R{tuitionSubtotal.toLocaleString('en-ZA')} Incl. VAT</span>
               </div>
               {reliefCost > 0 && (
                 <div className="flex justify-between text-[#52525B]">
                   <span>Relief Staff ({learnerCount} × {reliefDays}d × R380)</span>
-                  <span className="font-mono tabular-nums">R{reliefCost.toLocaleString('en-ZA')}</span>
+                  <span className="font-mono tabular-nums">R{reliefCost.toLocaleString('en-ZA')} Excl. VAT</span>
                 </div>
               )}
               <div className="flex justify-between text-base font-bold text-[#1C1B1B] pt-2 border-t border-[#E5E7EB]">
                 <span>Total (Incl. Study Material & Assessment)</span>
-                <span className="font-mono tabular-nums">R{totalEstimate.toLocaleString('en-ZA')}</span>
+                <span className="font-mono tabular-nums">R{totalEstimate.toLocaleString('en-ZA')} Incl. VAT</span>
               </div>
             </div>
 
@@ -794,8 +858,10 @@ export function CourseDetailView({
                 onClick={() => onEnrolCourse(course)}
                 className="w-full py-3 px-4 text-sm font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg transition-colors cursor-pointer"
               >
-                {learnerCount === 1
-                  ? `Register & Pay Now (R${totalEstimate.toLocaleString('en-ZA')})`
+                {course.quoteOnly
+                  ? `Request Group Quote (R${totalEstimate.toLocaleString('en-ZA')} Incl. VAT Est.)`
+                  : learnerCount === 1
+                  ? `Register & Pay Now (R${totalEstimate.toLocaleString('en-ZA')} Incl. VAT)`
                   : `Enrol ${learnerCount} Staff / Generate Pro-Forma Invoice`}
               </button>
               <button
@@ -839,6 +905,12 @@ export function OnlineLearningView({
   const currentModule =
     currentCourse.modules[selectedModuleIndex] || currentCourse.modules[0];
 
+  // Video Captions & Lesson Tab State (RFQ F07 & Section 5)
+  const [captionsEnabled, setCaptionsEnabled] = useState<boolean>(true);
+  const [activeLessonTab, setActiveLessonTab] = useState<
+    'briefing' | 'lab' | 'quiz'
+  >('briefing');
+
   // Interactive Chemical Dilution & pH Safety Simulation State
   const [bucketLitres, setBucketLitres] = useState<number>(10);
   const [dilutionPartsWater, setDilutionPartsWater] = useState<number>(50);
@@ -849,6 +921,44 @@ export function OnlineLearningView({
   const [quizSubmitted, setQuizSubmitted] = useState<boolean>(false);
 
   const concentrateMl = Math.round((bucketLitres * 1000) / dilutionPartsWater);
+
+  const downloadStudyChecklistPdf = () => {
+    const checklistItems = (
+      currentModule.onlineContent?.practicalChecklist ||
+      currentModule.keyTopics
+    )
+      .map((item, idx) => `[ ] ${idx + 1}. ${item}`)
+      .join('\n');
+
+    const content = `TRAINING AFRICA ACADEMY — OFFICIAL LMS STUDY CHECKLIST & MODULE GUIDE
+====================================================================
+Programme:      ${currentCourse.title} (${currentCourse.code})
+Accreditation:  ${currentCourse.accreditationBody}
+Active Module:  Module ${currentModule.number} — ${currentModule.title}
+Duration:       ${currentModule.onlineContent?.videoDuration || currentModule.duration}
+====================================================================
+
+CORE TECHNICAL BRIEFING:
+${
+  currentModule.onlineContent?.readingNotes ||
+  currentModule.summary
+}
+
+PRACTICAL & STUDY VERIFICATION CHECKLIST:
+${checklistItems}
+
+DELIVERY & ASSESSMENT GUARDRAIL:
+Online modules cover theoretical knowledge only. Accredited NQF certification requires completion of mandatory supervised practical hours at our Randburg Simulation Bays and an External Integrated Summative Assessment (EISA) at an approved assessment centre.
+====================================================================`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Study_Checklist_${currentCourse.code}_Module_${currentModule.number}.pdf.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const getPhClassification = (ph: number) => {
     if (ph <= 3) {
@@ -910,10 +1020,29 @@ export function OnlineLearningView({
     currentCourse.recommendedNextCourseIds.includes(c.id)
   );
 
+  // 3 Mandatory Pilot Course Archetypes for Quick Demo Switching (RFQ F07 & Section 5)
+  const pilotArchetypes = [
+    {
+      id: 'short-intro-cleaning-1-2',
+      tag: 'Pilot 1 · Commercial Cleaning Short Course',
+      label: 'Introduction to Professional Cleaning',
+    },
+    {
+      id: 'short-business-startup',
+      tag: 'Pilot 2 · Soft-Skills / Business Skills Course',
+      label: 'Cleaning Enterprise Startup & Marketing',
+    },
+    {
+      id: 'occ-cleaning-practitioner-nqf3',
+      tag: 'Pilot 3 · Nominated Accredited Qualification',
+      label: 'Occupational Qualification: Cleaning Practitioner',
+    },
+  ];
+
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Header & Course Switcher */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-[#E5E7EB]">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-[#E5E7EB]">
         <div>
           <p className="text-xs font-semibold text-[#D91B24] mb-2">
             05. Self-Paced Online Learning · Interactive Theory, Simulation & Assessment
@@ -950,23 +1079,156 @@ export function OnlineLearningView({
         </div>
       </div>
 
+      {/* 3 Mandatory Pilot Course Archetype Quick-Switcher Bar (RFQ F07 & Section 5) */}
+      <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-3">
+        {pilotArchetypes.map((pilot) => {
+          const isCurrent = currentCourse.id === pilot.id;
+          return (
+            <button
+              key={pilot.id}
+              type="button"
+              onClick={() => {
+                onSelectCourse(pilot.id);
+                setSelectedModuleIndex(0);
+                setSelectedQuizAnswer(null);
+                setQuizSubmitted(false);
+              }}
+              className={`p-3.5 rounded-xl border text-left transition-colors cursor-pointer ${
+                isCurrent
+                  ? 'bg-[#1C1B1B] text-white border-[#1C1B1B]'
+                  : 'bg-white text-[#1C1B1B] border-[#E5E7EB] hover:border-[#D91B24]'
+              }`}
+            >
+              <span
+                className={`block text-[11px] font-mono font-bold ${
+                  isCurrent ? 'text-[#F59E0B]' : 'text-[#D91B24]'
+                }`}
+              >
+                {pilot.tag}
+              </span>
+              <span className="block text-xs sm:text-sm font-bold mt-0.5">
+                {pilot.label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Two-Zone Sandbox Layout (Left 7 cols Stage + Lab, Right 5 cols Control & Assessment Deck) */}
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Zone: Interactive Lesson Stage & Chemical Dilution Lab */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Active Lesson Stage */}
+          {/* Active Lesson Stage with Video Player, CC / Captions Toggle, Downloadable Checklist & Lesson Tabs */}
           <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
-            <div className="bg-[#1C1B1B] text-white p-6">
-              <div className="flex items-center justify-between text-xs text-slate-300 mb-2">
-                <span>
-                  Module {currentModule.number} of {currentCourse.modules.length} · {currentModule.type}
-                </span>
-                <span className="font-mono tabular-nums">
+            {/* Simulated Low-Bandwidth Video Stage */}
+            <div className="relative aspect-video w-full bg-[#18181B] overflow-hidden">
+              <ResilientImage
+                src={currentCourse.image}
+                alt={currentModule.title}
+                fallbackTitle={currentModule.title}
+                className="w-full h-full object-cover opacity-55"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/40" />
+
+              {/* Top Video Bar: Module Info & CC / Captions Toggle + Download Checklist */}
+              <div className="absolute top-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2">
+                <span className="px-2.5 py-1 rounded-md bg-black/75 text-white text-xs font-mono">
+                  Module {currentModule.number} of {currentCourse.modules.length} ·{' '}
                   {quizContent?.videoDuration || currentModule.duration}
                 </span>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setCaptionsEnabled((prev) => !prev)}
+                    aria-pressed={captionsEnabled}
+                    className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-colors cursor-pointer border ${
+                      captionsEnabled
+                        ? 'bg-[#F59E0B] text-[#1C1B1B] border-[#F59E0B]'
+                        : 'bg-black/75 text-white border-white/25 hover:bg-black'
+                    }`}
+                  >
+                    CC / Captions: {captionsEnabled ? 'ON' : 'OFF'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={downloadStudyChecklistPdf}
+                    className="px-3 py-1.5 rounded-md bg-[#D91B24] hover:bg-[#B91C1C] text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download PDF Study Checklist</span>
+                  </button>
+                </div>
               </div>
-              <h2 className="text-xl font-bold text-white">{currentModule.title}</h2>
-              <p className="text-sm text-slate-300 mt-2">{currentModule.summary}</p>
+
+              {/* Center Play Indicator & Lesson Title */}
+              <div className="absolute inset-x-4 bottom-4 space-y-2.5">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-9 h-9 rounded-full bg-[#D91B24] text-white flex items-center justify-center shrink-0">
+                    <PlayCircle className="w-5 h-5" />
+                  </span>
+                  <div>
+                    <h2 className="text-base sm:text-lg font-bold text-white leading-snug">
+                      {currentModule.title}
+                    </h2>
+                    <p className="text-xs text-slate-300 line-clamp-1">
+                      {currentModule.summary}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Live Closed Captions Bar (Accessible / Low-Bandwidth Mode) */}
+                {captionsEnabled && (
+                  <div
+                    role="region"
+                    aria-label="Closed Captions"
+                    className="p-2.5 rounded-lg bg-black/85 border border-white/15 text-xs text-amber-200 font-mono leading-relaxed"
+                  >
+                    [CC · English / Multilingual Track]: &ldquo;
+                    {(
+                      quizContent?.readingNotes ||
+                      currentModule.summary
+                    ).slice(0, 145)}
+                    ...&rdquo;
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Interactive Lesson Player Tabs (Briefing, Dilution Lab, Interactive Quiz) */}
+            <div className="px-6 pt-4 border-b border-[#E5E7EB] flex flex-wrap items-center justify-between gap-2 bg-[#FCF9F8]">
+              <div role="tablist" aria-label="Lesson Player Views" className="flex flex-wrap gap-1.5 pb-3">
+                {[
+                  { id: 'briefing' as const, label: '1. Study Briefing & Checklist' },
+                  { id: 'lab' as const, label: '2. Chemical Dilution Lab' },
+                  { id: 'quiz' as const, label: '3. Interactive Quiz' },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeLessonTab === tab.id}
+                    onClick={() => setActiveLessonTab(tab.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                      activeLessonTab === tab.id
+                        ? 'bg-[#1C1B1B] text-white'
+                        : 'bg-white text-[#52525B] border border-[#E5E7EB] hover:text-[#1C1B1B]'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={downloadStudyChecklistPdf}
+                className="mb-3 text-xs font-bold text-[#D91B24] hover:underline inline-flex items-center gap-1 cursor-pointer"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>Download Study Checklist</span>
+              </button>
             </div>
 
             <div className="p-6 space-y-5">
@@ -981,9 +1243,19 @@ export function OnlineLearningView({
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-[#1C1B1B] mb-2">
-                  Practical Simulation & Workplace Checklist
-                </h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-bold text-[#1C1B1B]">
+                    Practical Simulation & Workplace Study Checklist
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={downloadStudyChecklistPdf}
+                    className="text-xs font-semibold text-[#D91B24] hover:underline inline-flex items-center gap-1 cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Save PDF Study Checklist</span>
+                  </button>
+                </div>
                 <ul className="space-y-2 text-sm text-[#52525B]">
                   {(
                     quizContent?.practicalChecklist ||

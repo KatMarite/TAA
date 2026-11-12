@@ -504,91 +504,136 @@ export function HomeView({
 
         {/* Curated 3-Card Grid */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {displayedCourses.map((course) => (
-            <article
-              key={course.id}
-              className="course-card-elevated overflow-hidden flex flex-col justify-between"
-            >
-              <div>
-                <div className="relative aspect-video w-full bg-zinc-100 overflow-hidden">
-                  <ResilientImage
-                    src={course.image}
-                    alt={course.title}
-                    fallbackTitle={course.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+          {displayedCourses.map((course) => {
+            const isAccreditedQual =
+              course.category === 'Occupational Qualifications';
+            const badgeText = isAccreditedQual
+              ? `QCTO & Services SETA Accredited (${course.nqfLevel})`
+              : 'Non-Accredited Skills Short Course';
+            const certTypeNote = isAccreditedQual
+              ? `${course.credits} Credits · ${course.saqaId}`
+              : 'Certificate of Completion';
 
-                <div className="p-6">
-                  {/* Unboxed Metadata Line */}
-                  <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-[var(--text-muted)] mb-2">
-                    <span className="font-bold text-brand">{course.nqfLevel}</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{course.credits} Credits</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{course.duration.split('(')[0].trim()}</span>
+            return (
+              <article
+                key={course.id}
+                className="course-card-elevated overflow-hidden flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative aspect-video w-full bg-zinc-100 overflow-hidden">
+                    <ResilientImage
+                      src={course.image}
+                      alt={course.title}
+                      fallbackTitle={course.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
 
-                  <h3 className="text-lg font-bold text-[var(--text-primary)] leading-snug">
+                  <div className="p-6">
+                    {/* Clear Accreditation / Non-Accredited Badge Distinction */}
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-[var(--text-muted)] mb-2">
+                      <span
+                        className={`font-bold ${
+                          isAccreditedQual ? 'text-brand' : 'text-[var(--text-primary)]'
+                        }`}
+                      >
+                        {badgeText}
+                      </span>
+                      <span aria-hidden="true">·</span>
+                      <span>{certTypeNote}</span>
+                      <span aria-hidden="true">·</span>
+                      <span>{course.duration.split('(')[0].trim()}</span>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-[var(--text-primary)] leading-snug">
+                      <button
+                        type="button"
+                        onClick={() => onInspectCourse(course.id)}
+                        className="text-left hover:text-brand transition-colors cursor-pointer"
+                      >
+                        {course.title}
+                      </button>
+                    </h3>
+
+                    <p className="mt-2 text-sm text-[var(--text-muted)] line-clamp-2 leading-relaxed">
+                      {course.shortSummary}
+                    </p>
+
+                    <p className="mt-3 text-xs text-[var(--text-muted)]">
+                      <strong className="text-[var(--text-primary)]">Outcome:</strong>{' '}
+                      {course.careerOutcome}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-6 pb-6 pt-4 bg-[var(--bg-primary)] border-t border-[var(--border-subtle)]">
+                  {course.quoteOnly ? (
+                    <div className="flex items-baseline justify-between mb-4">
+                      <div>
+                        <span className="text-xs text-[var(--text-muted)] block">
+                          Pricing Model
+                        </span>
+                        <span className="text-sm font-extrabold font-mono text-[var(--text-primary)]">
+                          Variable / Corporate Quote-Only
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs text-[var(--text-muted)] block">
+                          Est. Cohort Rate (5+)
+                        </span>
+                        <span className="text-xs font-bold font-mono text-brand tabular-nums">
+                          R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Incl. VAT
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-baseline justify-between mb-4">
+                      <div>
+                        <span className="text-xs text-[var(--text-muted)] block">
+                          Individual Fee
+                        </span>
+                        <span className="text-lg sm:text-xl font-extrabold font-mono text-[var(--text-primary)] tabular-nums">
+                          R{course.priceZAR.toLocaleString('en-ZA')}{' '}
+                          <span className="text-xs font-semibold text-[var(--text-muted)]">
+                            Incl. VAT
+                          </span>
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs text-[var(--text-muted)] block">
+                          Group Rate (5+)
+                        </span>
+                        <span className="text-xs sm:text-sm font-bold font-mono text-brand tabular-nums">
+                          R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Incl. VAT
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between gap-2 pt-3 border-t border-[var(--border-subtle)]">
                     <button
                       type="button"
                       onClick={() => onInspectCourse(course.id)}
-                      className="text-left hover:text-brand transition-colors cursor-pointer"
+                      className="py-2 text-xs font-bold text-[var(--text-primary)] hover:text-brand transition-colors cursor-pointer"
                     >
-                      {course.title}
+                      View Course Details →
                     </button>
-                  </h3>
-
-                  <p className="mt-2 text-sm text-[var(--text-muted)] line-clamp-2 leading-relaxed">
-                    {course.shortSummary}
-                  </p>
-
-                  <p className="mt-3 text-xs text-[var(--text-muted)]">
-                    <strong className="text-[var(--text-primary)]">Outcome:</strong>{' '}
-                    {course.careerOutcome}
-                  </p>
-                </div>
-              </div>
-
-              <div className="px-6 pb-6 pt-4 bg-[var(--bg-primary)] border-t border-[var(--border-subtle)]">
-                <div className="flex items-baseline justify-between mb-4">
-                  <div>
-                    <span className="text-xs text-[var(--text-muted)] block">
-                      Individual Fee
-                    </span>
-                    <span className="text-xl font-extrabold font-mono text-[var(--text-primary)] tabular-nums">
-                      R{course.priceZAR.toLocaleString('en-ZA')}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs text-[var(--text-muted)] block">
-                      Group Rate (5+)
-                    </span>
-                    <span className="text-sm font-bold font-mono text-brand tabular-nums">
-                      R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} / learner
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onEnrolCourse(course)}
+                      className={`px-4 py-2 min-h-[38px] text-xs font-bold text-white rounded-lg transition-colors cursor-pointer ${
+                        course.quoteOnly
+                          ? 'bg-[var(--brand-secondary)] hover:bg-brand'
+                          : 'bg-brand'
+                      }`}
+                    >
+                      {course.quoteOnly ? 'Request Group Quote' : 'Enrol Now'}
+                    </button>
                   </div>
                 </div>
-
-                <div className="flex items-center justify-between gap-2 pt-3 border-t border-[var(--border-subtle)]">
-                  <button
-                    type="button"
-                    onClick={() => onInspectCourse(course.id)}
-                    className="py-2 text-xs font-bold text-[var(--text-primary)] hover:text-brand transition-colors cursor-pointer"
-                  >
-                    View Course Details →
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onEnrolCourse(course)}
-                    className="px-4 py-2 min-h-[38px] text-xs font-bold text-white bg-brand rounded-lg transition-colors cursor-pointer"
-                  >
-                    Enrol Now
-                  </button>
-                </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
         {/* Clear Link to Full Course Catalogue & Career Pathways */}

@@ -18,7 +18,7 @@ import {
 import { EnrolmentRecord } from '@/components/DashboardAndModals';
 import { ThemeClass } from '@/components/TopBarAndNav';
 
-const STORAGE_KEY = 'taa_platform_state_v2';
+const STORAGE_KEY = 'taa_platform_state_v3';
 
 interface AcademyContextType {
   // Navigation & Page View
@@ -72,10 +72,14 @@ export function AcademyProvider({ children }: { children: ReactNode }) {
   // Records
   const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>([
     'short-intro-cleaning-1-2',
+    'short-business-startup',
     'occ-cleaning-practitioner-nqf3',
   ]);
   const [completedModuleIds, setCompletedModuleIds] = useState<string[]>([
     'ic-m1',
+    'ic-m2',
+    'biz-m1',
+    'biz-m2',
     'cp-m1',
   ]);
   const [enrolments, setEnrolments] = useState<EnrolmentRecord[]>([
@@ -88,6 +92,17 @@ export function AcademyProvider({ children }: { children: ReactNode }) {
       paymentMethod: 'Instant EFT / PayFast Secure',
       amountPaidZAR: 1450,
       enrolledAt: '02 Nov 2026',
+    },
+    {
+      id: 'ENR-84925',
+      courseId: 'short-business-startup',
+      courseTitle:
+        'Cleaning Enterprise Startup, Tendering & Marketing Masterclass',
+      learnerName: 'Thabo Molefe',
+      learnerEmail: 'thabo.molefe@example.co.za',
+      paymentMethod: 'Instant EFT / PayFast Secure',
+      amountPaidZAR: 2650,
+      enrolledAt: '04 Nov 2026',
     },
   ]);
   const [quotes, setQuotes] = useState<CorporateQuoteRecord[]>([

@@ -24,7 +24,8 @@ import {
   Loader2,
   ArrowRight,
   ArrowLeft,
-  CheckCircle2,
+  ShieldCheck,
+  Lock,
 } from 'lucide-react';
 
 export interface EnrolmentRecord {
@@ -75,7 +76,7 @@ export function DashboardView({
   const [newCategory, setNewCategory] = useState<CourseCategory>(
     'Specialized Hygiene & Technical'
   );
-  const [newNqf] = useState('NQF Level 3 Aligned Skills Programme');
+  const [newNqf] = useState('Non-Accredited Skills Short Course');
   const [newCredits] = useState<number>(15);
   const [newPrice, setNewPrice] = useState<number>(3850);
   const [newGroupPrice, setNewGroupPrice] = useState<number>(3200);
@@ -150,7 +151,10 @@ export function DashboardView({
       nqfLevel: newNqf,
       credits: Number(newCredits) || 12,
       saqaId: newCode.trim(),
-      accreditationBody: 'Services SETA & QCTO Aligned',
+      accreditationBody:
+        newCategory === 'Occupational Qualifications'
+          ? 'QCTO & Services SETA Accredited'
+          : 'Non-Accredited Skills Short Course · Certificate of Completion',
       duration: '3 Days Blended / Online',
       deliveryModes: [
         'Self-Paced Online',
@@ -206,7 +210,7 @@ export function DashboardView({
           </h1>
           <p className="mt-2 text-sm text-[#52525B]">
             {activeTab === 'learner'
-              ? 'Resume your self-paced online modules, preview & verify your QCTO/SETA statements of competency, and explore recommended next-stage courses.'
+              ? 'Resume your self-paced online modules across our 3 pilot course archetypes, preview & verify eligible Certificates of Completion, and track practical/EISA requirements.'
               : 'Structured for in-house programme expansion: add new accredited courses, generate Nano Banana visuals, and track live enrolments and quotes.'}
           </p>
         </div>
@@ -240,10 +244,15 @@ export function DashboardView({
       {activeTab === 'learner' ? (
         <div className="space-y-10">
           <div>
-            <h2 className="text-xl font-bold text-[#1C1B1B] mb-4">
-              Your Enrolled Programmes
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+              <h2 className="text-xl font-bold text-[#1C1B1B]">
+                Your Enrolled Programmes (3 Pilot Course Archetypes)
+              </h2>
+              <span className="text-xs text-[#52525B]">
+                Conditional Certificate Governance Active · Short Courses issue Certificate of Completion at 100%; Accredited NQF Qualifications require Practical + EISA Sign-Off
+              </span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {enrolledCourses.map((course) => {
                 const totalMods = course.modules.length || 1;
                 const doneMods = course.modules.filter((m) =>
@@ -251,64 +260,105 @@ export function DashboardView({
                 ).length;
                 const pct = Math.min(
                   100,
-                  Math.max(25, Math.round((doneMods / totalMods) * 100))
+                  Math.max(0, Math.round((doneMods / totalMods) * 100))
                 );
+                const isAccreditedQual =
+                  course.category === 'Occupational Qualifications';
+                const isCertificateUnlocked = !isAccreditedQual && pct === 100;
 
                 return (
                   <div
                     key={course.id}
-                    className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between"
+                    className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between shadow-xs"
                   >
                     <div>
-                      <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                      <div className="aspect-video w-full bg-zinc-100 overflow-hidden relative">
                         <ResilientImage
                           src={course.image}
                           alt={course.title}
                           fallbackTitle={course.title}
                           className="w-full h-full object-cover"
                         />
+                        <div className="absolute top-3 left-3">
+                          <span
+                            className={`px-2.5 py-1 text-[11px] font-bold rounded-md shadow-xs ${
+                              isAccreditedQual
+                                ? 'bg-[#1C1B1B] text-white'
+                                : 'bg-white/95 text-[#1C1B1B] border border-[#E5E7EB]'
+                            }`}
+                          >
+                            {isAccreditedQual
+                              ? `QCTO & Services SETA Accredited (${course.nqfLevel})`
+                              : 'Non-Accredited Skills Short Course'}
+                          </span>
+                        </div>
                       </div>
                       <div className="p-6">
                         <div className="flex items-center justify-between text-xs text-[#52525B] mb-2">
                           <span className="font-mono font-semibold text-[#D91B24]">
-                            {course.code} · {course.nqfLevel}
+                            {course.code}
                           </span>
                           <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
-                            {pct}% Complete
+                            {pct}% Complete ({doneMods}/{totalMods} Modules)
                           </span>
                         </div>
-                        <h3 className="text-lg font-bold text-[#1C1B1B]">
+                        <h3 className="text-lg font-bold text-[#1C1B1B] leading-snug">
                           {course.title}
                         </h3>
                         <div className="mt-3 w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-[#D91B24] transition-all"
+                            className={`h-full transition-all ${
+                              pct === 100 ? 'bg-emerald-600' : 'bg-[#D91B24]'
+                            }`}
                             style={{ width: `${pct}%` }}
                           />
                         </div>
                         <p className="text-xs text-[#52525B] mt-3">
                           Outcome: {course.careerOutcome}
                         </p>
+                        <p className="text-[11px] font-semibold text-[#1C1B1B] mt-1.5">
+                          Award:{' '}
+                          {isAccreditedQual
+                            ? 'QCTO Occupational Certificate (Subject to Practical + EISA)'
+                            : 'Certificate of Completion (Instant Digital Issue at 100%)'}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="px-6 pb-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                    <div className="px-6 pb-6 pt-4 border-t border-slate-100 flex flex-col gap-2.5">
                       <button
                         type="button"
                         onClick={() => onLaunchOnlineCourse(course.id)}
-                        className="px-4 py-2 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+                        className="w-full px-4 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <PlayCircle className="w-4 h-4" />
-                        <span>Continue Online Learning</span>
+                        <span>
+                          {pct === 100
+                            ? 'Review Online Modules & Quiz'
+                            : 'Continue Online Learning'}
+                        </span>
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => onOpenCertificateModal(course)}
-                        className="px-3.5 py-2 text-xs font-semibold text-[#1C1B1B] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <Award className="w-4 h-4 text-[#F59E0B]" />
-                        <span>Preview & Verify Certificate</span>
-                      </button>
+
+                      {isCertificateUnlocked ? (
+                        <button
+                          type="button"
+                          onClick={() => onOpenCertificateModal(course)}
+                          className="w-full px-3.5 py-2.5 text-xs font-semibold text-[#1C1B1B] bg-slate-100 hover:bg-slate-200 rounded-lg inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                        >
+                          <Award className="w-4 h-4 text-[#F59E0B]" />
+                          <span>Preview & Verify Certificate of Completion</span>
+                        </button>
+                      ) : (
+                        <div
+                          title="Certificate Locked (Requires 100% Completion + Practical/EISA Sign-Off)"
+                          className="w-full px-3.5 py-2.5 text-[11px] font-semibold text-amber-900 bg-amber-50 border border-amber-200 rounded-lg flex items-center justify-center gap-1.5 text-center"
+                        >
+                          <Lock className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                          <span>
+                            Certificate Locked (Requires 100% Completion + Practical/EISA Sign-Off)
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -350,10 +400,19 @@ export function DashboardView({
                       </p>
                     </div>
                   </div>
-                  <div className="px-5 pb-5 pt-3 border-t border-[#E5E7EB] flex items-center justify-between">
-                    <span className="font-mono text-sm font-bold text-[#1C1B1B] tabular-nums">
-                      R{rec.priceZAR.toLocaleString('en-ZA')}
-                    </span>
+                  <div className="px-5 pb-5 pt-3 border-t border-[#E5E7EB] flex items-center justify-between gap-2">
+                    {rec.quoteOnly ? (
+                      <span className="font-mono text-xs font-bold text-[#1C1B1B]">
+                        Variable / Corporate Quote-Only
+                      </span>
+                    ) : (
+                      <span className="font-mono text-sm font-bold text-[#1C1B1B] tabular-nums">
+                        R{rec.priceZAR.toLocaleString('en-ZA')}{' '}
+                        <span className="text-[11px] font-normal text-[#52525B]">
+                          Incl. VAT
+                        </span>
+                      </span>
+                    )}
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
@@ -367,7 +426,7 @@ export function DashboardView({
                         onClick={() => onEnrolCourse(rec)}
                         className="px-3 py-1.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
                       >
-                        Enrol
+                        {rec.quoteOnly ? 'Request Group Quote' : 'Enrol'}
                       </button>
                     </div>
                   </div>
@@ -460,7 +519,7 @@ export function DashboardView({
                     htmlFor="cms-price"
                     className="block text-xs font-medium text-slate-700 mb-1"
                   >
-                    Individual Fee (ZAR)
+                    Individual Fee (ZAR Incl. VAT)
                   </label>
                   <input
                     id="cms-price"
@@ -475,7 +534,7 @@ export function DashboardView({
                     htmlFor="cms-gprice"
                     className="block text-xs font-medium text-slate-700 mb-1"
                   >
-                    Corporate Group Rate (ZAR)
+                    Corporate Group Rate (ZAR Incl. VAT)
                   </label>
                   <input
                     id="cms-gprice"
@@ -613,7 +672,7 @@ export function DashboardView({
                       <p className="text-[#52525B]">{enr.courseTitle}</p>
                     </div>
                     <span className="font-mono font-bold text-[#D91B24] tabular-nums">
-                      R{enr.amountPaidZAR.toLocaleString('en-ZA')}
+                      R{enr.amountPaidZAR.toLocaleString('en-ZA')} Incl. VAT
                     </span>
                   </div>
                 ))}
@@ -645,13 +704,18 @@ export function EnrolmentModal({
   const [selectedDelivery, setSelectedDelivery] = useState<string>(
     course?.deliveryModes[0] || 'Self-Paced Online'
   );
-  const [learnerQty, setLearnerQty] = useState<number>(1);
+  const [learnerQty, setLearnerQty] = useState<number>(
+    course?.quoteOnly ? 10 : 1
+  );
   const [addRelief, setAddRelief] = useState<boolean>(false);
   const [reliefDays, setReliefDays] = useState<number>(2);
 
   const [learnerName, setLearnerName] = useState('');
   const [learnerEmail, setLearnerEmail] = useState('');
   const [idNumber, setIdNumber] = useState('');
+  // Unchecked by default per POPIA requirement (RFQ F06 & Section 6)
+  const [popiaMarketingConsent, setPopiaMarketingConsent] =
+    useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState(
     'Instant EFT / PayFast Secure'
   );
@@ -666,6 +730,8 @@ export function EnrolmentModal({
 
   if (!course) return null;
 
+  const isQuoteOnly = Boolean(course.quoteOnly);
+
   const unitRate =
     learnerQty >= 5 ? course.groupPricePerLearnerZAR : course.priceZAR;
   const reliefTotal =
@@ -677,12 +743,14 @@ export function EnrolmentModal({
     if (!learnerName.trim() || !learnerEmail.trim()) return;
 
     const record: EnrolmentRecord = {
-      id: generateRecordId('ENR'),
+      id: generateRecordId(isQuoteOnly ? 'GRP-QT' : 'ENR'),
       courseId: course.id,
       courseTitle: course.title,
       learnerName: learnerName.trim(),
       learnerEmail: learnerEmail.trim(),
-      paymentMethod: `${paymentMethod} (${selectedDelivery})`,
+      paymentMethod: isQuoteOnly
+        ? `Corporate Group Quote Request (${selectedDelivery})`
+        : `${paymentMethod} (${selectedDelivery})`,
       amountPaidZAR: grandTotalZAR,
       enrolledAt: getCurrentFormattedDate(),
     };
@@ -691,7 +759,10 @@ export function EnrolmentModal({
       await fetch('/api/enrolments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record),
+        body: JSON.stringify({
+          ...record,
+          popiaMarketingConsent,
+        }),
       });
     } catch (err) {
       console.warn('API enrolment sync deferred; saved locally:', err);
@@ -710,14 +781,16 @@ export function EnrolmentModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-white border border-[#E5E7EB] rounded-xl max-w-xl w-full overflow-hidden shadow-xl">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl max-w-xl w-full overflow-hidden shadow-xl max-h-[92vh] overflow-y-auto">
         <div className="bg-[#1C1B1B] text-white px-6 py-4 flex items-center justify-between">
           <div>
             <p className="text-xs text-[#F59E0B] font-mono">
               Step {step} of 3 · {course.code} · {course.nqfLevel}
             </p>
-            <h2 className="text-base font-bold">
-              Guided Online Enrolment & Checkout
+            <h2 id="enrolment-modal-title" className="text-base font-bold">
+              {isQuoteOnly
+                ? 'Request Group Quote — Corporate Cohort Qualification'
+                : 'Guided Online Enrolment & Checkout'}
             </h2>
           </div>
           <button
@@ -735,7 +808,10 @@ export function EnrolmentModal({
           {[
             { n: 1, title: '01. Mode & Options' },
             { n: 2, title: '02. Learner Details' },
-            { n: 3, title: '03. Payment & Access' },
+            {
+              n: 3,
+              title: isQuoteOnly ? '03. Submit Quote' : '03. Payment & Access',
+            },
           ].map((item) => (
             <button
               key={item.n}
@@ -756,7 +832,7 @@ export function EnrolmentModal({
 
         <form onSubmit={handleCheckout} className="p-6 space-y-5">
           {/* Course Summary Banner */}
-          <div className="p-3.5 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg flex items-center justify-between">
+          <div className="p-3.5 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg flex items-center justify-between gap-3">
             <div>
               <p className="text-xs font-bold text-[#1C1B1B]">{course.title}</p>
               <p className="text-xs text-[#52525B]">
@@ -764,9 +840,28 @@ export function EnrolmentModal({
                 {learnerQty === 1 ? 'Learner' : 'Learners'}
               </p>
             </div>
-            <span className="font-mono text-lg font-bold text-[#D91B24] tabular-nums">
-              R{grandTotalZAR.toLocaleString('en-ZA')}
-            </span>
+            <div className="text-right shrink-0">
+              {isQuoteOnly ? (
+                <>
+                  <span className="text-[10px] font-mono uppercase text-[#52525B] block">
+                    Variable / Corporate Quote-Only
+                  </span>
+                  <span className="font-mono text-base font-bold text-[#D91B24] tabular-nums">
+                    Est. R{grandTotalZAR.toLocaleString('en-ZA')}{' '}
+                    <span className="text-[11px] font-normal text-[#52525B]">
+                      Incl. VAT
+                    </span>
+                  </span>
+                </>
+              ) : (
+                <span className="font-mono text-lg font-bold text-[#D91B24] tabular-nums">
+                  R{grandTotalZAR.toLocaleString('en-ZA')}{' '}
+                  <span className="text-xs font-normal text-[#52525B]">
+                    Incl. VAT
+                  </span>
+                </span>
+              )}
+            </div>
           </div>
 
           {step === 1 && (
@@ -796,7 +891,11 @@ export function EnrolmentModal({
                 <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
                   <label htmlFor="wiz-qty">Number of Learners</label>
                   <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
-                    {learnerQty} ({learnerQty >= 5 ? 'Group Discount Active' : 'Standard Rate'})
+                    {learnerQty} (
+                    {learnerQty >= 5
+                      ? `Group Rate R${course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Incl. VAT`
+                      : `Standard Rate R${course.priceZAR.toLocaleString('en-ZA')} Incl. VAT`}
+                    )
                   </span>
                 </div>
                 <input
@@ -821,7 +920,7 @@ export function EnrolmentModal({
                     />
                     <span>
                       <strong className="text-[#1C1B1B] block">
-                        Add Workplace Relief Staff (R380/day per operative)
+                        Add Workplace Relief Staff (R380/day Incl. VAT per operative)
                       </strong>
                       Keep your site staffed while employees attend practical training.
                     </span>
@@ -915,6 +1014,25 @@ export function EnrolmentModal({
                 />
               </div>
 
+              {/* POPIA Privacy Notice & Optional Marketing Consent (Unchecked by Default) */}
+              <div className="p-3.5 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg space-y-2 text-xs text-[#52525B]">
+                <p className="leading-relaxed">
+                  <strong className="text-[#1C1B1B]">POPIA Privacy Notice:</strong>{' '}
+                  Personal and SA ID details are processed strictly for QCTO/Services SETA learner registration, NLRD reporting, and tax invoicing in compliance with the Protection of Personal Information Act (POPIA).
+                </p>
+                <label className="flex items-start gap-2.5 text-slate-700 cursor-pointer pt-1">
+                  <input
+                    type="checkbox"
+                    checked={popiaMarketingConsent}
+                    onChange={(e) => setPopiaMarketingConsent(e.target.checked)}
+                    className="mt-0.5 rounded border-[#E5E7EB] text-[#D91B24]"
+                  />
+                  <span className="italic">
+                    I have read the POPIA Privacy Notice and consent to receive course updates and marketing communications (optional).
+                  </span>
+                </label>
+              </div>
+
               <div className="flex items-center justify-between pt-2">
                 <button
                   type="button"
@@ -929,7 +1047,9 @@ export function EnrolmentModal({
                   onClick={() => setStep(3)}
                   className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
                 >
-                  <span>Next: Payment Method</span>
+                  <span>
+                    {isQuoteOnly ? 'Next: Confirm Quote' : 'Next: Payment Method'}
+                  </span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -955,19 +1075,32 @@ export function EnrolmentModal({
                     Instant EFT / PayFast Secure (Immediate LMS Access)
                   </option>
                   <option value="Visa / Mastercard Debit or Credit">
-                    Visa / Mastercard Debit or Credit
+                    Visa / Mastercard Debit or Credit (Peach Payments / Payfast)
+                  </option>
+                  <option value="Scan-to-Pay / SnapScan / Zapper">
+                    Scan-to-Pay / QR Code (Payfast / Peach Payments)
                   </option>
                   <option value="Corporate Purchase Order / Invoice">
-                    Corporate Purchase Order / Pro-Forma Invoice
+                    Corporate Purchase Order / Pro-Forma VAT Tax Invoice
                   </option>
                 </select>
+
+                {/* PCI-DSS Zero-Card-Storage & VAT Tax Invoice Notice (RFQ F06 & Section 6) */}
+                <div className="mt-2.5 p-3 bg-slate-50 border border-[#E5E7EB] rounded-lg flex items-start gap-2 text-xs text-[#52525B]">
+                  <ShieldCheck className="w-4 h-4 text-[#D91B24] shrink-0 mt-0.5" />
+                  <p className="italic leading-relaxed">
+                    Processed securely via PCI-DSS compliant South African gateways (Payfast / Peach Payments — Card, Instant EFT &amp; Scan-to-Pay). Zero card details are stored on this website. An itemised VAT tax invoice is emailed automatically upon payment.
+                  </p>
+                </div>
               </div>
 
               <div className="p-3.5 bg-[#FEF2F2] border border-[#FECACA] rounded-lg text-xs text-[#991B1B] space-y-1">
-                <p className="font-bold">✓ Enrolment Guarantee & Instant Unlock</p>
+                <p className="font-bold">
+                  ✓ {isQuoteOnly ? 'Corporate Group Quote & Cohort Reservation' : 'Enrolment Guarantee & Instant Unlock'}
+                </p>
                 <p>
-                  Completing checkout immediately unlocks{' '}
-                  <strong>{course.title}</strong> in your Learner Dashboard and persists your progress across reloads.
+                  Completing this step immediately unlocks{' '}
+                  <strong>{course.title}</strong> in your Learner Dashboard and issues your official itemised VAT reference.
                 </p>
               </div>
 
@@ -986,7 +1119,9 @@ export function EnrolmentModal({
                 >
                   <CreditCard className="w-4 h-4" />
                   <span>
-                    Confirm & Pay (R{grandTotalZAR.toLocaleString('en-ZA')})
+                    {isQuoteOnly
+                      ? `Submit Group Quote (Est. R${grandTotalZAR.toLocaleString('en-ZA')} Incl. VAT)`
+                      : `Confirm & Pay (R${grandTotalZAR.toLocaleString('en-ZA')} Incl. VAT)`}
                   </span>
                 </button>
               </div>
@@ -1025,11 +1160,15 @@ Course Code:        ${course.code} (${course.saqaId})
 NQF & Credits:      ${course.nqfLevel} · ${course.credits} Credits
 Accreditation:      ${course.accreditationBody}
 Duration:           ${course.duration}
-Individual Fee:     R${course.priceZAR.toLocaleString('en-ZA')}
-Corporate Rate:     R${course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} per learner (5+ cohort)
+Individual Fee:     ${
+      course.quoteOnly
+        ? 'Variable / Corporate Quote-Only'
+        : `R${course.priceZAR.toLocaleString('en-ZA')} Incl. VAT`
+    }
+Corporate Rate:     R${course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Incl. VAT per learner (5+ cohort)
 Relief Staff Option: ${
       course.reliefStaffAvailable
-        ? `Available at R${course.reliefStaffRatePerDayZAR}/day per operative`
+        ? `Available at R${course.reliefStaffRatePerDayZAR}/day Incl. VAT per operative`
         : 'Not applicable'
     }
 
@@ -1071,7 +1210,9 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
             <p className="text-xs text-[#F59E0B] font-mono">
               Official Course Brochure · {course.code}
             </p>
-            <h2 id="brochure-modal-title" className="text-base font-bold">{course.title}</h2>
+            <h2 id="brochure-modal-title" className="text-base font-bold">
+              {course.title}
+            </h2>
           </div>
           <button
             type="button"
@@ -1092,10 +1233,13 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
               </strong>
             </div>
             <div>
-              <span className="text-[#52525B] block">Fee Structure</span>
+              <span className="text-[#52525B] block">
+                Fee Structure (Incl. VAT)
+              </span>
               <strong className="font-mono text-[#D91B24]">
-                R{course.priceZAR.toLocaleString('en-ZA')} Single / R
-                {course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Group
+                {course.quoteOnly
+                  ? `Variable / Corporate Quote-Only (Est. R${course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Incl. VAT)`
+                  : `R${course.priceZAR.toLocaleString('en-ZA')} Single / R${course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} Group Incl. VAT`}
               </strong>
             </div>
           </div>
@@ -1138,7 +1282,7 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
               }}
               className="px-5 py-2.5 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
             >
-              Enrol in This Course
+              {course.quoteOnly ? 'Request Group Quote' : 'Enrol in This Course'}
             </button>
           </div>
         </div>

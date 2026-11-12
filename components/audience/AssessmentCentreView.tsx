@@ -158,42 +158,52 @@ export function AssessmentCentreView({
                 <div
                   key={fac.id}
                   onClick={() => setSelectedFacilityId(fac.id)}
-                  className={`p-5 rounded-xl border transition-colors cursor-pointer ${
+                  className={`rounded-xl border overflow-hidden transition-colors cursor-pointer ${
                     isSelected
                       ? 'bg-white border-[#D91B24] ring-1 ring-[#D91B24]'
                       : 'bg-white border-[#E5E7EB] hover:border-[#E5E7EB]'
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-xs font-semibold text-[#D91B24]">
-                        {fac.accreditationScope}
-                      </p>
-                      <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
-                        {fac.name}
-                      </h3>
-                      <p className="text-xs text-[#52525B] mt-0.5">
-                        {fac.capacity}
-                      </p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <span className="text-xs text-[#52525B] block">
-                        Full Day
-                      </span>
-                      <span className="font-mono text-base font-bold text-[#1C1B1B] tabular-nums">
-                        R{fac.dailyHireRateZAR.toLocaleString('en-ZA')}
-                      </span>
-                    </div>
+                  <div className="aspect-[21/9] w-full bg-zinc-100 overflow-hidden">
+                    <ResilientImage
+                      src={fac.image}
+                      alt={fac.name}
+                      fallbackTitle={fac.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
+                  <div className="p-5">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-semibold text-[#D91B24]">
+                          {fac.accreditationScope}
+                        </p>
+                        <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
+                          {fac.name}
+                        </h3>
+                        <p className="text-xs text-[#52525B] mt-0.5">
+                          {fac.capacity}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="text-xs text-[#52525B] block">
+                          Full Day
+                        </span>
+                        <span className="font-mono text-base font-bold text-[#1C1B1B] tabular-nums">
+                          R{fac.dailyHireRateZAR.toLocaleString('en-ZA')}
+                        </span>
+                      </div>
+                    </div>
 
-                  <ul className="mt-3 pt-3 border-t border-slate-100 space-y-1 text-xs text-[#52525B]">
-                    {fac.equipmentIncluded.map((eq, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#D91B24] shrink-0 mt-0.5" />
-                        <span>{eq}</span>
-                      </li>
-                    ))}
-                  </ul>
+                    <ul className="mt-3 pt-3 border-t border-slate-100 space-y-1 text-xs text-[#52525B]">
+                      {fac.equipmentIncluded.map((eq, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#D91B24] shrink-0 mt-0.5" />
+                          <span>{eq}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               );
             })}

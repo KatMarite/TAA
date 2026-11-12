@@ -257,32 +257,42 @@ export function DashboardView({
                 return (
                   <div
                     key={course.id}
-                    className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-col justify-between"
+                    className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between"
                   >
                     <div>
-                      <div className="flex items-center justify-between text-xs text-[#52525B] mb-2">
-                        <span className="font-mono font-semibold text-[#D91B24]">
-                          {course.code} · {course.nqfLevel}
-                        </span>
-                        <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
-                          {pct}% Complete
-                        </span>
-                      </div>
-                      <h3 className="text-lg font-bold text-[#1C1B1B]">
-                        {course.title}
-                      </h3>
-                      <div className="mt-3 w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-[#D91B24] transition-all"
-                          style={{ width: `${pct}%` }}
+                      <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                        <ResilientImage
+                          src={course.image}
+                          alt={course.title}
+                          fallbackTitle={course.title}
+                          className="w-full h-full object-cover"
                         />
                       </div>
-                      <p className="text-xs text-[#52525B] mt-3">
-                        Outcome: {course.careerOutcome}
-                      </p>
+                      <div className="p-6">
+                        <div className="flex items-center justify-between text-xs text-[#52525B] mb-2">
+                          <span className="font-mono font-semibold text-[#D91B24]">
+                            {course.code} · {course.nqfLevel}
+                          </span>
+                          <span className="font-mono font-bold text-[#1C1B1B] tabular-nums">
+                            {pct}% Complete
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1C1B1B]">
+                          {course.title}
+                        </h3>
+                        <div className="mt-3 w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-[#D91B24] transition-all"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                        <p className="text-xs text-[#52525B] mt-3">
+                          Outcome: {course.careerOutcome}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                    <div className="px-6 pb-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
                       <button
                         type="button"
                         onClick={() => onLaunchOnlineCourse(course.id)}
@@ -317,20 +327,30 @@ export function DashboardView({
               {recommendedCourses.slice(0, 3).map((rec) => (
                 <div
                   key={rec.id}
-                  className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between"
+                  className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between"
                 >
                   <div>
-                    <p className="text-xs font-mono text-[#52525B]">
-                      {rec.code} · {rec.nqfLevel}
-                    </p>
-                    <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
-                      {rec.title}
-                    </h3>
-                    <p className="text-xs text-[#52525B] mt-2">
-                      {rec.shortSummary}
-                    </p>
+                    <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                      <ResilientImage
+                        src={rec.image}
+                        alt={rec.title}
+                        fallbackTitle={rec.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-5">
+                      <p className="text-xs font-mono text-[#52525B]">
+                        {rec.code} · {rec.nqfLevel}
+                      </p>
+                      <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
+                        {rec.title}
+                      </h3>
+                      <p className="text-xs text-[#52525B] mt-2">
+                        {rec.shortSummary}
+                      </p>
+                    </div>
                   </div>
-                  <div className="mt-5 pt-3 border-t border-[#E5E7EB] flex items-center justify-between">
+                  <div className="px-5 pb-5 pt-3 border-t border-[#E5E7EB] flex items-center justify-between">
                     <span className="font-mono text-sm font-bold text-[#1C1B1B] tabular-nums">
                       R{rec.priceZAR.toLocaleString('en-ZA')}
                     </span>

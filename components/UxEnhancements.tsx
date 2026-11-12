@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { getCurrentFormattedDate } from '@/lib/utils';
 import { Course, PageId } from '@/lib/academy-data';
+import ResilientImage from './ResilientImage';
 import {
   Compass,
   CheckCircle2,
@@ -286,20 +287,30 @@ export function CourseFinderWizard({
             {matchedCourses.slice(0, 3).map((c) => (
               <div
                 key={c.id}
-                className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between"
+                className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between"
               >
                 <div>
-                  <p className="text-xs font-mono text-[#D91B24] font-semibold">
-                    {c.code} · {c.nqfLevel} · {c.credits} Credits
-                  </p>
-                  <h3 className="text-base font-bold text-[#1C1B1B] mt-1">{c.title}</h3>
-                  <p className="text-xs text-[#52525B] mt-2">{c.shortSummary}</p>
-                  <p className="text-xs text-[#52525B] mt-3">
-                    <strong className="text-[#1C1B1B]">Outcome:</strong> {c.careerOutcome}
-                  </p>
+                  <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                    <ResilientImage
+                      src={c.image}
+                      alt={c.title}
+                      fallbackTitle={c.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <p className="text-xs font-mono text-[#D91B24] font-semibold">
+                      {c.code} · {c.nqfLevel} · {c.credits} Credits
+                    </p>
+                    <h3 className="text-base font-bold text-[#1C1B1B] mt-1">{c.title}</h3>
+                    <p className="text-xs text-[#52525B] mt-2">{c.shortSummary}</p>
+                    <p className="text-xs text-[#52525B] mt-3">
+                      <strong className="text-[#1C1B1B]">Outcome:</strong> {c.careerOutcome}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="mt-5 pt-4 border-t border-[#E5E7EB] space-y-3">
+                <div className="px-5 pb-5 pt-4 border-t border-[#E5E7EB] space-y-3">
                   <div className="flex items-baseline justify-between">
                     <div>
                       <span className="text-[11px] text-[#52525B] block">Single Fee</span>

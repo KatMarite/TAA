@@ -212,17 +212,27 @@ export function FacilitatorsView({
           {facilitators.map((fac) => (
             <div
               key={fac.id}
-              className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-col justify-between"
+              className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between"
             >
               <div>
-                <p className="text-xs font-mono text-[#D91B24]">
-                  {fac.registrationCode} · {fac.yearsExperience} Years Experience
-                </p>
-                <h3 className="text-lg font-bold text-[#1C1B1B] mt-1">{fac.name}</h3>
-                <p className="text-xs font-semibold text-[#52525B] mt-0.5">{fac.role}</p>
-                <p className="text-sm text-[#52525B] mt-3">{fac.bio}</p>
+                <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                  <ResilientImage
+                    src={fac.image}
+                    alt={fac.name}
+                    fallbackTitle={fac.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <p className="text-xs font-mono text-[#D91B24]">
+                    {fac.registrationCode} · {fac.yearsExperience} Years Experience
+                  </p>
+                  <h3 className="text-lg font-bold text-[#1C1B1B] mt-1">{fac.name}</h3>
+                  <p className="text-xs font-semibold text-[#52525B] mt-0.5">{fac.role}</p>
+                  <p className="text-sm text-[#52525B] mt-3">{fac.bio}</p>
+                </div>
               </div>
-              <div className="mt-5 pt-4 border-t border-slate-100 text-xs text-[#52525B] space-y-1">
+              <div className="px-6 pb-6 pt-4 border-t border-slate-100 text-xs text-[#52525B] space-y-1">
                 <p>
                   <strong className="text-[#1C1B1B]">Specialisation:</strong> {fac.specialisation}
                 </p>
@@ -433,33 +443,43 @@ export function NewsInsightsView({
           })}
         </div>
 
-        <article className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-xl p-6 sm:p-10">
-          <div className="text-xs text-[#52525B] mb-2">
-            <span className="text-[#D91B24] font-semibold">{activeArticle.category}</span>
-            <span aria-hidden="true"> · </span>
-            <span>{activeArticle.date}</span>
-            <span aria-hidden="true"> · </span>
-            <span>{activeArticle.author}</span>
+        <article className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
+          <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+            <ResilientImage
+              src={activeArticle.image}
+              alt={activeArticle.title}
+              fallbackTitle={activeArticle.title}
+              className="w-full h-full object-cover"
+            />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1C1B1B]">
-            {activeArticle.title}
-          </h2>
-          <div className="mt-6 space-y-4 text-slate-700 text-base leading-relaxed">
-            {activeArticle.content.map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
-          </div>
-          <div className="mt-8 pt-6 border-t border-[#E5E7EB] flex items-center justify-between">
-            <span className="text-xs text-[#52525B]">
-              Want to apply these insights in your organisation or career?
-            </span>
-            <button
-              type="button"
-              onClick={() => onNavigate('catalogue')}
-              className="px-4 py-2 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
-            >
-              Browse Relevant Courses
-            </button>
+          <div className="p-6 sm:p-10">
+            <div className="text-xs text-[#52525B] mb-2">
+              <span className="text-[#D91B24] font-semibold">{activeArticle.category}</span>
+              <span aria-hidden="true"> · </span>
+              <span>{activeArticle.date}</span>
+              <span aria-hidden="true"> · </span>
+              <span>{activeArticle.author}</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#1C1B1B]">
+              {activeArticle.title}
+            </h2>
+            <div className="mt-6 space-y-4 text-slate-700 text-base leading-relaxed">
+              {activeArticle.content.map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+            <div className="mt-8 pt-6 border-t border-[#E5E7EB] flex items-center justify-between">
+              <span className="text-xs text-[#52525B]">
+                Want to apply these insights in your organisation or career?
+              </span>
+              <button
+                type="button"
+                onClick={() => onNavigate('catalogue')}
+                className="px-4 py-2 text-xs font-semibold text-white bg-[#D91B24] hover:bg-[#B91C1C] rounded-lg cursor-pointer"
+              >
+                Browse Relevant Courses
+              </button>
+            </div>
           </div>
         </article>
       </div>
@@ -775,35 +795,45 @@ export function OtherServicesView({
         {OTHER_SERVICES_LIST.map((srv) => (
           <div
             key={srv.id}
-            className="course-card-elevated p-6 sm:p-8 flex flex-col justify-between"
+            className="course-card-elevated overflow-hidden flex flex-col justify-between"
           >
             <div>
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <span className="px-2.5 py-1 rounded-md bg-[#18181B] text-white text-xs font-bold">
-                  {srv.badge}
-                </span>
-                <span className="text-xs font-mono font-bold text-brand">
-                  {srv.code}
-                </span>
+              <div className="relative aspect-video w-full bg-zinc-100 overflow-hidden">
+                <ResilientImage
+                  src={srv.image}
+                  alt={srv.title}
+                  fallbackTitle={srv.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <h2 className="text-xl font-bold text-[#1C1B1B]">{srv.title}</h2>
-              <p className="mt-2 text-sm font-mono font-bold text-brand">
-                {srv.priceHighlight}
-              </p>
-              <p className="mt-3 text-sm text-[#52525B] leading-relaxed">
-                {srv.summary}
-              </p>
-              <ul className="mt-5 space-y-2 border-t border-[#E5E7EB] pt-4 text-xs text-[#1C1B1B]">
-                {srv.keyDeliverables.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-brand shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="p-6 sm:p-8">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  <span className="px-2.5 py-1 rounded-md bg-[#18181B] text-white text-xs font-bold">
+                    {srv.badge}
+                  </span>
+                  <span className="text-xs font-mono font-bold text-brand">
+                    {srv.code}
+                  </span>
+                </div>
+                <h2 className="text-xl font-bold text-[#1C1B1B]">{srv.title}</h2>
+                <p className="mt-2 text-sm font-mono font-bold text-brand">
+                  {srv.priceHighlight}
+                </p>
+                <p className="mt-3 text-sm text-[#52525B] leading-relaxed">
+                  {srv.summary}
+                </p>
+                <ul className="mt-5 space-y-2 border-t border-[#E5E7EB] pt-4 text-xs text-[#1C1B1B]">
+                  {srv.keyDeliverables.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-brand shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-[#E5E7EB] flex items-center justify-between">
+            <div className="px-6 sm:px-8 pb-6 pt-4 bg-[#FCF9F8] border-t border-[#E5E7EB] flex items-center justify-between">
               <button
                 type="button"
                 onClick={() => onNavigate(srv.targetPage)}

@@ -99,6 +99,7 @@ export interface AssessmentFacility {
   accreditationScope: string;
   dailyHireRateZAR: number;
   halfDayRateZAR: number;
+  image: string;
   equipmentIncluded: string[];
   availableDates: string[];
 }
@@ -111,6 +112,7 @@ export interface Facilitator {
   specialisation: string;
   yearsExperience: number;
   languages: string[];
+  image: string;
   bio: string;
 }
 
@@ -121,6 +123,7 @@ export interface NewsArticle {
   date: string;
   readTime: string;
   author: string;
+  image: string;
   excerpt: string;
   content: string[];
 }
@@ -131,6 +134,11 @@ export const BRAND_IMAGES = {
   supervisoryManagement: '/images/course_supervisory_management_1794335778105.jpg',
   solarSpecialized: '/images/course_solar_specialized_1794335779941.jpg',
   assessmentCentre: '/images/assessment_centre_facility_1794335779489.jpg',
+  introHygiene: '/images/course_intro_hygiene_1794480212646.jpg',
+  carpetWashroom: '/images/course_carpet_washroom_1794480214613.jpg',
+  enterpriseStartup: '/images/course_enterprise_startup_1794480216019.jpg',
+  reliefStaff: '/images/service_relief_staff_1794480218387.jpg',
+  wspAssessor: '/images/service_wsp_assessor_1794480218304.jpg',
 };
 
 export const INITIAL_COURSES: Course[] = [
@@ -372,7 +380,7 @@ export const INITIAL_COURSES: Course[] = [
     reliefStaffRatePerDayZAR: 380,
     prerequisites: ['No prior formal qualification required — open to all learners'],
     targetAudience: 'Individual & Corporate',
-    image: BRAND_IMAGES.commercialHygiene,
+    image: BRAND_IMAGES.introHygiene,
     nextIntake: 'Start Immediately Online · Weekly Randburg Practicals',
     featured: true,
     onlineEligible: true,
@@ -438,7 +446,7 @@ export const INITIAL_COURSES: Course[] = [
     reliefStaffRatePerDayZAR: 0,
     prerequisites: ['Basic financial literacy; passion for starting or scaling a service business'],
     targetAudience: 'Individual Learner',
-    image: BRAND_IMAGES.supervisoryManagement,
+    image: BRAND_IMAGES.enterpriseStartup,
     nextIntake: 'Start Immediately Online · Monthly Entrepreneur Bootcamps',
     featured: true,
     onlineEligible: true,
@@ -490,7 +498,7 @@ export const INITIAL_COURSES: Course[] = [
     reliefStaffRatePerDayZAR: 380,
     prerequisites: ['Introduction to Professional Cleaning Module 1 or workplace experience'],
     targetAudience: 'Individual & Corporate',
-    image: BRAND_IMAGES.assessmentCentre,
+    image: BRAND_IMAGES.carpetWashroom,
     nextIntake: 'Weekly Thursday–Friday Sessions in Randburg',
     featured: false,
     onlineEligible: true,
@@ -529,7 +537,7 @@ export const INITIAL_COURSES: Course[] = [
     reliefStaffRatePerDayZAR: 0,
     prerequisites: ['Grade 11 / NQF Level 3 or equivalent communication and mathematical literacy'],
     targetAudience: 'Learnership Applicant',
-    image: BRAND_IMAGES.supervisoryManagement,
+    image: BRAND_IMAGES.wspAssessor,
     nextIntake: '01 February 2027 · Corporate ESD Intakes Anytime',
     featured: false,
     onlineEligible: true,
@@ -652,6 +660,7 @@ export const ASSESSMENT_FACILITIES: AssessmentFacility[] = [
     accreditationScope: 'QCTO EISA Commercial Cleaner L1 & Cleaning Practitioner L3 Practicals',
     dailyHireRateZAR: 4800,
     halfDayRateZAR: 2900,
+    image: BRAND_IMAGES.commercialHygiene,
     equipmentIncluded: [
       'Multi-surface test floors (sealed vinyl, quarry tile, porcelain, carpet, epoxy)',
       'Walk-behind & ride-on auto-scrubbers, high-speed burnishers, wet/dry extractors',
@@ -666,6 +675,7 @@ export const ASSESSMENT_FACILITIES: AssessmentFacility[] = [
     accreditationScope: 'Solar Panel Hygiene, Pure-Water DI Filtration & Working at Height',
     dailyHireRateZAR: 5400,
     halfDayRateZAR: 3200,
+    image: BRAND_IMAGES.solarSpecialized,
     equipmentIncluded: [
       'Pitched commercial solar PV test array & 3-storey glass facade',
       '4-stage RO/DI pure water filtration system with inline digital TDS meters',
@@ -680,6 +690,7 @@ export const ASSESSMENT_FACILITIES: AssessmentFacility[] = [
     accreditationScope: 'QCTO External Integrated Summative Assessment (EISA) Theory & Corporate Workshops',
     dailyHireRateZAR: 3900,
     halfDayRateZAR: 2400,
+    image: BRAND_IMAGES.enterpriseStartup,
     equipmentIncluded: [
       '4K Interactive laser projection, uncapped fibre Wi-Fi & backup solar/inverter power',
       'Biometric candidate sign-in & CCTV invigilation compliance for QCTO EISA',
@@ -698,6 +709,7 @@ export const FACILITATORS: Facilitator[] = [
     specialisation: 'Commercial Hygiene Operations, Auto-Scrubber Fleet Mastery & OHS Compliance',
     yearsExperience: 16,
     languages: ['English', 'isiZulu', 'Sesotho'],
+    image: BRAND_IMAGES.commercialHygiene,
     bio: 'With 16 years in large-scale commercial and healthcare hygiene across Gauteng, Thabo leads practical simulation assessments and on-site corporate workforce upskilling.',
   },
   {
@@ -708,6 +720,7 @@ export const FACILITATORS: Facilitator[] = [
     specialisation: 'Cleaning Business Startup, BCCCI Tender Costing & NQF Level 4 New Venture Creation',
     yearsExperience: 14,
     languages: ['English', 'Setswana', 'isiXhosa'],
+    image: BRAND_IMAGES.wspAssessor,
     bio: 'Sarah has mentored over 180 South African cleaning SMMEs through CIPC/BCCCI compliance, profitable per-square-metre tendering, and corporate ESD programmes.',
   },
   {
@@ -718,6 +731,7 @@ export const FACILITATORS: Facilitator[] = [
     specialisation: 'Deionized Water-Fed Pole Systems, Solar PV Maintenance & Carpet Chemistry',
     yearsExperience: 19,
     languages: ['English', 'Afrikaans'],
+    image: BRAND_IMAGES.solarSpecialized,
     bio: 'Specialist in high-reach purified water systems and commercial solar array maintenance, training facility teams to protect asset warranties and boost PV output.',
   },
 ];
@@ -730,6 +744,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     date: '04 November 2026',
     readTime: '4 min read',
     author: 'Sarah Molefe · Head of Enterprise Development',
+    image: BRAND_IMAGES.wspAssessor,
     excerpt:
       'How South African facility managers and HR leaders can align their 2026/2027 Workplace Skills Plans (WSP) with QCTO NQF Level 1 and Level 3 occupational qualifications.',
     content: [
@@ -745,6 +760,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     date: '21 October 2026',
     readTime: '5 min read',
     author: 'Johan van der Merwe · Technical Specialist Instructor',
+    image: BRAND_IMAGES.solarSpecialized,
     excerpt:
       'Highveld dust, diesel particulates, and bird fouling create hot-spots on commercial rooftop PV panels. Here is why municipal tap water ruins solar glass—and how DI pure water solves it.',
     content: [
@@ -759,6 +775,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     date: '09 October 2026',
     readTime: '6 min read',
     author: 'Sarah Molefe · Head of Enterprise Development',
+    image: BRAND_IMAGES.enterpriseStartup,
     excerpt:
       'The #1 reason emerging cleaning contractors fail in their first year is underpricing labour and statutory levies. Learn the exact costing formula taught in our Startup Masterclass.',
     content: [
@@ -920,6 +937,7 @@ export interface OtherServiceItem {
   title: string;
   badge: string;
   priceHighlight: string;
+  image: string;
   summary: string;
   keyDeliverables: string[];
   targetPage: PageId;
@@ -933,6 +951,7 @@ export const OTHER_SERVICES_LIST: OtherServiceItem[] = [
     title: 'Workplace Relief Staff Provision During Training',
     badge: 'Exclusive Operational Guarantee',
     priceHighlight: 'R380.00 / Operative / Day',
+    image: BRAND_IMAGES.reliefStaff,
     summary:
       'Backed by our parent company Cleaning Africa Services (Pty) Ltd, we deploy vetted, uniformed, OHS-compliant temporary cleaners to your premises while your permanent staff attend classroom or practical training blocks.',
     keyDeliverables: [
@@ -949,6 +968,7 @@ export const OTHER_SERVICES_LIST: OtherServiceItem[] = [
     title: 'Accredited Assessment Centre & Simulation Bay Hire',
     badge: 'Northriding, Randburg Campus',
     priceHighlight: 'From R2,400 Half-Day · R3,900 Full-Day',
+    image: BRAND_IMAGES.assessmentCentre,
     summary:
       'Hire our QCTO-compliant Practical Hygiene Simulation Bay (Bay A), Outdoor Solar PV & Water-Fed Pole Rig (Bay B), or 32-seat EISA Computer Assessment Suite with 100% solar/inverter backup.',
     keyDeliverables: [
@@ -965,6 +985,7 @@ export const OTHER_SERVICES_LIST: OtherServiceItem[] = [
     title: 'B-BBEE Skills Development, WSP/ATR & Section 12H Advisory',
     badge: 'Corporate Tax & Grant Recovery',
     priceHighlight: 'Up to R80,000 Section 12H Tax Allowance / Learner',
+    image: BRAND_IMAGES.wspAssessor,
     summary:
       'End-to-end administration of Services SETA learnership agreements, Workplace Skills Plans (WSP), Annual Training Reports (ATR), and SARS Section 12H tax allowance compliance packs.',
     keyDeliverables: [
@@ -981,6 +1002,7 @@ export const OTHER_SERVICES_LIST: OtherServiceItem[] = [
     title: 'Nationwide On-Site Mobile Workforce Training & Hygiene Audits',
     badge: 'Cohorts of 8+ Staff Nationwide',
     priceHighlight: 'Custom Group Rates · Gauteng & National',
+    image: BRAND_IMAGES.introHygiene,
     summary:
       'Our registered facilitators and assessors travel directly to your commercial office park, hospital, hotel, manufacturing plant, or solar estate to train staff on your actual equipment and SOPs.',
     keyDeliverables: [
@@ -1006,13 +1028,13 @@ export interface GalleryItem {
 export const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: 'gal-1',
-    title: 'Northriding Lecture & Interactive Theory Briefing',
-    category: 'Supervisory & Lectures',
-    location: 'Unit 14 Fancourt Office Park, Randburg',
-    image: BRAND_IMAGES.heroAcademy,
+    title: 'SABS Colour-Coding & Chemical Dilution Lab',
+    category: 'Practical Hygiene Bays',
+    location: 'Simulation Bay A · Randburg Assessment Centre',
+    image: BRAND_IMAGES.introHygiene,
     caption:
-      'Registered facilitator leading an interactive SABS colour-coding and OHS Act compliance session with commercial hygiene learners.',
-    relatedCourseId: 'occ-cleaning-practitioner-nqf3',
+      'Learners practicing SABS 4-zone colour-coded microfibre preparation and precision chemical dilution ratios at our stainless-steel dosing station.',
+    relatedCourseId: 'short-intro-cleaning-1-2',
   },
   {
     id: 'gal-2',
@@ -1036,23 +1058,33 @@ export const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: 'gal-4',
-    title: 'Cleaning Practitioner NQF Level 3 Supervisory Workshop',
-    category: 'Supervisory & Lectures',
-    location: 'Executive Seminar Suite · Randburg',
-    image: BRAND_IMAGES.supervisoryManagement,
+    title: 'Hot-Water Carpet Extraction & Textile Hygiene Specialist Training',
+    category: 'Practical Hygiene Bays',
+    location: 'Commercial Simulation Zone · Sandton & Randburg',
+    image: BRAND_IMAGES.carpetWashroom,
     caption:
-      'Team leaders and aspiring cleaning entrepreneurs mastering shift scheduling, ISSA square-metre productivity rates, and BCCCI tender costing.',
-    relatedCourseId: 'short-business-startup',
+      'Certified hygiene technician operating industrial hot-water spray extraction equipment for deep commercial carpet and upholstery restoration.',
+    relatedCourseId: 'short-deep-bathroom-carpet',
   },
   {
     id: 'gal-5',
+    title: 'Cleaning Enterprise Startup & BCCCI Tender Costing Workshop',
+    category: 'Supervisory & Lectures',
+    location: 'Executive Seminar Suite · Randburg',
+    image: BRAND_IMAGES.enterpriseStartup,
+    caption:
+      'Emerging SMME cleaning contractors reviewing commercial floor plans, square-metre productivity rates, and profitable BCCCI tender bids.',
+    relatedCourseId: 'short-business-startup',
+  },
+  {
+    id: 'gal-6',
     title: 'QCTO EISA Accredited Assessment & Simulation Facility',
     category: 'Randburg Campus',
     location: 'Northriding, Randburg, Gauteng',
     image: BRAND_IMAGES.assessmentCentre,
     caption:
-      'Our purpose-built practical assessment bays equipped for carpet extraction, deep washroom descaling, and External Integrated Summative Assessments.',
-    relatedCourseId: 'short-deep-bathroom-carpet',
+      'Our purpose-built practical assessment bays equipped for rotary floor care, deep washroom descaling, and External Integrated Summative Assessments.',
+    relatedCourseId: 'occ-cleaning-practitioner-nqf3',
   },
 ];
 

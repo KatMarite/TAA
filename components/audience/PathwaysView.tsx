@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Course, CareerPathway } from '@/lib/academy-data';
+import ResilientImage from '../ResilientImage';
 
 export interface PathwaysViewProps {
   pathways: CareerPathway[];
@@ -71,25 +72,37 @@ export function PathwaysView({
                 return (
                   <div
                     key={step.stepNumber}
-                    className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between"
+                    className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between"
                   >
                     <div>
-                      <div className="flex items-center justify-between text-xs text-[#52525B] mb-2">
-                        <span className="font-mono font-bold text-[#D91B24]">
-                          {step.stepNumber}
-                        </span>
-                        <span>{step.nqf}</span>
+                      {matchedCourse && (
+                        <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                          <ResilientImage
+                            src={matchedCourse.image}
+                            alt={step.stageTitle}
+                            fallbackTitle={step.stageTitle}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <div className="p-5">
+                        <div className="flex items-center justify-between text-xs text-[#52525B] mb-2">
+                          <span className="font-mono font-bold text-[#D91B24]">
+                            {step.stepNumber}
+                          </span>
+                          <span>{step.nqf}</span>
+                        </div>
+                        <h3 className="text-base font-bold text-[#1C1B1B]">
+                          {step.stageTitle}
+                        </h3>
+                        <p className="text-xs text-[#52525B] mt-2">
+                          {step.outcome}
+                        </p>
                       </div>
-                      <h3 className="text-base font-bold text-[#1C1B1B]">
-                        {step.stageTitle}
-                      </h3>
-                      <p className="text-xs text-[#52525B] mt-2">
-                        {step.outcome}
-                      </p>
                     </div>
 
                     {matchedCourse && (
-                      <div className="mt-5 pt-4 border-t border-[#E5E7EB]/80 flex items-center justify-between">
+                      <div className="px-5 pb-5 pt-4 border-t border-[#E5E7EB]/80 flex items-center justify-between">
                         <span className="font-mono text-sm font-bold text-[#1C1B1B] tabular-nums">
                           R{matchedCourse.priceZAR.toLocaleString('en-ZA')}
                         </span>

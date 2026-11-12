@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { generateRecordId, getCurrentFormattedDate } from '@/lib/utils';
 import { Course } from '@/lib/academy-data';
 import { calculateCorporateRoi } from '@/lib/roi-calculator';
+import ResilientImage from '../ResilientImage';
 import {
   Download,
   Plus,
@@ -289,18 +290,28 @@ export function EmployersView({
           {courses.slice(0, 3).map((c) => (
             <div
               key={c.id}
-              className="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between"
+              className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between"
             >
               <div>
-                <p className="text-xs text-[#52525B] font-mono">
-                  {c.code} · {c.nqfLevel} · {c.credits} Credits
-                </p>
-                <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
-                  {c.title}
-                </h3>
-                <p className="text-xs text-[#52525B] mt-2">{c.shortSummary}</p>
+                <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                  <ResilientImage
+                    src={c.image}
+                    alt={c.title}
+                    fallbackTitle={c.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-5">
+                  <p className="text-xs text-[#52525B] font-mono">
+                    {c.code} · {c.nqfLevel} · {c.credits} Credits
+                  </p>
+                  <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
+                    {c.title}
+                  </h3>
+                  <p className="text-xs text-[#52525B] mt-2">{c.shortSummary}</p>
+                </div>
               </div>
-              <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+              <div className="px-5 pb-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
                 <div>
                   <span className="text-xs text-[#52525B] block">
                     Group Rate (5+)

@@ -697,26 +697,38 @@ export function HomeView({
               {OTHER_SERVICES_LIST.map((srv) => (
                 <div
                   key={srv.id}
-                  className="bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-xl p-5 flex flex-col justify-between"
+                  className="bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-xl overflow-hidden flex flex-col justify-between"
                 >
                   <div>
-                    <p className="text-xs font-mono font-bold text-brand">
-                      {srv.priceHighlight}
-                    </p>
-                    <h3 className="text-base font-bold text-[var(--text-primary)] mt-1 leading-snug">
-                      {srv.title}
-                    </h3>
-                    <p className="text-xs text-[var(--text-muted)] mt-2 leading-relaxed">
-                      {srv.summary}
-                    </p>
+                    <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                      <ResilientImage
+                        src={srv.image}
+                        alt={srv.title}
+                        fallbackTitle={srv.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-5">
+                      <p className="text-xs font-mono font-bold text-brand">
+                        {srv.priceHighlight}
+                      </p>
+                      <h3 className="text-base font-bold text-[var(--text-primary)] mt-1 leading-snug">
+                        {srv.title}
+                      </h3>
+                      <p className="text-xs text-[var(--text-muted)] mt-2 leading-relaxed">
+                        {srv.summary}
+                      </p>
+                    </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => onNavigate(srv.targetPage)}
-                    className="mt-4 pt-3 border-t border-[var(--border-subtle)] text-xs font-bold text-brand hover:underline text-left cursor-pointer"
-                  >
-                    {srv.ctaLabel}
-                  </button>
+                  <div className="px-5 pb-5">
+                    <button
+                      type="button"
+                      onClick={() => onNavigate(srv.targetPage)}
+                      className="w-full pt-3 border-t border-[var(--border-subtle)] text-xs font-bold text-brand hover:underline text-left cursor-pointer"
+                    >
+                      {srv.ctaLabel}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

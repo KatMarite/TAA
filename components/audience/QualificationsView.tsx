@@ -7,6 +7,7 @@ import {
   validateSouthAfricanIdNumber,
 } from '@/lib/utils';
 import { Course } from '@/lib/academy-data';
+import ResilientImage from '../ResilientImage';
 import { CheckCircle2 } from 'lucide-react';
 import { LearnershipApplicationRecord } from '../AudienceJourneys';
 
@@ -102,32 +103,42 @@ export function QualificationsView({
         {qualificationCourses.map((q) => (
           <div
             key={q.id}
-            className="bg-white border border-[#E5E7EB] rounded-xl p-6 flex flex-col justify-between"
+            className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col justify-between"
           >
             <div>
-              <div className="text-xs font-mono text-[#D91B24] mb-2">
-                {q.saqaId} · {q.nqfLevel} · {q.credits} Credits
+              <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                <ResilientImage
+                  src={q.image}
+                  alt={q.title}
+                  fallbackTitle={q.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <h2 className="text-lg font-bold text-[#1C1B1B]">{q.title}</h2>
-              <p className="text-sm text-[#52525B] mt-2">{q.fullDescription}</p>
+              <div className="p-6">
+                <div className="text-xs font-mono text-[#D91B24] mb-2">
+                  {q.saqaId} · {q.nqfLevel} · {q.credits} Credits
+                </div>
+                <h2 className="text-lg font-bold text-[#1C1B1B]">{q.title}</h2>
+                <p className="text-sm text-[#52525B] mt-2">{q.fullDescription}</p>
 
-              <div className="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs text-[#52525B]">
-                <p>
-                  <strong className="text-[#1C1B1B]">Duration:</strong>{' '}
-                  {q.duration}
-                </p>
-                <p>
-                  <strong className="text-[#1C1B1B]">Next Intake:</strong>{' '}
-                  {q.nextIntake}
-                </p>
-                <p>
-                  <strong className="text-[#1C1B1B]">Entry Criteria:</strong>{' '}
-                  {q.prerequisites.join('; ')}
-                </p>
+                <div className="mt-4 pt-4 border-t border-slate-100 space-y-2 text-xs text-[#52525B]">
+                  <p>
+                    <strong className="text-[#1C1B1B]">Duration:</strong>{' '}
+                    {q.duration}
+                  </p>
+                  <p>
+                    <strong className="text-[#1C1B1B]">Next Intake:</strong>{' '}
+                    {q.nextIntake}
+                  </p>
+                  <p>
+                    <strong className="text-[#1C1B1B]">Entry Criteria:</strong>{' '}
+                    {q.prerequisites.join('; ')}
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-[#E5E7EB] flex items-center justify-between">
+            <div className="px-6 pb-6 pt-4 bg-[#FCF9F8] border-t border-[#E5E7EB] flex items-center justify-between">
               <div>
                 <span className="text-xs text-[#52525B] block">
                   Learnership Tuition

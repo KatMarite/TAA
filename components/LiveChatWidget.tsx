@@ -479,124 +479,111 @@ ${lines}
 
   return (
     <>
-      {/* Floating WhatsApp Quick-Chat Button + Live Chat Concierge Trigger in Bottom-Right Corner */}
-      <div className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 flex flex-col items-end gap-2.5">
-        {!isOpen && (
-          <>
-            {/* Floating WhatsApp Quick-Chat Button */}
-            <a
-              href="https://wa.me/27825398605?text=Hello%20Training%20Africa%20Academy%2C%20I%20would%20like%20to%20enquire%20about%20courses%20and%20training."
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chat with Training Africa Academy on WhatsApp (+27 82 539 8605)"
-              className="group flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#15803D] hover:bg-[#166534] text-white shadow-lg border border-white/20 transition-all cursor-pointer"
-            >
-              <Phone className="w-4 h-4 shrink-0" />
-              <span className="text-xs font-bold tracking-tight">
-                WhatsApp Quick Chat · 082 539 8605
-              </span>
-            </a>
+      {/* Single Coordinated Floating Help & WhatsApp Launcher (Positioned clear of mobile bottom bar) */}
+      {!isOpen && (
+        <div className="fixed bottom-20 md:bottom-6 right-3 sm:right-6 z-30">
+          <button
+            type="button"
+            onClick={() => {
+              setIsOpen(true);
+              setUnreadCount(0);
+            }}
+            aria-label="Open Help, Live Chat, and WhatsApp Support"
+            aria-expanded={isOpen}
+            className="group inline-flex items-center gap-2.5 px-3.5 py-2.5 min-h-[44px] rounded-full bg-[var(--brand-secondary)] hover:bg-zinc-800 text-white shadow-lg border border-white/15 transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)]"
+          >
+            <span className="relative flex items-center justify-center w-7 h-7 rounded-full bg-brand text-white shrink-0">
+              <MessageSquare className="w-3.5 h-3.5" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-[#18181B] text-[10px] font-bold flex items-center justify-center font-mono">
+                  {unreadCount}
+                </span>
+              )}
+            </span>
+            <span className="text-xs font-bold tracking-tight pr-1 whitespace-nowrap">
+              Help & WhatsApp
+            </span>
+          </button>
+        </div>
+      )}
 
-            {/* Business-Hours Live Help & Department Routing Trigger */}
-            <button
-              type="button"
-              onClick={() => {
-                setIsOpen(true);
-                setUnreadCount(0);
-              }}
-              aria-label="Open Training Africa Academy Live Chat and Department Routing"
-              aria-expanded={isOpen}
-              className="group flex items-center gap-3 px-4 py-3 rounded-xl bg-[#18181B] hover:bg-zinc-800 text-white shadow-xl border border-white/15 transition-all cursor-pointer min-h-[48px]"
-            >
-              <div className="relative flex items-center justify-center w-8 h-8 rounded-lg bg-brand text-white shrink-0">
-                <MessageSquare className="w-4 h-4" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-amber-400 text-[#18181B] text-[10px] font-bold flex items-center justify-center font-mono">
-                    {unreadCount}
-                  </span>
-                )}
-              </div>
-              <div className="text-left pr-1">
-                <p className="text-xs font-bold leading-tight text-white">
-                  Live Help & Routing Desk
-                </p>
-                <p className="text-[11px] text-zinc-300 leading-tight mt-0.5">
-                  Sales · Corporate · Support · Bookings
-                </p>
-              </div>
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* Responsive & Accessible Chat Dialog Panel */}
+      {/* Responsive & Accessible Support & Chat Dialog Panel */}
       {isOpen && (
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Training Africa Academy Live Support and Department Routing Chat"
-          className="fixed bottom-20 md:bottom-6 right-2 left-2 sm:left-auto sm:right-6 z-50 sm:w-[420px] max-h-[80vh] bg-white border border-[#E5E7EB] rounded-xl shadow-2xl flex flex-col overflow-hidden"
+          aria-label="Training Africa Academy Live Support, WhatsApp and Department Routing"
+          className="fixed bottom-20 md:bottom-6 right-3 left-3 sm:left-auto sm:right-6 z-50 sm:w-[410px] max-h-[calc(100vh-6.5rem)] bg-white border border-[var(--border-subtle)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         >
-          {/* Top Header: Brand, Business Hours Status & Simulator Toggle */}
-          <div className="bg-[#18181B] text-white px-4 py-3.5 shrink-0">
+          {/* Top Header: Brand, Business Hours Status & Close Button */}
+          <div className="bg-[var(--brand-secondary)] text-white px-4 py-3 shrink-0">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="flex items-center gap-2 text-[11px] font-mono text-amber-400">
-                  <Clock className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1.5 text-[11px] font-mono text-amber-400">
+                  <Clock className="w-3.5 h-3.5 shrink-0" />
                   <span>
                     {isBusinessHoursOnline
-                      ? 'Business Hours Active (Mon–Fri 07:30–16:30 SAST)'
+                      ? 'Online Now (Mon–Fri 07:30–16:30 SAST)'
                       : 'After-Hours Callback Desk (Opens 07:30 SAST)'}
                   </span>
                 </div>
                 <h2 className="text-sm font-bold text-white mt-0.5">
-                  Training Africa Academy — Live Concierge
+                  Help Desk & WhatsApp Support
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                aria-label="Minimize live chat window"
-                className="p-1.5 text-slate-300 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                aria-label="Close support window"
+                className="p-1.5 text-zinc-300 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Business Hours Mode Selector (Lets user test Online vs After-Hours behaviour) */}
-            <div className="mt-2.5 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px]">
-              <span className="text-slate-300">Hours Mode:</span>
+            {/* Coordinated Quick-Channel Bar: Direct WhatsApp + Business-Hours Simulator Toggle */}
+            <div className="mt-2.5 pt-2.5 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+              <a
+                href="https://wa.me/27825398605?text=Hello%20Training%20Africa%20Academy%2C%20I%20would%20like%20to%20enquire%20about%20courses%20and%20training."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#15803D] hover:bg-[#166534] text-white font-bold transition-colors"
+              >
+                <Phone className="w-3 h-3 shrink-0" />
+                <span>WhatsApp · 082 539 8605</span>
+              </a>
+
               <div className="flex items-center gap-1 bg-white/10 p-0.5 rounded-md">
                 <button
                   type="button"
                   onClick={() => setAvailabilityMode('online')}
                   className={`px-2 py-0.5 rounded transition-colors cursor-pointer ${
                     isBusinessHoursOnline
-                      ? 'bg-[#D91B24] text-white font-semibold'
-                      : 'text-slate-300 hover:text-white'
+                      ? 'bg-brand text-white font-semibold'
+                      : 'text-zinc-300 hover:text-white'
                   }`}
                 >
-                  During Business Hours
+                  Live Chat
                 </button>
                 <button
                   type="button"
                   onClick={() => setAvailabilityMode('after-hours')}
                   className={`px-2 py-0.5 rounded transition-colors cursor-pointer ${
                     !isBusinessHoursOnline
-                      ? 'bg-[#F59E0B] text-[#1C1B1B] font-semibold'
-                      : 'text-slate-300 hover:text-white'
+                      ? 'bg-amber-400 text-[#1C1B1B] font-semibold'
+                      : 'text-zinc-300 hover:text-white'
                   }`}
                 >
-                  After-Hours Form
+                  Callback Form
                 </button>
               </div>
             </div>
           </div>
 
           {/* 4-Department Routing Selector Tabs */}
-          <div className="bg-[#FCF9F8] border-b border-[#E5E7EB] px-3 py-2.5 shrink-0">
-            <p className="text-[11px] font-semibold text-[#52525B] mb-1.5">
-              Route Your Query to the Right Specialist Desk:
+          <div className="bg-[var(--bg-primary)] border-b border-[var(--border-subtle)] px-3 py-2.5 shrink-0">
+            <p className="text-[11px] font-semibold text-[var(--text-muted)] mb-1.5">
+              Choose a department:
             </p>
             <div className="grid grid-cols-2 gap-1.5" role="tablist" aria-label="Chat Departments">
               {DEPARTMENTS.map((dept) => {

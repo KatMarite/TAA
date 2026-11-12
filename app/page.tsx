@@ -78,7 +78,7 @@ export default function TrainingAfricaAcademyPlatform() {
   const [catalogueInitialSearch, setCatalogueInitialSearch] =
     useState<string>('');
   const [homeSearchQuery, setHomeSearchQuery] = useState<string>('');
-  const [showFinderWizard, setShowFinderWizard] = useState<boolean>(true);
+  const [showFinderWizard, setShowFinderWizard] = useState<boolean>(false);
   const [tourOpen, setTourOpen] = useState<boolean>(false);
 
   // Learner & Conversion State (Initialized deterministically to prevent SSR/Client hydration mismatch)
@@ -271,7 +271,9 @@ export default function TrainingAfricaAcademyPlatform() {
     }
   };
 
-  const handleNavigateCourseFilter = (filterType: 'accredited' | 'short') => {
+  const handleNavigateCourseFilter = (
+    filterType: 'all' | 'accredited' | 'short'
+  ) => {
     setPreviousPage(activePage);
     setActiveCourseFilter(filterType);
     setCatalogueInitialSearch('');
@@ -318,7 +320,7 @@ export default function TrainingAfricaAcademyPlatform() {
 
   return (
     <div
-      className={`${themeClass} min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] pb-16 md:pb-0`}
+      className={`${themeClass} min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] pb-24 md:pb-0`}
     >
       <TopBarAndNav
         activePage={activePage}
@@ -551,18 +553,16 @@ export default function TrainingAfricaAcademyPlatform() {
                 </strong>{' '}
                 (Established 2000).
               </p>
-              <div className="pt-1">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-white/10 text-amber-400 text-[11px] font-mono font-semibold">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>SETA & QCTO Accredited Provider</span>
-                </span>
-              </div>
+              <p className="text-xs text-amber-400 font-semibold flex items-center gap-1.5 pt-1">
+                <ShieldCheck className="w-4 h-4 shrink-0" />
+                <span>QCTO & Services SETA Accredited Provider</span>
+              </p>
             </div>
 
             {/* Column 2: Quick Links */}
             <div>
               <h3 className="text-xs font-extrabold uppercase tracking-wider text-white mb-4">
-                Quick Navigation
+                Main Navigation
               </h3>
               <ul className="space-y-2.5 text-xs">
                 <li>
@@ -577,19 +577,19 @@ export default function TrainingAfricaAcademyPlatform() {
                 <li>
                   <button
                     type="button"
-                    onClick={() => handleNavigate('about')}
+                    onClick={() => handleNavigateCourseFilter('all')}
                     className="hover:text-white transition-colors cursor-pointer"
                   >
-                    About & Heritage
+                    Course Catalogue
                   </button>
                 </li>
                 <li>
                   <button
                     type="button"
-                    onClick={() => handleNavigateCourseFilter('accredited')}
+                    onClick={() => handleNavigate('qualifications')}
                     className="hover:text-white transition-colors cursor-pointer"
                   >
-                    SETA Accredited Courses
+                    Qualifications & Learnerships (NQF 1–4)
                   </button>
                 </li>
                 <li>
@@ -598,61 +598,7 @@ export default function TrainingAfricaAcademyPlatform() {
                     onClick={() => handleNavigateCourseFilter('short')}
                     className="hover:text-white transition-colors cursor-pointer"
                   >
-                    Short Courses & Skills Programmes
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => handleNavigate('other-services')}
-                    className="hover:text-white transition-colors cursor-pointer"
-                  >
-                    Other Services (Relief Staff & Venue Hire)
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => handleNavigate('gallery')}
-                    className="hover:text-white transition-colors cursor-pointer"
-                  >
-                    Campus & Practical Gallery
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => handleNavigate('sitemap')}
-                    className="text-amber-400 font-bold hover:underline cursor-pointer"
-                  >
-                    Full 15-Page Interactive Sitemap →
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            {/* Column 3: SETA Accreditation Info & Portals */}
-            <div>
-              <h3 className="text-xs font-extrabold uppercase tracking-wider text-white mb-4">
-                SETA Accreditation & Portals
-              </h3>
-              <ul className="space-y-2.5 text-xs">
-                <li className="text-zinc-400">
-                  <strong className="text-zinc-200">QCTO NQF Level 3:</strong> Cleaning Practitioner (SAQA 118707 · 126 Credits)
-                </li>
-                <li className="text-zinc-400">
-                  <strong className="text-zinc-200">QCTO NQF Level 1:</strong> Commercial Cleaner (SAQA 118708 · 120 Credits)
-                </li>
-                <li className="text-zinc-400">
-                  <strong className="text-zinc-200">Services SETA NQF 4:</strong> New Venture Creation (SAQA 66249 · 149 Credits)
-                </li>
-                <li className="pt-1">
-                  <button
-                    type="button"
-                    onClick={() => handleNavigate('online-learning')}
-                    className="hover:text-white transition-colors cursor-pointer"
-                  >
-                    Self-Paced Online LMS & Dilution Lab
+                    Short Courses (2–5 Days)
                   </button>
                 </li>
                 <li>
@@ -661,7 +607,82 @@ export default function TrainingAfricaAcademyPlatform() {
                     onClick={() => handleNavigate('employers')}
                     className="hover:text-white transition-colors cursor-pointer"
                   >
-                    Employer Section 12H & WSP Calculator
+                    For Employers (Quotes, Relief Staff & Tax ROI)
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleNavigate('assessment-centre')}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Assessment Centre & Venue Hire
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleNavigate('about')}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    About & Accreditations
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3: Learning Portals, Tools & Governance */}
+            <div>
+              <h3 className="text-xs font-extrabold uppercase tracking-wider text-white mb-4">
+                Learner Hub & Support Tools
+              </h3>
+              <ul className="space-y-2.5 text-xs">
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleNavigate('dashboard')}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Learner Hub & Course Studio
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleNavigate('online-learning')}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Self-Paced Online Learning Lab
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleNavigate('pathways')}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Career & Learning Pathways
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCertificateModalCourse(selectedCourse);
+                      setCertificateModalOpen(true);
+                    }}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Verify a Certificate
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleNavigate('resources')}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Resources, Toolkits & FAQs
                   </button>
                 </li>
                 <li>
@@ -671,6 +692,15 @@ export default function TrainingAfricaAcademyPlatform() {
                     className="hover:text-white transition-colors cursor-pointer"
                   >
                     POPIA, Terms & Learner Policies
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleNavigate('sitemap')}
+                    className="text-amber-400 font-bold hover:underline cursor-pointer"
+                  >
+                    Full Site Directory →
                   </button>
                 </li>
               </ul>

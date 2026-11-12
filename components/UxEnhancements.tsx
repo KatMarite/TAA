@@ -743,11 +743,14 @@ export function MobileThumbBar({
     { id: 'home', label: 'Home', icon: <Compass className="w-4 h-4" /> },
     { id: 'catalogue', label: 'Courses', icon: <BookOpen className="w-4 h-4" /> },
     { id: 'employers', label: 'Employers', icon: <Building2 className="w-4 h-4" /> },
-    { id: 'online-learning', label: 'LMS Lab', icon: <PlayCircle className="w-4 h-4" /> },
+    { id: 'online-learning', label: 'Online Lab', icon: <PlayCircle className="w-4 h-4" /> },
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E5E7EB] px-2 py-1.5">
+    <nav
+      aria-label="Mobile Quick Navigation"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-[var(--border-subtle)] px-2 py-1.5"
+    >
       <div className="grid grid-cols-5 items-center gap-1">
         {navItems.map((item) => {
           const isActive = activePage === item.id;
@@ -757,11 +760,13 @@ export function MobileThumbBar({
               type="button"
               onClick={() => onNavigate(item.id)}
               className={`min-h-[44px] flex flex-col items-center justify-center rounded-lg transition-colors cursor-pointer ${
-                isActive ? 'text-[#D91B24] font-semibold' : 'text-[#52525B]'
+                isActive
+                  ? 'text-brand font-bold'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
             >
               {item.icon}
-              <span className="text-[10px] mt-0.5 leading-none whitespace-nowrap">
+              <span className="text-[11px] mt-0.5 leading-none whitespace-nowrap">
                 {item.label}
               </span>
             </button>
@@ -770,14 +775,14 @@ export function MobileThumbBar({
         <button
           type="button"
           onClick={onTriggerPrimaryAction}
-          className="min-h-[44px] px-2 bg-[#D91B24] text-white rounded-lg flex flex-col items-center justify-center font-semibold cursor-pointer"
+          className="min-h-[44px] px-2 bg-brand text-white rounded-lg flex flex-col items-center justify-center font-bold cursor-pointer"
         >
           <GraduationCap className="w-4 h-4" />
-          <span className="text-[10px] mt-0.5 leading-none whitespace-nowrap">
+          <span className="text-[11px] mt-0.5 leading-none whitespace-nowrap">
             Enrol
           </span>
         </button>
       </div>
-    </div>
+    </nav>
   );
 }

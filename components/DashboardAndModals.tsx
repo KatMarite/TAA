@@ -987,6 +987,15 @@ export function BrochureModal({
   onClose: () => void;
   onEnrol: (course: Course) => void;
 }) {
+  useEffect(() => {
+    if (!course) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [course, onClose]);
+
   if (!course) return null;
 
   const downloadSpecTxt = () => {
@@ -1025,14 +1034,6 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
     a.click();
     URL.revokeObjectURL(url);
   };
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
 
   return (
     <div

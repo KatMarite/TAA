@@ -1,19 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PageId } from '@/lib/academy-data';
 import {
   Compass,
   ChevronDown,
-  LayoutGrid,
-  CheckCircle2,
   ArrowLeft,
   RotateCcw,
   Award,
   Menu,
   X,
-  ShieldCheck,
   Palette,
+  FileText,
 } from 'lucide-react';
 
 export type ThemeClass = 'theme-crimson' | 'theme-emerald';
@@ -22,7 +20,7 @@ interface TopBarAndNavProps {
   activePage: PageId;
   previousPage: PageId | null;
   onNavigate: (page: PageId) => void;
-  onNavigateCourseFilter: (filterType: 'accredited' | 'short') => void;
+  onNavigateCourseFilter: (filterType: 'all' | 'accredited' | 'short') => void;
   activeCourseFilter: 'all' | 'accredited' | 'short';
   enrolledCount: number;
   audienceMode: 'learner' | 'employer';
@@ -35,45 +33,86 @@ interface TopBarAndNavProps {
 }
 
 const PAGE_LABELS: Record<PageId, { title: string; section: string }> = {
-  home: { title: 'Home (Dual-Audience Gateway)', section: 'Core Gateway' },
-  catalogue: { title: 'Find a Course / Catalogue', section: 'Course Discovery' },
-  'course-detail': { title: 'Individual Course Detail', section: 'Course Discovery' },
-  'online-learning': { title: 'Self-Paced Online Learning LMS', section: 'Learner Journey' },
-  pathways: { title: 'Career & Learning Pathways', section: 'Learner Journey' },
-  qualifications: { title: 'SETA Accredited Qualifications & Learnerships', section: 'Learnership Journey' },
-  employers: { title: 'Training for Employers (HR & WSP)', section: 'Employer Journey' },
-  'assessment-centre': { title: 'Assessment Centre & Venue Hire', section: 'Venue Client Journey' },
-  'other-services': { title: 'Other Services (Relief Staff, Venue & WSP)', section: 'Specialist Services' },
-  gallery: { title: 'Campus & Practical Training Gallery', section: 'Visual Showcase' },
-  about: { title: 'About & Accreditations', section: 'Institutional Trust' },
-  facilitators: { title: 'Facilitators & Training Approach', section: 'Institutional Trust' },
-  resources: { title: 'Resources, Toolkits & FAQs', section: 'Institutional Trust' },
-  news: { title: 'News & Industry Insights', section: 'Institutional Trust' },
-  contact: { title: 'Contact & Campus Locations', section: 'Governance & Support' },
-  policies: { title: 'Privacy, Terms & Learner Policies', section: 'Governance & Support' },
-  dashboard: { title: 'Learner Dashboard & In-House CMS', section: 'Authenticated Hub' },
-  sitemap: { title: 'Interactive 15-Page Sitemap', section: 'Architecture' },
+  home: { title: 'Home', section: 'Main' },
+  catalogue: { title: 'Course Catalogue', section: 'Courses' },
+  'course-detail': { title: 'Course Details', section: 'Courses' },
+  'online-learning': { title: 'Online Learning Lab', section: 'Learning' },
+  pathways: { title: 'Career Pathways', section: 'Learning' },
+  qualifications: { title: 'Accredited Qualifications & Learnerships', section: 'Qualifications' },
+  employers: { title: 'Training for Employers', section: 'Employers' },
+  'assessment-centre': { title: 'Assessment Centre & Venue Hire', section: 'Campus & Venue' },
+  'other-services': { title: 'Employer & Campus Services', section: 'Employers' },
+  gallery: { title: 'Campus & Practical Gallery', section: 'Campus & Venue' },
+  about: { title: 'About & Accreditations', section: 'Academy' },
+  facilitators: { title: 'Facilitators & Training Approach', section: 'Academy' },
+  resources: { title: 'Resources & FAQs', section: 'Support' },
+  news: { title: 'News & Industry Insights', section: 'Academy' },
+  contact: { title: 'Contact & Locations', section: 'Support' },
+  policies: { title: 'Privacy, Terms & Learner Policies', section: 'Support' },
+  dashboard: { title: 'Learner Hub & Course Studio', section: 'Learner Hub' },
+  sitemap: { title: 'Full Site Directory', section: 'Support' },
 };
 
-const ALL_PAGES: { id: PageId; label: string; group: string }[] = [
-  { id: 'home', label: '01. Home Gateway', group: 'Core Gateway' },
-  { id: 'about', label: '02. About & Accreditations', group: 'Academy Trust' },
-  { id: 'catalogue', label: '03. Find a Course / Catalogue', group: 'Core Gateway' },
-  { id: 'course-detail', label: '04. Individual Course Detail', group: 'Core Gateway' },
-  { id: 'online-learning', label: '05. Online Learning LMS Player', group: 'Learner Journey' },
-  { id: 'employers', label: '06. Training for Employers', group: 'Corporate & Venue' },
-  { id: 'qualifications', label: '07. Qualifications & Learnerships', group: 'Learner Journey' },
-  { id: 'pathways', label: '08. Career / Learning Pathways', group: 'Learner Journey' },
-  { id: 'assessment-centre', label: '09. Assessment Centre & Venue Hire', group: 'Corporate & Venue' },
-  { id: 'facilitators', label: '10. Facilitators & Approach', group: 'Academy Trust' },
-  { id: 'resources', label: '11. Resources & FAQs', group: 'Academy Trust' },
-  { id: 'news', label: '12. News & Insights', group: 'Academy Trust' },
-  { id: 'contact', label: '13. Contact & Locations', group: 'Governance & Support' },
-  { id: 'policies', label: '14. Privacy, Terms & Policies', group: 'Governance & Support' },
-  { id: 'dashboard', label: '15. Learner Dashboard & CMS', group: 'Governance & Support' },
-  { id: 'other-services', label: 'Other Services (Relief Staff & WSP)', group: 'Corporate & Venue' },
-  { id: 'gallery', label: 'Practical Training & Campus Gallery', group: 'Academy Trust' },
-  { id: 'sitemap', label: 'Interactive Sitemap (All 15 Templates)', group: 'Governance & Support' },
+const MORE_DESTINATIONS: {
+  id: PageId;
+  label: string;
+  desc: string;
+  group: 'Learning & Career' | 'Employers & Venue' | 'Academy & Support';
+}[] = [
+  {
+    id: 'online-learning',
+    label: 'Self-Paced Online Learning Lab',
+    desc: 'Interactive modules, chemical dilution lab & quizzes',
+    group: 'Learning & Career',
+  },
+  {
+    id: 'pathways',
+    label: 'Career & Learning Pathways',
+    desc: 'Step-by-step progression from NQF 1 to business owner',
+    group: 'Learning & Career',
+  },
+  {
+    id: 'assessment-centre',
+    label: 'Assessment Centre & Venue Hire',
+    desc: 'Book Randburg practical bays, solar rigs & lecture rooms',
+    group: 'Employers & Venue',
+  },
+  {
+    id: 'other-services',
+    label: 'Relief Staff & WSP Services',
+    desc: 'R380/day vetted relief cleaners & SETA grant advisory',
+    group: 'Employers & Venue',
+  },
+  {
+    id: 'gallery',
+    label: 'Campus & Practical Gallery',
+    desc: 'Inside our Northriding, Randburg training facilities',
+    group: 'Academy & Support',
+  },
+  {
+    id: 'facilitators',
+    label: 'Facilitators & Training Approach',
+    desc: 'Meet our QCTO assessors & moderators',
+    group: 'Academy & Support',
+  },
+  {
+    id: 'resources',
+    label: 'Resources, Toolkits & FAQs',
+    desc: 'Downloadable guides & common learner/employer answers',
+    group: 'Academy & Support',
+  },
+  {
+    id: 'news',
+    label: 'News & Industry Insights',
+    desc: 'Updates on QCTO qualifications, solar maintenance & hygiene',
+    group: 'Academy & Support',
+  },
+  {
+    id: 'policies',
+    label: 'Learner Policies & POPIA',
+    desc: 'RPL, remediation, refunds & data protection policies',
+    group: 'Academy & Support',
+  },
 ];
 
 export default function TopBarAndNav({
@@ -89,10 +128,11 @@ export default function TopBarAndNav({
   themeClass,
   onSelectThemeClass,
 }: TopBarAndNavProps) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [localThemeClass, setLocalThemeClass] =
     useState<ThemeClass>('theme-crimson');
+  const moreMenuRef = useRef<HTMLDivElement | null>(null);
 
   const resolvedThemeClass = themeClass || localThemeClass;
 
@@ -103,52 +143,121 @@ export default function TopBarAndNav({
     }
   };
 
+  // Close desktop "More & Tools" popover when clicking outside or pressing Escape
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        moreMenuRef.current &&
+        !moreMenuRef.current.contains(e.target as Node)
+      ) {
+        setMoreMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMoreMenuOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const currentMeta = PAGE_LABELS[activePage] || PAGE_LABELS.home;
+
+  const isCoursesActive =
+    activePage === 'catalogue' || activePage === 'course-detail';
+  const isQualificationsActive = activePage === 'qualifications';
+  const isEmployersActive =
+    activePage === 'employers' || activePage === 'other-services';
+  const isMorePageActive = MORE_DESTINATIONS.some(
+    (d) => d.id === activePage && d.id !== 'other-services'
+  ) || activePage === 'sitemap';
 
   return (
     <div className={`${resolvedThemeClass} sticky top-0 z-40 w-full`}>
-      {/* FULL-WIDTH HORIZONTAL GLASSMORPHISM STICKY HEADER */}
-      <div className="w-full bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border-subtle)]">
-        <header className="max-w-[1360px] mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 py-3.5">
-          {/* Left: Training Africa Academy Brand Mark */}
+      {/* SINGLE COMPACT PRIMARY HEADER ROW */}
+      <div className="w-full bg-[var(--bg-primary)]/95 backdrop-blur-md border-b border-[var(--border-subtle)]">
+        <header className="max-w-[1360px] mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 h-16">
+          {/* Zone 1: Brand Wordmark */}
           <button
             type="button"
-            onClick={() => onNavigate('home')}
-            className="flex items-center gap-3 text-left group cursor-pointer shrink-0"
+            onClick={() => {
+              onNavigate('home');
+              setMobileMenuOpen(false);
+              setMoreMenuOpen(false);
+            }}
+            className="flex items-center gap-2.5 text-left group cursor-pointer shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded-lg"
           >
-            <div className="w-10 h-10 rounded-xl bg-brand text-white flex items-center justify-center font-extrabold text-sm tracking-tighter shadow-xs">
+            <div className="w-9 h-9 rounded-lg bg-brand text-white flex items-center justify-center font-extrabold text-xs tracking-tight shrink-0">
               TAA
             </div>
-            <div>
-              <span className="block text-base sm:text-lg font-extrabold tracking-tight text-[var(--text-primary)] group-hover:text-brand transition-colors leading-none">
-                Training Africa Academy
-              </span>
-              <span className="block text-[11px] font-medium text-[var(--text-muted)] mt-1 leading-none">
-                Cleaning Africa Services (Pty) Ltd · Est. 2000
-              </span>
-            </div>
+            <span className="text-base sm:text-lg font-extrabold tracking-tight text-[var(--text-primary)] group-hover:text-brand transition-colors whitespace-nowrap">
+              Training Africa Academy
+            </span>
           </button>
 
-          {/* Center: Clean Navigation Links (Home, About, Accredited Courses, Short Courses, Other Services, Gallery, Contact) */}
+          {/* Zone 2: Simplified Primary Navigation Links (Desktop) */}
           <nav
-            aria-label="Primary Navigation"
-            className="hidden xl:flex items-center gap-6 text-sm font-semibold text-[var(--text-muted)]"
+            aria-label="Main Navigation"
+            className="hidden lg:flex items-center gap-6 text-sm font-semibold text-[var(--text-muted)]"
           >
             <button
               type="button"
-              onClick={() => onNavigate('home')}
-              className={`py-1 transition-colors whitespace-nowrap cursor-pointer ${
-                activePage === 'home'
+              onClick={() => onNavigateCourseFilter('all')}
+              className={`py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded ${
+                isCoursesActive
                   ? 'text-brand font-bold underline decoration-2 underline-offset-8'
                   : 'hover:text-[var(--text-primary)]'
               }`}
             >
-              Home
+              Courses
             </button>
+
+            <button
+              type="button"
+              onClick={() => onNavigate('qualifications')}
+              className={`py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded ${
+                isQualificationsActive
+                  ? 'text-brand font-bold underline decoration-2 underline-offset-8'
+                  : 'hover:text-[var(--text-primary)]'
+              }`}
+            >
+              Qualifications
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onNavigate('employers')}
+              className={`py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded ${
+                isEmployersActive
+                  ? 'text-brand font-bold underline decoration-2 underline-offset-8'
+                  : 'hover:text-[var(--text-primary)]'
+              }`}
+            >
+              For Employers
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onNavigate('dashboard')}
+              className={`py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded ${
+                activePage === 'dashboard'
+                  ? 'text-brand font-bold underline decoration-2 underline-offset-8'
+                  : 'hover:text-[var(--text-primary)]'
+              }`}
+            >
+              Learner Hub ({enrolledCount})
+            </button>
+
             <button
               type="button"
               onClick={() => onNavigate('about')}
-              className={`py-1 transition-colors whitespace-nowrap cursor-pointer ${
+              className={`py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded ${
                 activePage === 'about'
                   ? 'text-brand font-bold underline decoration-2 underline-offset-8'
                   : 'hover:text-[var(--text-primary)]'
@@ -156,57 +265,11 @@ export default function TopBarAndNav({
             >
               About
             </button>
-            <button
-              type="button"
-              onClick={() => onNavigateCourseFilter('accredited')}
-              className={`py-1 transition-colors whitespace-nowrap cursor-pointer ${
-                activePage === 'qualifications' ||
-                (activePage === 'catalogue' && activeCourseFilter === 'accredited')
-                  ? 'text-brand font-bold underline decoration-2 underline-offset-8'
-                  : 'hover:text-[var(--text-primary)]'
-              }`}
-            >
-              Accredited Courses
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigateCourseFilter('short')}
-              className={`py-1 transition-colors whitespace-nowrap cursor-pointer ${
-                activePage === 'catalogue' && activeCourseFilter === 'short'
-                  ? 'text-brand font-bold underline decoration-2 underline-offset-8'
-                  : 'hover:text-[var(--text-primary)]'
-              }`}
-            >
-              Short Courses
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('other-services')}
-              className={`py-1 transition-colors whitespace-nowrap cursor-pointer ${
-                activePage === 'other-services' ||
-                activePage === 'employers' ||
-                activePage === 'assessment-centre'
-                  ? 'text-brand font-bold underline decoration-2 underline-offset-8'
-                  : 'hover:text-[var(--text-primary)]'
-              }`}
-            >
-              Other Services
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('gallery')}
-              className={`py-1 transition-colors whitespace-nowrap cursor-pointer ${
-                activePage === 'gallery'
-                  ? 'text-brand font-bold underline decoration-2 underline-offset-8'
-                  : 'hover:text-[var(--text-primary)]'
-              }`}
-            >
-              Gallery
-            </button>
+
             <button
               type="button"
               onClick={() => onNavigate('contact')}
-              className={`py-1 transition-colors whitespace-nowrap cursor-pointer ${
+              className={`py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded ${
                 activePage === 'contact'
                   ? 'text-brand font-bold underline decoration-2 underline-offset-8'
                   : 'hover:text-[var(--text-primary)]'
@@ -214,280 +277,463 @@ export default function TopBarAndNav({
             >
               Contact
             </button>
+
+            {/* Consolidated "More & Tools" Dropdown for Secondary Pages & Utility Tools */}
+            <div className="relative" ref={moreMenuRef}>
+              <button
+                type="button"
+                onClick={() => setMoreMenuOpen((prev) => !prev)}
+                aria-expanded={moreMenuOpen}
+                aria-haspopup="true"
+                className={`inline-flex items-center gap-1 py-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded ${
+                  isMorePageActive || moreMenuOpen
+                    ? 'text-brand font-bold'
+                    : 'hover:text-[var(--text-primary)]'
+                }`}
+              >
+                <span>More & Tools</span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-150 ${
+                    moreMenuOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              {moreMenuOpen && (
+                <div
+                  role="menu"
+                  aria-label="Additional Academy Pages and Tools"
+                  className="absolute right-0 mt-3 w-[560px] max-w-[92vw] bg-white border border-[var(--border-subtle)] rounded-xl shadow-xl p-5 text-[var(--text-primary)] z-50"
+                >
+                  <div className="grid grid-cols-2 gap-4 pb-4 border-b border-[var(--border-subtle)]">
+                    <div>
+                      <p className="text-xs font-bold text-[var(--text-muted)] mb-2">
+                        Learning, Campus & Venues
+                      </p>
+                      <div className="space-y-1">
+                        {MORE_DESTINATIONS.slice(0, 5).map((item) => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            role="menuitem"
+                            onClick={() => {
+                              onNavigate(item.id);
+                              setMoreMenuOpen(false);
+                            }}
+                            className={`w-full text-left px-3 py-2 rounded-lg transition-colors cursor-pointer ${
+                              activePage === item.id
+                                ? 'bg-brand-soft text-brand font-semibold'
+                                : 'hover:bg-zinc-50'
+                            }`}
+                          >
+                            <span className="block text-xs font-bold text-[var(--text-primary)]">
+                              {item.label}
+                            </span>
+                            <span className="block text-[11px] text-[var(--text-muted)] leading-snug mt-0.5">
+                              {item.desc}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-xs font-bold text-[var(--text-muted)] mb-2">
+                        Academy Info & Policies
+                      </p>
+                      <div className="space-y-1">
+                        {MORE_DESTINATIONS.slice(5).map((item) => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            role="menuitem"
+                            onClick={() => {
+                              onNavigate(item.id);
+                              setMoreMenuOpen(false);
+                            }}
+                            className={`w-full text-left px-3 py-2 rounded-lg transition-colors cursor-pointer ${
+                              activePage === item.id
+                                ? 'bg-brand-soft text-brand font-semibold'
+                                : 'hover:bg-zinc-50'
+                            }`}
+                          >
+                            <span className="block text-xs font-bold text-[var(--text-primary)]">
+                              {item.label}
+                            </span>
+                            <span className="block text-[11px] text-[var(--text-muted)] leading-snug mt-0.5">
+                              {item.desc}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Utility & Help Tools Area */}
+                  <div className="pt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMoreMenuOpen(false);
+                          onOpenCertificateVerify();
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--bg-primary)] hover:bg-zinc-100 text-[var(--text-primary)] font-semibold border border-[var(--border-subtle)] cursor-pointer"
+                      >
+                        <Award className="w-3.5 h-3.5 text-brand" />
+                        <span>Verify Certificate</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMoreMenuOpen(false);
+                          onOpenTour();
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--bg-primary)] hover:bg-zinc-100 text-[var(--text-primary)] font-semibold border border-[var(--border-subtle)] cursor-pointer"
+                      >
+                        <Compass className="w-3.5 h-3.5 text-brand" />
+                        <span>Guided Tour</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMoreMenuOpen(false);
+                          onNavigate('sitemap');
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--bg-primary)] hover:bg-zinc-100 text-[var(--text-primary)] font-semibold border border-[var(--border-subtle)] cursor-pointer"
+                      >
+                        <FileText className="w-3.5 h-3.5 text-brand" />
+                        <span>Site Directory</span>
+                      </button>
+                    </div>
+
+                    {/* Theme & Reset Controls */}
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="inline-flex items-center gap-1 bg-[var(--bg-primary)] p-1 rounded-lg border border-[var(--border-subtle)]"
+                        role="group"
+                        aria-label="Color Theme"
+                      >
+                        <Palette className="w-3.5 h-3.5 text-[var(--text-muted)] ml-1" />
+                        <button
+                          type="button"
+                          onClick={() => handleSelectTheme('theme-crimson')}
+                          className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
+                            resolvedThemeClass === 'theme-crimson'
+                              ? 'bg-[#D91B24] text-white'
+                              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                          }`}
+                        >
+                          Crimson
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleSelectTheme('theme-emerald')}
+                          className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
+                            resolvedThemeClass === 'theme-emerald'
+                              ? 'bg-[#059669] text-white'
+                              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                          }`}
+                        >
+                          Emerald
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleSelectTheme('theme-crimson');
+                          onResetState();
+                          setMoreMenuOpen(false);
+                        }}
+                        title="Reset saved demo data"
+                        className="p-1.5 rounded-lg border border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-zinc-100 cursor-pointer"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </nav>
 
-          {/* Right: Primary High-Contrast CTA + Learner Hub + Mobile Menu Toggle */}
+          {/* Zone 3: Single Primary Enquiry Action + Labeled Mobile Menu Button */}
           <div className="flex items-center gap-2.5 shrink-0">
             <button
               type="button"
-              onClick={() => onNavigate('dashboard')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-[var(--text-primary)] bg-white hover:bg-zinc-100 border border-[var(--border-subtle)] rounded-lg transition-colors whitespace-nowrap cursor-pointer"
-            >
-              <span>Learner Hub ({enrolledCount})</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('contact')}
-              className="px-4 py-2.5 text-xs sm:text-sm font-bold text-white bg-brand rounded-lg transition-colors whitespace-nowrap cursor-pointer shadow-xs"
+              onClick={() => {
+                onNavigate('contact');
+                setMobileMenuOpen(false);
+              }}
+              className="px-4 py-2.5 min-h-[40px] text-xs sm:text-sm font-bold text-white bg-brand rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)]"
             >
               Enquire Now
             </button>
+
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle navigation menu"
-              className="xl:hidden p-2 rounded-lg border border-[var(--border-subtle)] bg-white text-[var(--text-primary)] hover:bg-zinc-100 cursor-pointer"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-expanded={mobileMenuOpen}
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              className="lg:hidden inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg border border-[var(--border-subtle)] bg-white text-[var(--text-primary)] hover:bg-zinc-50 text-xs font-bold whitespace-nowrap shrink-0 cursor-pointer"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? (
+                <>
+                  <X className="w-4 h-4" />
+                  <span>Close</span>
+                </>
+              ) : (
+                <>
+                  <Menu className="w-4 h-4" />
+                  <span>Menu</span>
+                </>
+              )}
             </button>
           </div>
         </header>
 
-        {/* Mobile / Tablet Navigation Menu */}
-        {mobileMenuOpen && (
-          <div className="xl:hidden bg-white border-t border-[var(--border-subtle)] px-4 py-4 space-y-3">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {[
-                { label: 'Home', action: () => onNavigate('home') },
-                { label: 'About', action: () => onNavigate('about') },
-                { label: 'Accredited Courses', action: () => onNavigateCourseFilter('accredited') },
-                { label: 'Short Courses', action: () => onNavigateCourseFilter('short') },
-                { label: 'Other Services', action: () => onNavigate('other-services') },
-                { label: 'Gallery', action: () => onNavigate('gallery') },
-                { label: 'Contact', action: () => onNavigate('contact') },
-                { label: `Learner Hub (${enrolledCount})`, action: () => onNavigate('dashboard') },
-              ].map((item) => (
+        {/* Quiet Sub-Page Breadcrumb Strip (Shown ONLY on inner pages, never on Home) */}
+        {activePage !== 'home' && (
+          <div className="border-t border-[var(--border-subtle)] bg-white/80">
+            <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-3 text-xs text-[var(--text-muted)]">
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
                 <button
-                  key={item.label}
                   type="button"
-                  onClick={() => {
-                    item.action();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="px-3 py-2.5 text-xs font-bold text-left rounded-lg bg-[var(--bg-primary)] hover:bg-zinc-100 text-[var(--text-primary)] border border-[var(--border-subtle)] cursor-pointer"
+                  onClick={() => onNavigate(previousPage || 'home')}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[var(--bg-primary)] hover:bg-zinc-100 text-[var(--text-primary)] font-semibold border border-[var(--border-subtle)] whitespace-nowrap shrink-0 cursor-pointer"
                 >
-                  {item.label}
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Back</span>
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => onNavigate('home')}
+                  className="hover:text-[var(--text-primary)] whitespace-nowrap cursor-pointer"
+                >
+                  Home
+                </button>
+                <span aria-hidden="true">/</span>
+                <span className="whitespace-nowrap">{currentMeta.section}</span>
+                <span aria-hidden="true">/</span>
+                <span className="font-semibold text-[var(--text-primary)] whitespace-nowrap">
+                  {currentMeta.title}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={onOpenCertificateVerify}
+                className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-brand hover:underline whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                <Award className="w-3.5 h-3.5" />
+                <span>Verify a Certificate</span>
+              </button>
             </div>
           </div>
         )}
-      </div>
 
-      {/* SECONDARY UTILITY BAR: Breadcrumb, Audience Portals, Theme Switcher & 15-Page Directory */}
-      <div className="bg-[var(--brand-secondary)] text-zinc-200 border-b border-zinc-800">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-3 text-xs">
-          {/* Left: Contextual Breadcrumb Trail & Step-Back */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-            {activePage !== 'home' && (
-              <button
-                type="button"
-                onClick={() => onNavigate(previousPage || 'home')}
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white font-medium whitespace-nowrap shrink-0 cursor-pointer"
-              >
-                <ArrowLeft className="w-3 h-3" />
-                <span>Back</span>
-              </button>
-            )}
-            <span className="inline-flex items-center gap-1 text-zinc-400 whitespace-nowrap">
-              <ShieldCheck className="w-3.5 h-3.5 text-brand" />
-              <button
-                type="button"
-                onClick={() => onNavigate('home')}
-                className="hover:text-white cursor-pointer"
-              >
-                Academy
-              </button>
-            </span>
-            <span aria-hidden="true" className="text-zinc-600">
-              /
-            </span>
-            <span className="text-zinc-400 whitespace-nowrap shrink-0">
-              {currentMeta.section}
-            </span>
-            <span aria-hidden="true" className="text-zinc-600">
-              /
-            </span>
-            <span className="text-white font-semibold whitespace-nowrap shrink-0">
-              {currentMeta.title}
-            </span>
-          </div>
-
-          {/* Center: Interactive Audience Portals Quick Switcher */}
-          <div className="hidden lg:flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
-            <span className="text-zinc-400 mr-1 whitespace-nowrap">Audience Portals:</span>
-            <button
-              type="button"
-              onClick={() => onNavigate('online-learning')}
-              className={`px-2 py-0.5 rounded whitespace-nowrap cursor-pointer ${
-                activePage === 'online-learning'
-                  ? 'bg-brand text-white font-semibold'
-                  : 'text-zinc-300 hover:text-white'
-              }`}
-            >
-              Self-Paced LMS Lab
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('employers')}
-              className={`px-2 py-0.5 rounded whitespace-nowrap cursor-pointer ${
-                activePage === 'employers'
-                  ? 'bg-brand text-white font-semibold'
-                  : 'text-zinc-300 hover:text-white'
-              }`}
-            >
-              Employer & WSP
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('qualifications')}
-              className={`px-2 py-0.5 rounded whitespace-nowrap cursor-pointer ${
-                activePage === 'qualifications'
-                  ? 'bg-brand text-white font-semibold'
-                  : 'text-zinc-300 hover:text-white'
-              }`}
-            >
-              Learnerships
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('assessment-centre')}
-              className={`px-2 py-0.5 rounded whitespace-nowrap cursor-pointer ${
-                activePage === 'assessment-centre'
-                  ? 'bg-brand text-white font-semibold'
-                  : 'text-zinc-300 hover:text-white'
-              }`}
-            >
-              Venue Hire
-            </button>
-          </div>
-
-          {/* Right: Palette Switcher (.theme-crimson default / .theme-emerald), Verify Cert, Tour, Sitemap & All-Pages Drawer */}
-          <div className="flex items-center gap-2 shrink-0">
-            <div
-              className="hidden sm:inline-flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded border border-white/10"
-              role="group"
-              aria-label="Color Palette Switcher"
-            >
-              <Palette className="w-3 h-3 text-zinc-300 mr-0.5" />
-              <button
-                type="button"
-                onClick={() => handleSelectTheme('theme-crimson')}
-                className={`px-1.5 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
-                  resolvedThemeClass === 'theme-crimson'
-                    ? 'bg-[#D91B24] text-white'
-                    : 'text-zinc-300 hover:text-white'
-                }`}
-              >
-                Crimson
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSelectTheme('theme-emerald')}
-                className={`px-1.5 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
-                  resolvedThemeClass === 'theme-emerald'
-                    ? 'bg-[#059669] text-white'
-                    : 'text-zinc-300 hover:text-white'
-                }`}
-              >
-                Emerald
-              </button>
-            </div>
-
-            <button
-              type="button"
-              onClick={onOpenCertificateVerify}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              <Award className="w-3.5 h-3.5 text-brand" />
-              <span className="hidden md:inline">Verify Cert</span>
-            </button>
-            <button
-              type="button"
-              onClick={onOpenTour}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              <Compass className="w-3.5 h-3.5 text-brand" />
-              <span className="hidden sm:inline">Guided Tour</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('sitemap')}
-              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                activePage === 'sitemap'
-                  ? 'bg-brand text-white font-bold'
-                  : 'bg-white/10 text-white hover:bg-white/20'
-              }`}
-            >
-              <span>Sitemap</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setDrawerOpen(!drawerOpen)}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-brand text-white font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span>All Pages</span>
-              <ChevronDown
-                className={`w-3.5 h-3.5 transition-transform ${
-                  drawerOpen ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
-          </div>
-        </div>
-
-        {/* Expandable Full Platform Directory Drawer */}
-        {drawerOpen && (
-          <div className="bg-[var(--brand-secondary)] border-t border-white/10 py-5 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-[1360px] mx-auto">
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <p className="text-xs font-semibold text-white">
-                  Complete Platform Directory — Jump to Any Page Template, Portal, or Interactive Calculator
-                </p>
-                <div className="flex items-center gap-4">
+        {/* Accessible Mobile & Tablet Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div
+            role="dialog"
+            aria-label="Mobile Navigation Menu"
+            className="lg:hidden bg-white border-t border-[var(--border-subtle)] px-4 pt-4 pb-24 max-h-[calc(100vh-4rem)] overflow-y-auto shadow-xl space-y-5"
+          >
+            {/* Primary Destinations */}
+            <div>
+              <p className="text-xs font-bold text-[var(--text-muted)] mb-2">
+                Main Navigation
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {[
+                  {
+                    label: 'Home',
+                    sub: 'Individual & Employer starting point',
+                    active: activePage === 'home',
+                    action: () => onNavigate('home'),
+                  },
+                  {
+                    label: 'Courses (All Programmes)',
+                    sub: 'Browse all accredited & short courses',
+                    active: isCoursesActive && activeCourseFilter === 'all',
+                    action: () => onNavigateCourseFilter('all'),
+                  },
+                  {
+                    label: 'Qualifications & Learnerships',
+                    sub: 'QCTO & Services SETA (NQF 1–4)',
+                    active: isQualificationsActive,
+                    action: () => onNavigate('qualifications'),
+                  },
+                  {
+                    label: 'Short Courses (2–5 Days)',
+                    sub: 'Cleaning, Solar PV, Carpets & Startup',
+                    active: isCoursesActive && activeCourseFilter === 'short',
+                    action: () => onNavigateCourseFilter('short'),
+                  },
+                  {
+                    label: 'For Employers & HR',
+                    sub: 'Group quotes, R380/day relief staff & tax ROI',
+                    active: activePage === 'employers',
+                    action: () => onNavigate('employers'),
+                  },
+                  {
+                    label: `Learner Hub (${enrolledCount})`,
+                    sub: 'Enrolled courses, certificates & course studio',
+                    active: activePage === 'dashboard',
+                    action: () => onNavigate('dashboard'),
+                  },
+                  {
+                    label: 'About & Accreditations',
+                    sub: 'Our heritage since 2000 & SETA status',
+                    active: activePage === 'about',
+                    action: () => onNavigate('about'),
+                  },
+                  {
+                    label: 'Contact & Randburg Campus',
+                    sub: 'Address, phone, WhatsApp & enquiry form',
+                    active: activePage === 'contact',
+                    action: () => onNavigate('contact'),
+                  },
+                ].map((item) => (
                   <button
+                    key={item.label}
                     type="button"
                     onClick={() => {
-                      handleSelectTheme('theme-crimson');
-                      onResetState();
-                      setDrawerOpen(false);
+                      item.action();
+                      setMobileMenuOpen(false);
                     }}
-                    className="inline-flex items-center gap-1 text-xs text-zinc-300 hover:text-white cursor-pointer"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5 text-brand" />
-                    <span>Reset Persistent Demo Data</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setDrawerOpen(false)}
-                    className="text-xs text-zinc-300 hover:text-white cursor-pointer"
-                  >
-                    Close Directory ✕
-                  </button>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-                {ALL_PAGES.map((pg) => (
-                  <button
-                    key={pg.id}
-                    type="button"
-                    onClick={() => {
-                      onNavigate(pg.id);
-                      setDrawerOpen(false);
-                    }}
-                    className={`flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs transition-colors cursor-pointer ${
-                      activePage === pg.id
-                        ? 'bg-brand text-white font-semibold'
-                        : 'bg-white/5 text-zinc-200 hover:bg-white/15'
+                    className={`p-3 rounded-xl text-left border transition-colors cursor-pointer min-h-[48px] ${
+                      item.active
+                        ? 'bg-brand-soft border-brand text-[var(--text-primary)]'
+                        : 'bg-[var(--bg-primary)] border-[var(--border-subtle)] text-[var(--text-primary)] hover:bg-zinc-100'
                     }`}
                   >
-                    <span className="truncate">{pg.label}</span>
-                    {activePage === pg.id && (
-                      <CheckCircle2 className="w-3.5 h-3.5 shrink-0 ml-2" />
-                    )}
+                    <span className="block text-sm font-bold">{item.label}</span>
+                    <span className="block text-xs text-[var(--text-muted)] mt-0.5">
+                      {item.sub}
+                    </span>
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Specialist Portals & Academy Pages */}
+            <div className="pt-3 border-t border-[var(--border-subtle)]">
+              <p className="text-xs font-bold text-[var(--text-muted)] mb-2">
+                Portals, Venue Hire & Resources
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {MORE_DESTINATIONS.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => {
+                      onNavigate(item.id);
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`px-3 py-2.5 rounded-lg text-left text-xs font-semibold border transition-colors cursor-pointer min-h-[44px] ${
+                      activePage === item.id
+                        ? 'bg-brand text-white border-brand'
+                        : 'bg-white text-[var(--text-primary)] border-[var(--border-subtle)] hover:bg-zinc-50'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Utility & Help Tools */}
+            <div className="pt-3 border-t border-[var(--border-subtle)] space-y-3">
+              <p className="text-xs font-bold text-[var(--text-muted)]">
+                Tools & Preferences
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenCertificateVerify();
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
+                >
+                  <Award className="w-4 h-4 text-brand" />
+                  <span>Verify Certificate</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenTour();
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
+                >
+                  <Compass className="w-4 h-4 text-brand" />
+                  <span>Guided Tour</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    onNavigate('sitemap');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
+                >
+                  <FileText className="w-4 h-4 text-brand" />
+                  <span>Site Directory</span>
+                </button>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
+                <div
+                  className="inline-flex items-center gap-1.5 bg-[var(--bg-primary)] p-1 rounded-lg border border-[var(--border-subtle)]"
+                  role="group"
+                  aria-label="Color Theme"
+                >
+                  <span className="text-xs font-semibold text-[var(--text-muted)] px-2">
+                    Theme:
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectTheme('theme-crimson')}
+                    className={`px-3 py-1.5 rounded-md text-xs font-bold cursor-pointer ${
+                      resolvedThemeClass === 'theme-crimson'
+                        ? 'bg-[#D91B24] text-white'
+                        : 'text-[var(--text-primary)]'
+                    }`}
+                  >
+                    Crimson
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectTheme('theme-emerald')}
+                    className={`px-3 py-1.5 rounded-md text-xs font-bold cursor-pointer ${
+                      resolvedThemeClass === 'theme-emerald'
+                        ? 'bg-[#059669] text-white'
+                        : 'text-[var(--text-primary)]'
+                    }`}
+                  >
+                    Emerald
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleSelectTheme('theme-crimson');
+                    onResetState();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset Demo Data</span>
+                </button>
               </div>
             </div>
           </div>

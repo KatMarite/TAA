@@ -137,23 +137,32 @@ export function AcademyProvider({ children }: { children: ReactNode }) {
 
   // Hydrate from localStorage
   useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed.courses)) setCourses(parsed.courses);
-        if (Array.isArray(parsed.enrolledCourseIds)) setEnrolledCourseIds(parsed.enrolledCourseIds);
-        if (Array.isArray(parsed.completedModuleIds)) setCompletedModuleIds(parsed.completedModuleIds);
-        if (Array.isArray(parsed.enrolments)) setEnrolments(parsed.enrolments);
-        if (Array.isArray(parsed.quotes)) setQuotes(parsed.quotes);
-        if (Array.isArray(parsed.applications)) setApplications(parsed.applications);
-        if (Array.isArray(parsed.venueBookings)) setVenueBookings(parsed.venueBookings);
-        if (parsed.themeClass) setThemeClass(parsed.themeClass);
+    const frameId = window.requestAnimationFrame(() => {
+      try {
+        const saved = window.localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed.courses)) setCourses(parsed.courses);
+          if (Array.isArray(parsed.enrolledCourseIds))
+            setEnrolledCourseIds(parsed.enrolledCourseIds);
+          if (Array.isArray(parsed.completedModuleIds))
+            setCompletedModuleIds(parsed.completedModuleIds);
+          if (Array.isArray(parsed.enrolments))
+            setEnrolments(parsed.enrolments);
+          if (Array.isArray(parsed.quotes)) setQuotes(parsed.quotes);
+          if (Array.isArray(parsed.applications))
+            setApplications(parsed.applications);
+          if (Array.isArray(parsed.venueBookings))
+            setVenueBookings(parsed.venueBookings);
+          if (parsed.themeClass) setThemeClass(parsed.themeClass);
+        }
+      } catch {
+        // Ignore parse errors
+      } finally {
+        hasHydratedRef.current = true;
       }
-    } catch {
-      // Ignore parse errors
-    }
-    hasHydratedRef.current = true;
+    });
+    return () => window.cancelAnimationFrame(frameId);
   }, []);
 
   // Persist to localStorage (debounced)

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   BRAND_IMAGES,
   OTHER_SERVICES_LIST,
@@ -16,8 +16,9 @@ import {
   Building2,
   ArrowRight,
   ShieldCheck,
-  Award,
   CheckCircle2,
+  Compass,
+  ChevronDown,
 } from 'lucide-react';
 
 export interface HomeViewProps {
@@ -51,7 +52,10 @@ export function HomeView({
   onOpenBrochure,
   onHomeSearchSubmit,
 }: HomeViewProps) {
-  // Memoized courses filtering to avoid re-calculating on unrelated parent renders
+  const [courseTab, setCourseTab] = useState<'featured' | 'accredited' | 'short'>(
+    'featured'
+  );
+
   const setaAccreditedCourses = useMemo(
     () => courses.filter((c) => c.category === 'Occupational Qualifications'),
     [courses]
@@ -62,209 +66,289 @@ export function HomeView({
     [courses]
   );
 
+  const displayedCourses = useMemo(() => {
+    if (courseTab === 'accredited') {
+      return setaAccreditedCourses.slice(0, 3);
+    }
+    if (courseTab === 'short') {
+      return shortCoursesList.slice(0, 3);
+    }
+    // Featured mix: 1 entry short course, 1 NQF 3 supervisor qualification, 1 specialist/startup course
+    const featured = [
+      shortCoursesList[0],
+      setaAccreditedCourses[0],
+      shortCoursesList[2] || shortCoursesList[1],
+    ].filter(Boolean);
+    return featured.length === 3 ? featured : courses.slice(0, 3);
+  }, [courseTab, setaAccreditedCourses, shortCoursesList, courses]);
+
   return (
     <div>
       {/* ============================================================== */}
-      {/* 1. SPLIT-SCREEN ARCHITECTURAL HERO SECTION                     */}
+      {/* 1. HERO SECTION: CLEAR AUDIENCE ENTRY & COURSE DISCOVERY       */}
       {/* ============================================================== */}
-      <section className="arch-hero-surface border-b border-[#E5E7EB]">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-8 py-16 lg:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            {/* Left 7 Cols: SETA Accredited Badge, Headline, High-Contrast CTA Group & Entry Routes */}
-            <div className="lg:col-span-7 flex flex-col justify-between">
-              <div>
-                {/* SETA Accredited Trust Indicator */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-soft border border-brand-soft text-brand text-xs font-bold tracking-wide mb-6">
-                  <ShieldCheck className="w-4 h-4 shrink-0" />
-                  <span>
-                    SETA Accredited · QCTO Registered · Division of Cleaning Africa Services (Est. 2000)
-                  </span>
-                </div>
+      <section className="arch-hero-surface border-b border-[var(--border-subtle)]">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            {/* Left 7 Cols: Clear Proposition, Two Primary Audience Routes & Course Search */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Quiet Unboxed Accreditation Kicker */}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm font-semibold text-brand">
+                <ShieldCheck className="w-4 h-4 shrink-0" />
+                <span>QCTO & Services SETA Accredited</span>
+                <span aria-hidden="true" className="text-[var(--text-muted)]">
+                  ·
+                </span>
+                <span className="text-[var(--text-muted)] font-medium">
+                  Division of Cleaning Africa Services (Est. 2000)
+                </span>
+              </div>
 
-                {/* Hero Headline: font-weight 800, letter-spacing -0.03em, line-height 1.1 */}
+              {/* Hero Headline */}
+              <div>
                 <h1
-                  className="font-extrabold tracking-[-0.03em] text-[#1C1B1B] leading-[1.1]"
+                  className="font-extrabold tracking-[-0.03em] text-[var(--text-primary)] leading-[1.12]"
                   style={{
-                    fontSize: 'clamp(2.5rem, 4.6vw, 4.1rem)',
+                    fontSize: 'clamp(2rem, 4.2vw, 3.5rem)',
                     textWrap: 'balance',
                   }}
                 >
                   Advancing Knowledge,{' '}
-                  <span className="text-brand underline decoration-wavy decoration-1 underline-offset-8">
-                    Transforming Lives.
-                  </span>
+                  <span className="text-brand">Transforming Lives.</span>
                 </h1>
 
-                {/* Readable Measure Body Copy (max-width: 65ch, line-height: 1.6) */}
-                <p className="mt-5 text-base sm:text-lg text-[#52525B] max-w-[65ch] leading-[1.6]">
-                  South Africa’s industry-born vocational training academy and QCTO assessment centre in Northriding, Randburg. Build a certified career or upskill your commercial facility workforce with upfront ZAR pricing, self-paced online modules, and optional R380/day relief staff.
+                <p className="mt-4 text-base sm:text-lg text-[var(--text-muted)] max-w-[62ch] leading-relaxed">
+                  Accredited commercial cleaning, hygiene, and solar maintenance training in Northriding, Randburg and online. Choose your path below to start a certified career or upskill your workforce with upfront ZAR pricing.
                 </p>
+              </div>
 
-                {/* High-Contrast Two-Button CTA Group */}
-                <div className="mt-8 flex flex-wrap items-center gap-4">
+              {/* Primary First Step: Two Distinct Audience Entry Cards */}
+              <div
+                aria-label="Choose your starting path"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1"
+              >
+                {/* Route 1: Individual Learner */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAudienceMode('learner');
+                    onNavigateCourseFilter('all');
+                  }}
+                  className={`group p-5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[168px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] ${
+                    audienceMode === 'learner'
+                      ? 'bg-[var(--brand-secondary)] text-white border-[var(--brand-secondary)] shadow-sm'
+                      : 'bg-white text-[var(--text-primary)] border-[var(--border-subtle)] hover:border-brand'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span
+                        className={`text-xs font-bold ${
+                          audienceMode === 'learner'
+                            ? 'text-amber-400'
+                            : 'text-brand'
+                        }`}
+                      >
+                        For Individual Learners
+                      </span>
+                      <GraduationCap
+                        className={`w-5 h-5 shrink-0 ${
+                          audienceMode === 'learner'
+                            ? 'text-amber-400'
+                            : 'text-brand'
+                        }`}
+                      />
+                    </div>
+                    <h2 className="text-xl font-extrabold tracking-tight">
+                      I want to study
+                    </h2>
+                    <p
+                      className={`text-sm mt-1.5 leading-relaxed ${
+                        audienceMode === 'learner'
+                          ? 'text-zinc-200'
+                          : 'text-[var(--text-muted)]'
+                      }`}
+                    >
+                      Compare accredited qualifications (NQF 1–4) and 2–5 day short courses from R1,450. Enrol online or study at our Randburg campus.
+                    </p>
+                  </div>
+                  <div
+                    className={`mt-4 pt-3 border-t flex items-center justify-between text-xs font-bold ${
+                      audienceMode === 'learner'
+                        ? 'border-white/15 text-amber-400'
+                        : 'border-[var(--border-subtle)] text-brand'
+                    }`}
+                  >
+                    <span>Explore Courses & Fees</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                  </div>
+                </button>
+
+                {/* Route 2: Employer / HR / L&D */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAudienceMode('employer');
+                    onNavigate('employers');
+                  }}
+                  className={`group p-5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[168px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] ${
+                    audienceMode === 'employer'
+                      ? 'bg-[var(--brand-secondary)] text-white border-[var(--brand-secondary)] shadow-sm'
+                      : 'bg-white text-[var(--text-primary)] border-[var(--border-subtle)] hover:border-brand'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span
+                        className={`text-xs font-bold ${
+                          audienceMode === 'employer'
+                            ? 'text-amber-400'
+                            : 'text-brand'
+                        }`}
+                      >
+                        For Employers, HR & Operations
+                      </span>
+                      <Building2
+                        className={`w-5 h-5 shrink-0 ${
+                          audienceMode === 'employer'
+                            ? 'text-amber-400'
+                            : 'text-brand'
+                        }`}
+                      />
+                    </div>
+                    <h2 className="text-xl font-extrabold tracking-tight">
+                      Train my team
+                    </h2>
+                    <p
+                      className={`text-sm mt-1.5 leading-relaxed ${
+                        audienceMode === 'employer'
+                          ? 'text-zinc-200'
+                          : 'text-[var(--text-muted)]'
+                      }`}
+                    >
+                      Request group quotes, add R380/day vetted relief staff while your team trains, and calculate SARS Section 12H tax savings.
+                    </p>
+                  </div>
+                  <div
+                    className={`mt-4 pt-3 border-t flex items-center justify-between text-xs font-bold ${
+                      audienceMode === 'employer'
+                        ? 'border-white/15 text-amber-400'
+                        : 'border-[var(--border-subtle)] text-brand'
+                    }`}
+                  >
+                    <span>Employer Quotes & Tax ROI</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                  </div>
+                </button>
+              </div>
+
+              {/* Easy-to-Find Course Search & Secondary Quick Filters */}
+              <div className="bg-white border border-[var(--border-subtle)] rounded-xl p-4 space-y-3">
+                <form
+                  onSubmit={onHomeSearchSubmit}
+                  className="flex flex-col sm:flex-row gap-2.5"
+                >
+                  <div className="relative flex-1">
+                    <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={homeSearchQuery}
+                      onChange={(e) => setHomeSearchQuery(e.target.value)}
+                      placeholder="Search courses by role, NQF level, or skill (e.g. Supervisor, Solar, Startup)..."
+                      aria-label="Search courses"
+                      className="w-full pl-10 pr-4 py-2.5 min-h-[44px] text-sm bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-lg focus:outline-none focus:border-brand text-[var(--text-primary)]"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-5 py-2.5 min-h-[44px] text-sm font-bold text-white bg-brand rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  >
+                    Search Courses
+                  </button>
+                </form>
+
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-[var(--text-muted)]">
+                  <span className="font-semibold text-[var(--text-primary)]">
+                    Quick browse:
+                  </span>
                   <button
                     type="button"
                     onClick={() => onNavigateCourseFilter('accredited')}
-                    className="px-7 py-3.5 text-sm sm:text-base font-bold text-white bg-brand rounded-xl shadow-sm transition-all inline-flex items-center gap-2 cursor-pointer"
+                    className="hover:text-brand underline underline-offset-4 cursor-pointer"
                   >
-                    <Award className="w-4 h-4" />
-                    <span>Qualifications (NQF 1–4)</span>
-                    <ArrowRight className="w-4 h-4" />
+                    NQF 1–4 Qualifications
                   </button>
+                  <span aria-hidden="true">·</span>
                   <button
                     type="button"
                     onClick={() => onNavigateCourseFilter('short')}
-                    className="px-7 py-3.5 text-sm sm:text-base font-bold text-[#1C1B1B] bg-white hover:bg-[#18181B] hover:text-white border-2 border-[#18181B] rounded-xl transition-all inline-flex items-center gap-2 cursor-pointer"
+                    className="hover:text-brand underline underline-offset-4 cursor-pointer"
                   >
-                    <span>Short Courses</span>
+                    2–5 Day Short Courses
                   </button>
-                </div>
-
-                {/* Two Prominent Accessible Audience Entry Routes */}
-                <div className="mt-9 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <span aria-hidden="true">·</span>
                   <button
                     type="button"
-                    onClick={() => {
-                      setAudienceMode('learner');
-                      onNavigate('catalogue');
-                    }}
-                    className={`p-5 rounded-xl border transition-all cursor-pointer text-left w-full focus:outline-none focus:ring-2 focus:ring-[#D91B24] ${
-                      audienceMode === 'learner'
-                        ? 'bg-[#18181B] text-white border-[#18181B] shadow-md'
-                        : 'bg-white text-[#1C1B1B] border-[#E5E7EB] hover:border-brand'
-                    }`}
+                    onClick={() => onNavigate('assessment-centre')}
+                    className="hover:text-brand underline underline-offset-4 cursor-pointer"
                   >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span
-                        className={`text-xs font-mono font-bold ${
-                          audienceMode === 'learner'
-                            ? 'text-amber-400'
-                            : 'text-brand'
-                        }`}
-                      >
-                        Entry Route 01 · Individual Learner
-                      </span>
-                      <GraduationCap
-                        className={`w-5 h-5 ${
-                          audienceMode === 'learner'
-                            ? 'text-amber-400'
-                            : 'text-brand'
-                        }`}
-                      />
-                    </div>
-                    <h2 className="text-lg font-extrabold">“I want to study”</h2>
-                    <p
-                      className={`text-xs mt-1 leading-relaxed ${
-                        audienceMode === 'learner'
-                          ? 'text-zinc-300'
-                          : 'text-[#52525B]'
-                      }`}
-                    >
-                      Filter courses by career outcome, view upfront ZAR fees, enrol & pay online, and study self-paced or practical modules.
-                    </p>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAudienceMode('employer');
-                      onNavigate('employers');
-                    }}
-                    className={`p-5 rounded-xl border transition-all cursor-pointer text-left w-full focus:outline-none focus:ring-2 focus:ring-[#D91B24] ${
-                      audienceMode === 'employer'
-                        ? 'bg-[#18181B] text-white border-[#18181B] shadow-md'
-                        : 'bg-white text-[#1C1B1B] border-[#E5E7EB] hover:border-brand'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span
-                        className={`text-xs font-mono font-bold ${
-                          audienceMode === 'employer'
-                            ? 'text-amber-400'
-                            : 'text-brand'
-                        }`}
-                      >
-                        Entry Route 02 · Employer / HR / L&D
-                      </span>
-                      <Building2
-                        className={`w-5 h-5 ${
-                          audienceMode === 'employer'
-                            ? 'text-amber-400'
-                            : 'text-brand'
-                        }`}
-                      />
-                    </div>
-                    <h2 className="text-lg font-extrabold">“Train my team”</h2>
-                    <p
-                      className={`text-xs mt-1 leading-relaxed ${
-                        audienceMode === 'employer'
-                          ? 'text-zinc-300'
-                          : 'text-[#52525B]'
-                      }`}
-                    >
-                      Calculate Section 12H tax ROI, request group quotes with R380/day relief staff, enrol multiple staff, and track progress.
-                    </p>
+                    Randburg Venue Hire
                   </button>
                 </div>
               </div>
-
-              {/* Course Discovery Search Bar */}
-              <form
-                onSubmit={onHomeSearchSubmit}
-                className="mt-7 pt-6 border-t border-[#E5E7EB] flex flex-col sm:flex-row gap-3"
-              >
-                <div className="relative flex-1">
-                  <Search className="w-4 h-4 text-[#52525B] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={homeSearchQuery}
-                    onChange={(e) => setHomeSearchQuery(e.target.value)}
-                    placeholder="Search courses by role, NQF level or skill (e.g. Supervisor, Solar, Startup)..."
-                    aria-label="Search courses"
-                    className="w-full pl-10 pr-4 py-3 text-sm bg-white border border-[#E5E7EB] rounded-xl focus:outline-none focus:border-brand text-[#1C1B1B]"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="px-6 py-3 text-sm font-bold text-white bg-[#18181B] hover:bg-brand rounded-xl transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-                >
-                  Search Catalogue
-                </button>
-              </form>
             </div>
 
-            {/* Right 5 Cols: Campus Photography + Verification Cards */}
+            {/* Right 5 Cols: Clean Campus Image with Legible Below-Image Facts */}
             <div className="lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden border border-[#E5E7EB] shadow-xl bg-white">
-                <div className="aspect-[4/4.3] w-full relative">
+              <div className="rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-white shadow-sm">
+                <div className="aspect-[16/11] w-full bg-zinc-100 overflow-hidden">
                   <ResilientImage
                     src={BRAND_IMAGES.heroAcademy}
                     alt="Training Africa Academy Facilitator and Learners in Randburg"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#18181B]/95 via-[#18181B]/30 to-transparent" />
                 </div>
 
-                <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2">
-                  <span className="px-3 py-1 rounded-md bg-[#18181B]/90 backdrop-blur-xs text-white text-xs font-bold">
-                    Northriding, Randburg Campus
-                  </span>
-                  <span className="px-3 py-1 rounded-md bg-brand text-white text-xs font-mono font-bold">
-                    94.6% EISA Pass Rate
-                  </span>
-                </div>
-
-                <div className="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-xl p-4 text-[#1C1B1B] shadow-lg">
-                  <div className="flex items-center justify-between text-xs font-mono font-bold text-brand mb-1">
-                    <span>ZERO DOWNTIME GUARANTEE</span>
-                    <span>R380.00 / DAY</span>
+                {/* Secondary Details Beneath Image (No Competing Overlay Badges) */}
+                <div className="p-5 space-y-4">
+                  <div>
+                    <p className="text-xs font-semibold text-brand">
+                      Northriding, Randburg Campus & Nationwide On-Site
+                    </p>
+                    <h2 className="text-base font-bold text-[var(--text-primary)] mt-0.5">
+                      Practical Hygiene Bays, Solar PV Rigs & Self-Paced Online LMS
+                    </h2>
+                    <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">
+                      We combine 70% practical workplace simulation with self-paced digital modules, and deploy vetted Cleaning Africa Services relief staff so employer sites never lose coverage during training.
+                    </p>
                   </div>
-                  <p className="text-sm font-extrabold text-[#1C1B1B]">
-                    Practical Hygiene Bays, Solar PV Rigs & Self-Paced LMS
-                  </p>
-                  <p className="text-xs text-[#52525B] mt-1">
-                    We supply vetted Cleaning Africa Services relief staff on your premises while your permanent employees train.
-                  </p>
+
+                  <div className="grid grid-cols-3 gap-3 pt-3 border-t border-[var(--border-subtle)] text-left">
+                    <div>
+                      <span className="block text-base sm:text-lg font-extrabold font-mono text-[var(--text-primary)] tabular-nums">
+                        94.6%
+                      </span>
+                      <span className="block text-[11px] text-[var(--text-muted)] leading-snug">
+                        QCTO EISA Pass Rate
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-base sm:text-lg font-extrabold font-mono text-brand tabular-nums">
+                        R380/day
+                      </span>
+                      <span className="block text-[11px] text-[var(--text-muted)] leading-snug">
+                        Vetted Relief Staff
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-base sm:text-lg font-extrabold font-mono text-[var(--text-primary)] tabular-nums">
+                        Est. 2000
+                      </span>
+                      <span className="block text-[11px] text-[var(--text-muted)] leading-snug">
+                        Industry Heritage
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -273,121 +357,92 @@ export function HomeView({
       </section>
 
       {/* ============================================================== */}
-      {/* 2. "WHO WE ARE" TWO-COLUMN ASYMMETRIC BENTO SECTION            */}
+      {/* 2. KEY TRUST POINTS & HERITAGE (PLAIN-LANGUAGE CREDIBILITY)    */}
       {/* ============================================================== */}
-      <section className="bg-white border-b border-[#E5E7EB] py-16 lg:py-20">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            {/* Left Bento Card (7 Cols): Heritage */}
-            <div className="lg:col-span-7 bg-[#FCF9F8] border border-[#E5E7EB] rounded-2xl p-8 sm:p-10 flex flex-col justify-between">
-              <div>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-brand-soft text-brand text-xs font-bold border border-brand-soft mb-4">
-                  Who We Are · Heritage Since 2000
+      <section className="bg-white border-b border-[var(--border-subtle)] py-12 sm:py-16">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-6 space-y-3">
+              <p className="text-xs font-bold text-brand">
+                Who We Are · Built by Cleaning Africa Services (Pty) Ltd
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)] leading-tight">
+                25+ Years of Real-World Commercial Hygiene Experience
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed max-w-[60ch]">
+                Founded as the dedicated training division of{' '}
+                <strong className="text-[var(--text-primary)]">
+                  Cleaning Africa Services (Pty) Ltd
+                </strong>{' '}
+                (established in 2000), we train individual job-seekers and corporate facility teams across commercial offices, healthcare, hospitality, and solar maintenance.
+              </p>
+              <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-[var(--text-primary)]">
+                <span className="inline-flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-brand shrink-0" />
+                  <span>70% Practical Simulation</span>
                 </span>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#1C1B1B] leading-tight">
-                  Forged from 25+ Years of Real-World Commercial Hygiene Excellence
-                </h2>
-                <p className="mt-4 text-base text-[#52525B] max-w-[65ch] leading-[1.6]">
-                  Established as the dedicated training and skills development arm of{' '}
-                  <strong className="text-[#1C1B1B]">
-                    Cleaning Africa Services (Pty) Ltd
-                  </strong>{' '}
-                  (founded in 2000), Training Africa Academy was created to address critical skills shortages across South Africa’s commercial cleaning, healthcare sanitation, hospitality, and green solar maintenance sectors.
-                </p>
-                <p className="mt-3 text-sm text-[#52525B] max-w-[65ch] leading-[1.6]">
-                  We empower both unemployed youth seeking their first NQF qualification and corporate facility teams requiring SETA-accredited upskilling, B-BBEE Skills Development points, and SARS Section 12H learnership tax allowances.
-                </p>
-              </div>
-
-              <div className="mt-8 pt-6 border-t border-[#E5E7EB] flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-6 text-xs font-bold text-[#1C1B1B]">
-                  <span className="inline-flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-brand" />
-                    <span>70% Practical Simulation</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-brand" />
-                    <span>6 SA Languages Supported</span>
-                  </span>
-                </div>
+                <span className="inline-flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-brand shrink-0" />
+                  <span>6 SA Languages Supported</span>
+                </span>
                 <button
                   type="button"
                   onClick={() => onNavigate('about')}
-                  className="text-xs sm:text-sm font-bold text-brand hover:underline inline-flex items-center gap-1 cursor-pointer"
+                  className="text-brand font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
                 >
-                  <span>Read Our Full Heritage & Accreditations</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>About & Accreditations</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
 
-            {/* Right Metrics Grid (5 Cols) */}
-            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-[#18181B] text-white rounded-2xl p-6 flex flex-col justify-between">
-                <span className="text-xs font-mono font-bold text-amber-400">
-                  01 · HERITAGE
-                </span>
-                <div className="my-4">
-                  <span className="text-3xl sm:text-4xl font-extrabold font-mono tabular-nums">
-                    20+ Years
-                  </span>
-                  <p className="text-sm font-bold text-white mt-1">
-                    Industry Experience
-                  </p>
-                </div>
-                <p className="text-xs text-zinc-300 leading-relaxed">
-                  Rooted in Cleaning Africa Services (Pty) Ltd since 2000 across commercial & industrial estates.
+            {/* 4 Scannable Trust Cards Explaining Key Terms Plainly */}
+            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-xl p-5">
+                <p className="text-xs font-bold text-brand">
+                  QCTO & Services SETA
+                </p>
+                <p className="text-lg font-extrabold text-[var(--text-primary)] mt-1">
+                  Nationally Accredited
+                </p>
+                <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">
+                  Registered with the Quality Council for Trades and Occupations (QCTO) and Services SETA for NQF Level 1 to 4 qualifications.
                 </p>
               </div>
 
-              <div className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-2xl p-6 flex flex-col justify-between">
-                <span className="text-xs font-mono font-bold text-brand">
-                  02 · QUALITY ASSURANCE
-                </span>
-                <div className="my-4">
-                  <span className="text-3xl sm:text-4xl font-extrabold font-mono text-[#1C1B1B] tabular-nums">
-                    SETA
-                  </span>
-                  <p className="text-sm font-bold text-[#1C1B1B] mt-1">
-                    QCTO & Services SETA
-                  </p>
-                </div>
-                <p className="text-xs text-[#52525B] leading-relaxed">
-                  Accredited NQF Level 1 to Level 4 qualifications (120–149 credits) and registered assessors.
+              <div className="bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-xl p-5">
+                <p className="text-xs font-bold text-brand">
+                  Upfront ZAR Pricing
+                </p>
+                <p className="text-lg font-extrabold text-[var(--text-primary)] mt-1 font-mono tabular-nums">
+                  From R1,450
+                </p>
+                <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">
+                  Transparent single-learner fees and discounted group rates for 5+ staff, with instant official PDF brochures and quotes.
                 </p>
               </div>
 
-              <div className="bg-[#FCF9F8] border border-[#E5E7EB] rounded-2xl p-6 flex flex-col justify-between">
-                <span className="text-xs font-mono font-bold text-brand">
-                  03 · SECTOR SCOPE
-                </span>
-                <div className="my-4">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-[#1C1B1B]">
-                    Multi-Industry
-                  </span>
-                  <p className="text-sm font-bold text-[#1C1B1B] mt-1">
-                    Nationwide Training
-                  </p>
-                </div>
-                <p className="text-xs text-[#52525B] leading-relaxed">
-                  Commercial offices, hospitals, retail malls, hospitality, solar PV arrays & SMME contractors.
+              <div className="bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-xl p-5">
+                <p className="text-xs font-bold text-brand">
+                  Zero Site Downtime
+                </p>
+                <p className="text-lg font-extrabold text-[var(--text-primary)] mt-1 font-mono tabular-nums">
+                  R380 / Day Relief Staff
+                </p>
+                <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">
+                  Employers can book vetted temporary cleaners to cover shifts on-site while permanent staff complete practical training.
                 </p>
               </div>
 
-              <div className="bg-brand text-white rounded-2xl p-6 flex flex-col justify-between">
-                <span className="text-xs font-mono font-bold text-white/90">
-                  04 · CONTINUITY
-                </span>
-                <div className="my-4">
-                  <span className="text-3xl sm:text-4xl font-extrabold font-mono tabular-nums">
-                    R380/Day
-                  </span>
-                  <p className="text-sm font-bold text-white mt-1">
-                    Vetted Relief Staff
-                  </p>
-                </div>
-                <p className="text-xs text-white/90 leading-relaxed">
-                  Temporary replacement cleaners deployed on your site while your permanent team trains.
+              <div className="bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-xl p-5">
+                <p className="text-xs font-bold text-brand">
+                  Tax & Grant Recovery
+                </p>
+                <p className="text-lg font-extrabold text-[var(--text-primary)] mt-1 font-mono tabular-nums">
+                  Up to R80,000 / Learner
+                </p>
+                <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">
+                  Qualifying learnerships unlock SARS Section 12H tax allowances and Workplace Skills Plan (WSP) mandatory grant claims.
                 </p>
               </div>
             </div>
@@ -396,32 +451,60 @@ export function HomeView({
       </section>
 
       {/* ============================================================== */}
-      {/* 3. SETA ACCREDITED QUALIFICATIONS (3-COLUMN ELEVATED GRID)     */}
+      {/* 3. CURATED COURSES & QUALIFICATIONS (SINGLE SCANNABLE SECTION) */}
       {/* ============================================================== */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-8 pt-16 pb-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-[#E5E7EB]">
+      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-6 border-b border-[var(--border-subtle)]">
           <div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-brand-soft text-brand text-xs font-bold border border-brand-soft mb-2">
-              National Qualifications Framework · QCTO & Services SETA
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1C1B1B]">
-              SETA Accredited Qualifications & Learnerships
+            <p className="text-xs font-bold text-brand">
+              Accredited Qualifications & Practical Short Courses
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)] mt-1">
+              Explore Popular Programmes
             </h2>
-            <p className="text-sm text-[#52525B] mt-1 max-w-[65ch]">
-              Full credit-bearing NQF Level 1, Level 3, and Level 4 qualifications eligible for Workplace Skills Plans (WSP), mandatory grants, and SARS Section 12H tax allowances.
+            <p className="text-sm text-[var(--text-muted)] mt-1 max-w-[62ch]">
+              Compare our most popular programmes below, or open the full catalogue to filter by NQF (National Qualifications Framework) level, duration, and delivery mode.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => onNavigate('qualifications')}
-            className="px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-[#18181B] hover:bg-brand rounded-xl transition-colors cursor-pointer shrink-0"
+
+          {/* Interactive Filter Tabs */}
+          <div
+            role="tablist"
+            aria-label="Filter home page courses"
+            className="inline-flex flex-wrap items-center gap-1 p-1 bg-white border border-[var(--border-subtle)] rounded-xl shrink-0"
           >
-            View Learnership Intakes & Apply →
-          </button>
+            {[
+              { id: 'featured' as const, label: 'Featured Selection' },
+              {
+                id: 'accredited' as const,
+                label: `Qualifications (${setaAccreditedCourses.length})`,
+              },
+              {
+                id: 'short' as const,
+                label: `Short Courses (${shortCoursesList.length})`,
+              },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={courseTab === tab.id}
+                onClick={() => setCourseTab(tab.id)}
+                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap cursor-pointer ${
+                  courseTab === tab.id
+                    ? 'bg-[var(--brand-secondary)] text-white'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {setaAccreditedCourses.map((course) => (
+        {/* Curated 3-Card Grid */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {displayedCourses.map((course) => (
             <article
               key={course.id}
               className="course-card-elevated overflow-hidden flex flex-col justify-between"
@@ -434,26 +517,19 @@ export function HomeView({
                     fallbackTitle={course.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="px-3 py-1 rounded-md bg-brand text-white text-xs font-bold shadow-xs">
-                      {course.nqfLevel}
-                    </span>
-                    <span className="px-2.5 py-1 rounded-md bg-[#18181B]/90 text-white text-xs font-mono font-semibold">
-                      {course.credits} Credits
-                    </span>
-                  </div>
-                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-zinc-200 font-mono">
-                    <span>{course.saqaId}</span>
-                    <span>{course.duration}</span>
-                  </div>
                 </div>
 
                 <div className="p-6">
-                  <p className="text-xs font-bold text-brand mb-1">
-                    {course.accreditationBody}
-                  </p>
-                  <h3 className="text-lg font-bold text-[#1C1B1B] leading-snug">
+                  {/* Unboxed Metadata Line */}
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-[var(--text-muted)] mb-2">
+                    <span className="font-bold text-brand">{course.nqfLevel}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{course.credits} Credits</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{course.duration.split('(')[0].trim()}</span>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-[var(--text-primary)] leading-snug">
                     <button
                       type="button"
                       onClick={() => onInspectCourse(course.id)}
@@ -462,48 +538,50 @@ export function HomeView({
                       {course.title}
                     </button>
                   </h3>
-                  <p className="mt-2 text-sm text-[#52525B] line-clamp-2 leading-relaxed">
+
+                  <p className="mt-2 text-sm text-[var(--text-muted)] line-clamp-2 leading-relaxed">
                     {course.shortSummary}
                   </p>
-                  <p className="mt-3 text-xs text-[#52525B]">
-                    <strong className="text-[#1C1B1B]">Career Outcome:</strong>{' '}
+
+                  <p className="mt-3 text-xs text-[var(--text-muted)]">
+                    <strong className="text-[var(--text-primary)]">Outcome:</strong>{' '}
                     {course.careerOutcome}
                   </p>
                 </div>
               </div>
 
-              <div className="px-6 pb-6 pt-4 bg-[#FCF9F8] border-t border-[#E5E7EB]">
+              <div className="px-6 pb-6 pt-4 bg-[var(--bg-primary)] border-t border-[var(--border-subtle)]">
                 <div className="flex items-baseline justify-between mb-4">
                   <div>
-                    <span className="text-xs text-[#52525B] block">
-                      Single Learner
+                    <span className="text-xs text-[var(--text-muted)] block">
+                      Individual Fee
                     </span>
-                    <span className="text-xl font-extrabold font-mono text-[#1C1B1B] tabular-nums">
+                    <span className="text-xl font-extrabold font-mono text-[var(--text-primary)] tabular-nums">
                       R{course.priceZAR.toLocaleString('en-ZA')}
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs text-[#52525B] block">
-                      Employer Cohort (5+)
+                    <span className="text-xs text-[var(--text-muted)] block">
+                      Group Rate (5+)
                     </span>
                     <span className="text-sm font-bold font-mono text-brand tabular-nums">
-                      R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} / staff
+                      R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} / learner
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-[#E5E7EB]">
+                <div className="flex items-center justify-between gap-2 pt-3 border-t border-[var(--border-subtle)]">
                   <button
                     type="button"
                     onClick={() => onInspectCourse(course.id)}
-                    className="text-xs font-bold text-[#1C1B1B] hover:text-brand transition-colors cursor-pointer"
+                    className="py-2 text-xs font-bold text-[var(--text-primary)] hover:text-brand transition-colors cursor-pointer"
                   >
                     View Course Details →
                   </button>
                   <button
                     type="button"
                     onClick={() => onEnrolCourse(course)}
-                    className="px-3.5 py-2 text-xs font-bold text-white bg-brand rounded-lg transition-colors cursor-pointer"
+                    className="px-4 py-2 min-h-[38px] text-xs font-bold text-white bg-brand rounded-lg transition-colors cursor-pointer"
                   >
                     Enrol Now
                   </button>
@@ -512,271 +590,198 @@ export function HomeView({
             </article>
           ))}
         </div>
-      </section>
 
-      {/* ============================================================== */}
-      {/* 4. SHORT COURSES & SKILLS PROGRAMMES (3-COLUMN ELEVATED GRID)  */}
-      {/* ============================================================== */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-8 py-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-[#E5E7EB]">
-          <div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-zinc-200/80 text-[#1C1B1B] text-xs font-bold mb-2">
-              Rapid Upskilling · Self-Paced Online & Randburg Practicals
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1C1B1B]">
-              Specialized Short Courses & Entrepreneurship Masterclasses
-            </h2>
-            <p className="text-sm text-[#52525B] mt-1 max-w-[65ch]">
-              High-impact 2-day to 5-day practical certifications in Commercial Cleaning Modules 1 & 2, Solar Panel Cleaning, Carpet Extraction, and Cleaning Business Startup.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => onNavigateCourseFilter('short')}
-            className="px-5 py-2.5 text-xs sm:text-sm font-bold text-[#1C1B1B] bg-white hover:bg-[#18181B] hover:text-white border border-[#18181B] rounded-xl transition-colors cursor-pointer shrink-0"
-          >
-            Browse All Short Courses →
-          </button>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {shortCoursesList.slice(0, 3).map((course) => (
-            <article
-              key={course.id}
-              className="course-card-elevated overflow-hidden flex flex-col justify-between"
-            >
-              <div>
-                <div className="relative aspect-video w-full bg-zinc-100 overflow-hidden">
-                  <ResilientImage
-                    src={course.image}
-                    alt={course.title}
-                    fallbackTitle={course.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="px-3 py-1 rounded-md bg-[#18181B] text-white text-xs font-bold shadow-xs">
-                      Short Course
-                    </span>
-                    <span className="px-2.5 py-1 rounded-md bg-brand text-white text-xs font-mono font-bold">
-                      {course.duration.split('(')[0].trim()}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-zinc-200 font-mono">
-                    <span>{course.code}</span>
-                    <span>{course.credits} Credits</span>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <p className="text-xs font-bold text-brand mb-1">
-                    {course.category}
-                  </p>
-                  <h3 className="text-lg font-bold text-[#1C1B1B] leading-snug">
-                    <button
-                      type="button"
-                      onClick={() => onInspectCourse(course.id)}
-                      className="text-left hover:text-brand transition-colors cursor-pointer"
-                    >
-                      {course.title}
-                    </button>
-                  </h3>
-                  <p className="mt-2 text-sm text-[#52525B] line-clamp-2 leading-relaxed">
-                    {course.shortSummary}
-                  </p>
-                  <p className="mt-3 text-xs text-[#52525B]">
-                    <strong className="text-[#1C1B1B]">Delivery:</strong>{' '}
-                    {course.deliveryModes.slice(0, 2).join(' · ')}
-                  </p>
-                </div>
-              </div>
-
-              <div className="px-6 pb-6 pt-4 bg-[#FCF9F8] border-t border-[#E5E7EB]">
-                <div className="flex items-baseline justify-between mb-4">
-                  <div>
-                    <span className="text-xs text-[#52525B] block">
-                      Single Learner
-                    </span>
-                    <span className="text-xl font-extrabold font-mono text-[#1C1B1B] tabular-nums">
-                      R{course.priceZAR.toLocaleString('en-ZA')}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs text-[#52525B] block">
-                      Employer Cohort (5+)
-                    </span>
-                    <span className="text-sm font-bold font-mono text-brand tabular-nums">
-                      R{course.groupPricePerLearnerZAR.toLocaleString('en-ZA')} / staff
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-3 border-t border-[#E5E7EB]">
-                  <button
-                    type="button"
-                    onClick={() => onInspectCourse(course.id)}
-                    className="text-xs font-bold text-[#1C1B1B] hover:text-brand transition-colors cursor-pointer"
-                  >
-                    View Course Details →
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onEnrolCourse(course)}
-                    className="px-3.5 py-2 text-xs font-bold text-white bg-brand rounded-lg transition-colors cursor-pointer"
-                  >
-                    Enrol Now
-                  </button>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* INTERACTIVE 3-STEP CAREER & COURSE FINDER WIZARD */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-8 py-8">
-        {showFinderWizard ? (
-          <CourseFinderWizard
-            courses={courses}
-            onSelectCourse={onInspectCourse}
-            onEnrolCourse={onEnrolCourse}
-            onOpenBrochure={onOpenBrochure}
-            onNavigate={onNavigate}
-          />
-        ) : (
-          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 flex items-center justify-between">
-            <span className="text-sm font-bold text-[#1C1B1B]">
-              Need help matching the right NQF qualification or short course?
-            </span>
+        {/* Clear Link to Full Course Catalogue & Career Pathways */}
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-[var(--border-subtle)]">
+          <p className="text-sm text-[var(--text-muted)]">
+            Showing 3 of {courses.length} accredited qualifications and practical short courses.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
-              onClick={() => setShowFinderWizard(true)}
-              className="px-4 py-2 text-xs font-bold text-white bg-brand rounded-lg cursor-pointer"
+              onClick={() => onNavigate('pathways')}
+              className="px-4 py-2.5 text-xs sm:text-sm font-bold text-[var(--text-primary)] bg-white hover:bg-zinc-100 border border-[var(--border-subtle)] rounded-xl transition-colors cursor-pointer"
             >
-              Open 3-Step Course Matcher
+              View Career Pathways
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigateCourseFilter('all')}
+              className="px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-[var(--brand-secondary)] hover:bg-brand rounded-xl transition-colors inline-flex items-center gap-2 cursor-pointer"
+            >
+              <span>View Full Course Catalogue ({courses.length})</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-        )}
+        </div>
       </section>
 
       {/* ============================================================== */}
-      {/* 5. OTHER SERVICES SECTION (RELIEF STAFF, VENUE HIRE, WSP/12H)  */}
+      {/* 4. ROUTE TO THE 3-STEP COURSE MATCHER                          */}
       {/* ============================================================== */}
-      <section className="bg-white border-y border-[#E5E7EB] py-16">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-[#E5E7EB]">
-            <div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-brand-soft text-brand text-xs font-bold border border-brand-soft mb-2">
-                Other Services · Turnkey Employer & Assessment Solutions
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1C1B1B]">
-                Operational Relief Staff, Randburg Venue Hire & WSP Advisory
+      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <div className="bg-white border border-[var(--border-subtle)] rounded-2xl p-6 sm:p-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand">
+                <Compass className="w-4 h-4" />
+                <span>Guided Course Matcher</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[var(--text-primary)]">
+                Not sure which qualification or short course fits your goal?
               </h2>
-              <p className="text-sm text-[#52525B] mt-1 max-w-[65ch]">
-                Backed by Cleaning Africa Services (Pty) Ltd, we eliminate every operational barrier to workforce training.
+              <p className="text-sm text-[var(--text-muted)] max-w-[62ch]">
+                Answer 3 quick questions on your career goal, preferred learning format, and budget to see matched programmes.
               </p>
             </div>
             <button
               type="button"
-              onClick={() => onNavigate('other-services')}
-              className="px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-[#18181B] hover:bg-brand rounded-xl transition-colors cursor-pointer shrink-0"
+              onClick={() => setShowFinderWizard(!showFinderWizard)}
+              aria-expanded={showFinderWizard}
+              className="px-5 py-3 min-h-[44px] text-xs sm:text-sm font-bold text-white bg-brand rounded-xl inline-flex items-center justify-center gap-2 shrink-0 cursor-pointer"
             >
-              Explore All Specialist Services →
+              <span>
+                {showFinderWizard ? 'Hide Course Matcher' : 'Start 3-Step Course Matcher'}
+              </span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${
+                  showFinderWizard ? 'rotate-180' : ''
+                }`}
+              />
             </button>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {OTHER_SERVICES_LIST.map((srv) => (
-              <div
-                key={srv.id}
-                className="course-card-elevated p-6 flex flex-col justify-between"
-              >
-                <div>
-                  <span className="inline-block px-2.5 py-1 rounded bg-[#18181B] text-white text-[11px] font-bold mb-3">
-                    {srv.badge}
-                  </span>
-                  <h3 className="text-base font-bold text-[#1C1B1B] leading-snug">
-                    {srv.title}
-                  </h3>
-                  <p className="text-xs font-mono font-bold text-brand mt-2">
-                    {srv.priceHighlight}
-                  </p>
-                  <p className="text-xs text-[#52525B] mt-2 leading-relaxed">
-                    {srv.summary}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => onNavigate(srv.targetPage)}
-                  className="mt-5 pt-3 border-t border-[#E5E7EB] text-xs font-bold text-brand hover:underline text-left cursor-pointer"
-                >
-                  {srv.ctaLabel}
-                </button>
-              </div>
-            ))}
-          </div>
+          {showFinderWizard && (
+            <div className="mt-6 pt-6 border-t border-[var(--border-subtle)]">
+              <CourseFinderWizard
+                courses={courses}
+                onSelectCourse={onInspectCourse}
+                onEnrolCourse={onEnrolCourse}
+                onOpenBrochure={onOpenBrochure}
+                onNavigate={onNavigate}
+              />
+            </div>
+          )}
         </div>
       </section>
 
       {/* ============================================================== */}
-      {/* 6. TRAINING & FACILITY GALLERY SHOWCASE                        */}
+      {/* 5. EMPLOYER SERVICES & RANDBURG CAMPUS HIGHLIGHTS              */}
       {/* ============================================================== */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-8 py-16">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 border-b border-[#E5E7EB]">
+      <section className="bg-white border-t border-[var(--border-subtle)] py-14 sm:py-16">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+          {/* Employer & Specialist Services */}
           <div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-brand-soft text-brand text-xs font-bold border border-brand-soft mb-2">
-              Campus & Practical Gallery · Northriding, Randburg
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1C1B1B]">
-              Inside Our Simulation Bays, Solar PV Rigs & Lecture Suites
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={() => onNavigate('gallery')}
-            className="px-5 py-2.5 text-xs sm:text-sm font-bold text-[#1C1B1B] bg-white hover:bg-[#18181B] hover:text-white border border-[#18181B] rounded-xl transition-colors cursor-pointer shrink-0"
-          >
-            Open Full Training Gallery →
-          </button>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {GALLERY_ITEMS.slice(0, 3).map((item) => (
-            <article
-              key={item.id}
-              className="course-card-elevated overflow-hidden flex flex-col justify-between"
-            >
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[var(--border-subtle)]">
               <div>
-                <div className="relative aspect-video w-full bg-zinc-100 overflow-hidden">
-                  <ResilientImage
-                    src={item.image}
-                    alt={item.title}
-                    fallbackTitle={item.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className="px-2.5 py-1 rounded-md bg-[#18181B]/90 text-white text-[11px] font-bold">
-                      {item.category}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-5">
-                  <p className="text-xs font-mono text-brand font-bold">
-                    {item.location}
-                  </p>
-                  <h3 className="text-base font-bold text-[#1C1B1B] mt-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-[#52525B] mt-1.5 leading-relaxed">
-                    {item.caption}
-                  </p>
-                </div>
+                <p className="text-xs font-bold text-brand">
+                  Employer & Assessment Solutions
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)] mt-1">
+                  Workforce Training, Relief Staff & Venue Hire
+                </h2>
+                <p className="text-sm text-[var(--text-muted)] mt-1 max-w-[62ch]">
+                  Practical support for HR, Learning & Development (L&D), and operations teams across South Africa.
+                </p>
               </div>
-            </article>
-          ))}
+              <button
+                type="button"
+                onClick={() => onNavigate('other-services')}
+                className="px-4 py-2.5 text-xs sm:text-sm font-bold text-[var(--text-primary)] bg-[var(--bg-primary)] hover:bg-zinc-100 border border-[var(--border-subtle)] rounded-xl transition-colors shrink-0 cursor-pointer"
+              >
+                All Employer & Venue Services →
+              </button>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {OTHER_SERVICES_LIST.map((srv) => (
+                <div
+                  key={srv.id}
+                  className="bg-[var(--bg-primary)] border border-[var(--border-subtle)] rounded-xl p-5 flex flex-col justify-between"
+                >
+                  <div>
+                    <p className="text-xs font-mono font-bold text-brand">
+                      {srv.priceHighlight}
+                    </p>
+                    <h3 className="text-base font-bold text-[var(--text-primary)] mt-1 leading-snug">
+                      {srv.title}
+                    </h3>
+                    <p className="text-xs text-[var(--text-muted)] mt-2 leading-relaxed">
+                      {srv.summary}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate(srv.targetPage)}
+                    className="mt-4 pt-3 border-t border-[var(--border-subtle)] text-xs font-bold text-brand hover:underline text-left cursor-pointer"
+                  >
+                    {srv.ctaLabel}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Concise Randburg Campus & Gallery Preview */}
+          <div>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[var(--border-subtle)]">
+              <div>
+                <p className="text-xs font-bold text-brand">
+                  Northriding, Randburg Campus
+                </p>
+                <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[var(--text-primary)] mt-1">
+                  Inside Our Practical Simulation Bays & Solar PV Rigs
+                </h2>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => onNavigate('assessment-centre')}
+                  className="px-4 py-2 text-xs font-bold text-[var(--text-primary)] bg-[var(--bg-primary)] hover:bg-zinc-100 border border-[var(--border-subtle)] rounded-lg cursor-pointer"
+                >
+                  Book Assessment Venue
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('gallery')}
+                  className="px-4 py-2 text-xs font-bold text-brand hover:underline cursor-pointer"
+                >
+                  Open Full Gallery →
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+              {GALLERY_ITEMS.slice(0, 3).map((item) => (
+                <article
+                  key={item.id}
+                  className="rounded-xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--bg-primary)] flex flex-col justify-between"
+                >
+                  <div className="aspect-video w-full bg-zinc-100 overflow-hidden">
+                    <ResilientImage
+                      src={item.image}
+                      alt={item.title}
+                      fallbackTitle={item.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <p className="text-xs font-mono text-brand font-semibold">
+                      {item.category} · {item.location}
+                    </p>
+                    <h3 className="text-sm font-bold text-[var(--text-primary)] mt-1">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-[var(--text-muted)] mt-1 line-clamp-2 leading-relaxed">
+                      {item.caption}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </div>
   );
 }
-

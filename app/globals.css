@@ -3,9 +3,9 @@
 @layer base {
   :root,
   .theme-crimson {
-    --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
-    --font-sans: 'Plus Jakarta Sans', 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: var(--font-plus-jakarta), system-ui, -apple-system, sans-serif;
+    --font-sans: var(--font-dm-sans), var(--font-plus-jakarta), system-ui, -apple-system, sans-serif;
+    --font-mono: var(--font-jetbrains-mono), monospace;
 
     /* Option A (.theme-crimson): Refined Crimson & Charcoal (True to Original Brand) */
     --bg-primary: #FCF9F8;
@@ -23,9 +23,9 @@
   }
 
   .theme-emerald {
-    --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
-    --font-sans: 'Plus Jakarta Sans', 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: var(--font-plus-jakarta), system-ui, -apple-system, sans-serif;
+    --font-sans: var(--font-dm-sans), var(--font-plus-jakarta), system-ui, -apple-system, sans-serif;
+    --font-mono: var(--font-jetbrains-mono), monospace;
 
     /* Option B (.theme-emerald): Fresh EdTech Emerald & Deep Slate */
     --bg-primary: #F8FAFC;
@@ -101,4 +101,12 @@
   transform: translateY(-4px);
   box-shadow: 0 14px 28px -8px rgba(28, 27, 27, 0.08), 0 4px 10px -3px rgba(28, 27, 27, 0.04);
   border-color: var(--brand-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .course-card-elevated,
+  .course-card-elevated:hover {
+    transform: none !important;
+    transition: none !important;
+  }
 }

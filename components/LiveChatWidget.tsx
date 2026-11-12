@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { generateRecordId } from '@/lib/utils';
 import { PageId } from '@/lib/academy-data';
 import {
   MessageSquare,
@@ -423,8 +424,24 @@ export default function LiveChatWidget({ onNavigate }: LiveChatWidgetProps) {
   const handleOfflineSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!visitorName.trim() || !visitorEmail.trim() || !offlineNote.trim()) return;
-    const refCode = `CHAT-2026-${5100 + visitorName.trim().length * 19 + offlineNote.trim().length}`;
+    const refCode = generateRecordId('CHAT-2026');
     setOfflineTicketRef(refCode);
+
+    try {
+      const existing = JSON.parse(localStorage.getItem('taa_offline_chat_tickets') || '[]');
+      existing.push({
+        refCode,
+        dept: activeDept.id,
+        name: visitorName.trim(),
+        email: visitorEmail.trim(),
+        phone: visitorPhone.trim(),
+        note: offlineNote.trim(),
+        createdAt: new Date().toISOString(),
+      });
+      localStorage.setItem('taa_offline_chat_tickets', JSON.stringify(existing));
+    } catch {
+      // Ignore storage errors in private browsing
+    }
   };
 
   const downloadChatTranscript = () => {
@@ -516,7 +533,7 @@ ${lines}
       {isOpen && (
         <div
           role="dialog"
-          aria-modal="false"
+          aria-modal="true"
           aria-label="Training Africa Academy Live Support and Department Routing Chat"
           className="fixed bottom-20 md:bottom-6 right-2 left-2 sm:left-auto sm:right-6 z-50 sm:w-[420px] max-h-[80vh] bg-white border border-[#E5E7EB] rounded-xl shadow-2xl flex flex-col overflow-hidden"
         >

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { generateRecordId, getCurrentFormattedDate } from '@/lib/utils';
 import {
   Course,
   CourseCategory,
@@ -628,12 +629,20 @@ export function EnrolmentModal({
   const [addRelief, setAddRelief] = useState<boolean>(false);
   const [reliefDays, setReliefDays] = useState<number>(2);
 
-  const [learnerName, setLearnerName] = useState('Katleho Marite');
-  const [learnerEmail, setLearnerEmail] = useState('KatlehoMarite@gmail.com');
-  const [idNumber, setIdNumber] = useState('9508145800081');
+  const [learnerName, setLearnerName] = useState('');
+  const [learnerEmail, setLearnerEmail] = useState('');
+  const [idNumber, setIdNumber] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(
     'Instant EFT / PayFast Secure'
   );
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   if (!course) return null;
 
@@ -643,25 +652,44 @@ export function EnrolmentModal({
     addRelief && course.reliefStaffAvailable ? learnerQty * reliefDays * 380 : 0;
   const grandTotalZAR = unitRate * learnerQty + reliefTotal;
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!learnerName.trim() || !learnerEmail.trim()) return;
 
     const record: EnrolmentRecord = {
-      id: `ENR-${85100 + learnerName.trim().length * 23 + learnerQty}`,
+      id: generateRecordId('ENR'),
       courseId: course.id,
       courseTitle: course.title,
       learnerName: learnerName.trim(),
       learnerEmail: learnerEmail.trim(),
       paymentMethod: `${paymentMethod} (${selectedDelivery})`,
       amountPaidZAR: grandTotalZAR,
-      enrolledAt: '10 Nov 2026',
+      enrolledAt: getCurrentFormattedDate(),
     };
+
+    try {
+      await fetch('/api/enrolments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+    } catch (err) {
+      console.warn('API enrolment sync deferred; saved locally:', err);
+    }
+
     onCompleteEnrolment(record);
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="enrolment-modal-title"
+      className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div className="bg-white border border-[#E5E7EB] rounded-xl max-w-xl w-full overflow-hidden shadow-xl">
         <div className="bg-[#1C1B1B] text-white px-6 py-4 flex items-center justify-between">
           <div>
@@ -998,15 +1026,31 @@ Address: Unit 14 Fancourt Office Park, Northriding, Randburg, 2188
     URL.revokeObjectURL(url);
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="brochure-modal-title"
+      className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div className="bg-white border border-[#E5E7EB] rounded-xl max-w-xl w-full overflow-hidden shadow-xl">
         <div className="bg-[#1C1B1B] text-white px-6 py-4 flex items-center justify-between">
           <div>
             <p className="text-xs text-[#F59E0B] font-mono">
               Official Course Brochure · {course.code}
             </p>
-            <h2 className="text-base font-bold">{course.title}</h2>
+            <h2 id="brochure-modal-title" className="text-base font-bold">{course.title}</h2>
           </div>
           <button
             type="button"

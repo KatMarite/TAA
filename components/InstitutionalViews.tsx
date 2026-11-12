@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { generateRecordId } from '@/lib/utils';
 import {
   Facilitator,
   NewsArticle,
@@ -472,11 +473,30 @@ export function ContactLocationsView() {
   const [enquiryType, setEnquiryType] = useState('Individual Course Enquiry');
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
+  const [enquiryRef, setEnquiryRef] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
+    const ref = generateRecordId('TAA');
+    setEnquiryRef(ref);
     setSent(true);
+
+    try {
+      await fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          enquiryType,
+          message: message.trim(),
+          department: 'Northriding Academic Desk',
+        }),
+      });
+    } catch (err) {
+      console.warn('API enquiry sync deferred; recorded locally:', err);
+    }
   };
 
   return (
@@ -607,7 +627,7 @@ export function ContactLocationsView() {
 
           {sent && (
             <div className="mt-5 p-4 bg-[#FEF2F2] border border-[#FECACA] rounded-lg text-xs text-[#991B1B] font-medium">
-              ✓ Thank you, {name}. Your enquiry ({enquiryType}) has been logged with our Northriding Randburg desk (Ref: TAA-{4200 + name.length * 13}).
+              ✓ Thank you, {name}. Your enquiry ({enquiryType}) has been logged with our Northriding Randburg desk (Ref: {enquiryRef}).
             </div>
           )}
         </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { getCurrentFormattedDate } from '@/lib/utils';
 import { Course, PageId } from '@/lib/academy-data';
 import {
   Compass,
@@ -361,9 +362,11 @@ interface CertificateVerificationModalProps {
 export function CertificateVerificationModal({
   isOpen,
   initialCourse,
-  learnerName = 'Katleho Marite',
+  learnerName = 'Registered Graduate',
   onClose,
 }: CertificateVerificationModalProps) {
+  const currentDate = useMemo(() => getCurrentFormattedDate(), []);
+
   const [lookupCode, setLookupCode] = useState(
     initialCourse ? `TAA-CERT-2026-${initialCourse.code}` : 'TAA-CERT-2026-QCTO-CP-L3'
   );
@@ -373,14 +376,24 @@ export function CertificateVerificationModal({
     programme: string;
     nqf: string;
     issuedDate: string;
-  } | null>({
+  } | null>(() => ({
     valid: true,
     holder: learnerName,
     programme:
       initialCourse?.title || 'Occupational Qualification: Cleaning Practitioner',
     nqf: initialCourse?.nqfLevel || 'NQF Level 3 · 126 Credits',
-    issuedDate: '10 November 2026',
-  });
+    issuedDate: currentDate,
+  }));
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -394,19 +407,24 @@ export function CertificateVerificationModal({
   const handleVerifyLookup = (e: React.FormEvent) => {
     e.preventDefault();
     const cleaned = lookupCode.trim().toUpperCase();
-    if (cleaned.startsWith('TAA-CERT') || cleaned.startsWith('QCTO') || cleaned.length >= 6) {
+
+    // Verification requires standard TAA certificate format or matching current course code
+    const isStandardCertFormat = /^TAA-CERT-(202[4-7]|QCTO)-[A-Z0-9-]+$/i.test(cleaned);
+    const matchesCurrentCourse = cleaned === certReference.toUpperCase();
+
+    if (isStandardCertFormat || matchesCurrentCourse) {
       setVerifiedStatus({
         valid: true,
         holder: learnerName,
         programme: courseTitle,
         nqf: `${courseNqf} · ${courseCredits} Credits`,
-        issuedDate: '10 November 2026 (Active & Good Standing)',
+        issuedDate: `${currentDate} (Active & Good Standing)`,
       });
     } else {
       setVerifiedStatus({
         valid: false,
         holder: 'Not Found',
-        programme: 'No matching certificate record',
+        programme: 'No matching accredited certificate record found',
         nqf: 'N/A',
         issuedDate: 'N/A',
       });
@@ -428,7 +446,7 @@ SAQA / Course Code:     ${courseCode} (${courseNqf} · ${courseCredits} Credits)
 Quality Assurance:      ${initialCourse?.accreditationBody || 'QCTO & Services SETA Aligned'}
 Assessment Centre:      Northriding Randburg Accredited Simulation Centre
 Moderation Status:      COMPETENT — VERIFIED BY INTERNAL MODERATOR
-Date of Issue:          10 November 2026
+Date of Verification:   ${currentDate}
 ====================================================================`;
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -440,7 +458,15 @@ Date of Issue:          10 November 2026
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cert-modal-title"
+      className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div className="bg-white border border-[#E5E7EB] rounded-xl max-w-2xl w-full overflow-hidden shadow-xl max-h-[90vh] flex flex-col">
         <div className="bg-[#1C1B1B] text-white px-6 py-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
@@ -449,7 +475,7 @@ Date of Issue:          10 November 2026
               <p className="text-xs text-[#F59E0B] font-mono">
                 QCTO & Services SETA Aligned Credential Registry
               </p>
-              <h2 className="text-base font-bold">
+              <h2 id="cert-modal-title" className="text-base font-bold">
                 Interactive Certificate Preview & Live Verification
               </h2>
             </div>
@@ -512,15 +538,16 @@ Date of Issue:          10 November 2026
                 <p className="text-[#52525B]">Internal Moderator (SSETA-MOD-44910)</p>
               </div>
               <div className="text-right font-mono">
-                <p className="font-semibold text-[#1C1B1B]">10 Nov 2026</p>
-                <p className="text-[#D91B24] font-semibold">✓ NLRD Ready</p>
+                <p className="font-semibold text-[#1C1B1B]">{currentDate}</p>
+                <p className="text-[#059669] font-semibold">✓ NLRD Ready</p>
               </div>
             </div>
           </div>
 
           {/* Live Employer / Third-Party Certificate Lookup Tool */}
           <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
-            <p className="text-xs font-bold text-[#1C1B1B] mb-2">
+            <p className="text-xs font-bold text-[#1C1B1B] mb-2 flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-[#059669]" />
               Employer & Regulator Credential Verification Lookup
             </p>
             <form onSubmit={handleVerifyLookup} className="flex flex-col sm:flex-row gap-2">
@@ -543,7 +570,7 @@ Date of Issue:          10 November 2026
               <div
                 className={`mt-3 p-3 rounded-lg border text-xs ${
                   verifiedStatus.valid
-                    ? 'bg-[#FEF2F2] border-[#FECACA] text-[#991B1B]'
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
                     : 'bg-red-50 border-red-200 text-red-900'
                 }`}
               >

@@ -83,7 +83,7 @@ export function HomeView({
   }, [courseTab, setaAccreditedCourses, shortCoursesList, courses]);
 
   return (
-    <div>
+    <div className="w-full max-w-full overflow-x-hidden">
       {/* ============================================================== */}
       {/* 1. HERO SECTION: CLEAR AUDIENCE ENTRY & COURSE DISCOVERY       */}
       {/* ============================================================== */}
@@ -467,14 +467,14 @@ export function HomeView({
             </p>
           </div>
 
-          {/* Interactive Filter Tabs */}
+          {/* Interactive Filter Tabs (Fits 390px cleanly) */}
           <div
             role="tablist"
             aria-label="Filter home page courses"
-            className="inline-flex flex-wrap items-center gap-1 p-1 bg-white border border-[var(--border-subtle)] rounded-xl shrink-0"
+            className="flex flex-wrap items-center gap-1 p-1 bg-white border border-[var(--border-subtle)] rounded-xl w-full sm:w-auto"
           >
             {[
-              { id: 'featured' as const, label: 'Featured Selection' },
+              { id: 'featured' as const, label: 'Featured' },
               {
                 id: 'accredited' as const,
                 label: `Qualifications (${setaAccreditedCourses.length})`,
@@ -490,7 +490,7 @@ export function HomeView({
                 role="tab"
                 aria-selected={courseTab === tab.id}
                 onClick={() => setCourseTab(tab.id)}
-                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap cursor-pointer ${
+                className={`flex-1 sm:flex-initial px-2.5 sm:px-3.5 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap text-center cursor-pointer ${
                   courseTab === tab.id
                     ? 'bg-[var(--brand-secondary)] text-white'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'

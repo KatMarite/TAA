@@ -42,12 +42,15 @@
     --brand-glow: rgba(5, 150, 105, 0.08);
   }
 
+  html,
   body {
     font-family: var(--font-sans);
     color: var(--text-primary);
     background-color: var(--bg-primary);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   h1, h2, h3, h4, .font-display {

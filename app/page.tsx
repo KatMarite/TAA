@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import {
   INITIAL_COURSES,
   CAREER_PATHWAYS,
@@ -80,6 +81,7 @@ export default function TrainingAfricaAcademyPlatform() {
   const [homeSearchQuery, setHomeSearchQuery] = useState<string>('');
   const [showFinderWizard, setShowFinderWizard] = useState<boolean>(false);
   const [tourOpen, setTourOpen] = useState<boolean>(false);
+  const [helpChatOpen, setHelpChatOpen] = useState<boolean>(false);
 
   // Learner & Conversion State (Initialized deterministically to prevent SSR/Client hydration mismatch)
   const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>([
@@ -320,7 +322,7 @@ export default function TrainingAfricaAcademyPlatform() {
 
   return (
     <div
-      className={`${themeClass} min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)] pb-24 md:pb-0`}
+      className={`${themeClass} min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)]`}
     >
       <TopBarAndNav
         activePage={activePage}
@@ -337,6 +339,7 @@ export default function TrainingAfricaAcademyPlatform() {
           setCertificateModalOpen(true);
         }}
         onResetState={handleResetDemoState}
+        onOpenHelpChat={() => setHelpChatOpen(true)}
         themeClass={themeClass}
         onSelectThemeClass={setThemeClass}
       />
@@ -520,10 +523,14 @@ export default function TrainingAfricaAcademyPlatform() {
         onClose={() => setCertificateModalOpen(false)}
       />
 
-      {/* Floating WhatsApp Quick-Chat Button + Business-Hours Live Chat Concierge */}
-      <LiveChatWidget onNavigate={handleNavigate} />
+      {/* Live Chat & WhatsApp Support Modal + Desktop Launcher */}
+      <LiveChatWidget
+        onNavigate={handleNavigate}
+        isOpen={helpChatOpen}
+        onOpenChange={setHelpChatOpen}
+      />
 
-      {/* Sticky Mobile Bottom Conversion Bar (< 768px) */}
+      {/* In-Flow Mobile Quick Navigation Dock (< 768px) */}
       <MobileThumbBar
         activePage={activePage}
         onNavigate={handleNavigate}
@@ -533,14 +540,21 @@ export default function TrainingAfricaAcademyPlatform() {
       {/* ================================================================== */}
       {/* STRUCTURED 4-COLUMN DARK CHARCOAL (#1C1B1B) FOOTER                 */}
       {/* ================================================================== */}
-      <footer className="bg-[#1C1B1B] text-zinc-300 border-t border-zinc-800 mt-16">
+      <footer className="bg-[#1C1B1B] text-zinc-300 border-t border-zinc-800 mt-8 md:mt-16">
         <div className="max-w-[1360px] mx-auto px-4 sm:px-8 py-14">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
             {/* Column 1: Brand Identity & Parent Company Credit */}
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-brand text-white flex items-center justify-center font-extrabold text-xs">
-                  TAA
+                <div className="w-11 h-11 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 shadow-sm">
+                  <Image
+                    src="/assets/aistudio/1_bff70370.svg"
+                    alt="Training Africa Academy Logo"
+                    width={40}
+                    height={40}
+                    referrerPolicy="no-referrer"
+                    className="w-9 h-9 object-contain"
+                  />
                 </div>
                 <span className="text-lg font-extrabold text-white tracking-tight">
                   Training Africa Academy

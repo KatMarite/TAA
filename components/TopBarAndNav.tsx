@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { PageId } from '@/lib/academy-data';
 import {
   Compass,
@@ -12,6 +13,7 @@ import {
   X,
   Palette,
   FileText,
+  MessageSquare,
 } from 'lucide-react';
 
 export type ThemeClass = 'theme-crimson' | 'theme-emerald';
@@ -28,6 +30,7 @@ interface TopBarAndNavProps {
   onOpenTour: () => void;
   onOpenCertificateVerify: () => void;
   onResetState: () => void;
+  onOpenHelpChat?: () => void;
   themeClass?: ThemeClass;
   onSelectThemeClass?: (theme: ThemeClass) => void;
 }
@@ -125,6 +128,7 @@ export default function TopBarAndNav({
   onOpenTour,
   onOpenCertificateVerify,
   onResetState,
+  onOpenHelpChat,
   themeClass,
   onSelectThemeClass,
 }: TopBarAndNavProps) {
@@ -143,7 +147,6 @@ export default function TopBarAndNav({
     }
   };
 
-  // Close desktop "More & Tools" popover when clicking outside or pressing Escape
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -174,16 +177,17 @@ export default function TopBarAndNav({
   const isQualificationsActive = activePage === 'qualifications';
   const isEmployersActive =
     activePage === 'employers' || activePage === 'other-services';
-  const isMorePageActive = MORE_DESTINATIONS.some(
-    (d) => d.id === activePage && d.id !== 'other-services'
-  ) || activePage === 'sitemap';
+  const isMorePageActive =
+    MORE_DESTINATIONS.some(
+      (d) => d.id === activePage && d.id !== 'other-services'
+    ) || activePage === 'sitemap';
 
   return (
-    <div className={`${resolvedThemeClass} sticky top-0 z-40 w-full`}>
+    <div className={`${resolvedThemeClass} sticky top-0 z-40 w-full max-w-full`}>
       {/* SINGLE COMPACT PRIMARY HEADER ROW */}
       <div className="w-full bg-[var(--bg-primary)]/95 backdrop-blur-md border-b border-[var(--border-subtle)]">
-        <header className="max-w-[1360px] mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 h-16">
-          {/* Zone 1: Brand Wordmark */}
+        <header className="max-w-[1360px] mx-auto flex items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8 h-14 sm:h-16">
+          {/* Zone 1: Brand Wordmark (min-w-0 & truncate on mobile prevents 390px overflow) */}
           <button
             type="button"
             onClick={() => {
@@ -191,12 +195,17 @@ export default function TopBarAndNav({
               setMobileMenuOpen(false);
               setMoreMenuOpen(false);
             }}
-            className="flex items-center gap-2.5 text-left group cursor-pointer shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded-lg"
+            className="flex items-center gap-2 sm:gap-2.5 text-left group cursor-pointer min-w-0 flex-1 lg:flex-initial focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] rounded-lg"
           >
-            <div className="w-9 h-9 rounded-lg bg-brand text-white flex items-center justify-center font-extrabold text-xs tracking-tight shrink-0">
-              TAA
-            </div>
-            <span className="text-base sm:text-lg font-extrabold tracking-tight text-[var(--text-primary)] group-hover:text-brand transition-colors whitespace-nowrap">
+            <Image
+              src="/assets/aistudio/1_bff70370.svg"
+              alt="Training Africa Academy Logo"
+              width={40}
+              height={40}
+              referrerPolicy="no-referrer"
+              className="w-9 h-9 sm:w-10 sm:h-10 object-contain shrink-0"
+            />
+            <span className="text-sm sm:text-base lg:text-lg font-extrabold tracking-tight text-[var(--text-primary)] group-hover:text-brand transition-colors truncate">
               Training Africa Academy
             </span>
           </button>
@@ -460,15 +469,31 @@ export default function TopBarAndNav({
             </div>
           </nav>
 
-          {/* Zone 3: Single Primary Enquiry Action + Labeled Mobile Menu Button */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          {/* Zone 3: Right Actions (Fits cleanly inside 390px without overflowing) */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            {/* On mobile (<768px), provide a clean Help & Chat button in the header so no floating button covers page cards */}
+            {onOpenHelpChat && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenHelpChat();
+                }}
+                aria-label="Open Help and WhatsApp Support"
+                className="md:hidden inline-flex items-center gap-1 px-2.5 py-2 min-h-[40px] rounded-lg border border-[var(--border-subtle)] bg-white text-[var(--text-primary)] hover:bg-zinc-50 text-xs font-bold whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-brand shrink-0" />
+                <span>Help</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => {
                 onNavigate('contact');
                 setMobileMenuOpen(false);
               }}
-              className="px-4 py-2.5 min-h-[40px] text-xs sm:text-sm font-bold text-white bg-brand rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)]"
+              className="hidden sm:inline-flex items-center justify-center px-4 py-2 min-h-[40px] text-xs sm:text-sm font-bold text-white bg-brand rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)]"
             >
               Enquire Now
             </button>
@@ -477,17 +502,19 @@ export default function TopBarAndNav({
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-expanded={mobileMenuOpen}
-              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-              className="lg:hidden inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg border border-[var(--border-subtle)] bg-white text-[var(--text-primary)] hover:bg-zinc-50 text-xs font-bold whitespace-nowrap shrink-0 cursor-pointer"
+              aria-label={
+                mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'
+              }
+              className="lg:hidden inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-2 min-h-[40px] rounded-lg border border-[var(--border-subtle)] bg-white text-[var(--text-primary)] hover:bg-zinc-50 text-xs font-bold whitespace-nowrap shrink-0 cursor-pointer"
             >
               {mobileMenuOpen ? (
                 <>
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4 shrink-0" />
                   <span>Close</span>
                 </>
               ) : (
                 <>
-                  <Menu className="w-4 h-4" />
+                  <Menu className="w-4 h-4 shrink-0" />
                   <span>Menu</span>
                 </>
               )}
@@ -498,8 +525,8 @@ export default function TopBarAndNav({
         {/* Quiet Sub-Page Breadcrumb Strip (Shown ONLY on inner pages, never on Home) */}
         {activePage !== 'home' && (
           <div className="border-t border-[var(--border-subtle)] bg-white/80">
-            <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-3 text-xs text-[var(--text-muted)]">
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+            <div className="max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-2 text-xs text-[var(--text-muted)]">
+              <div className="flex items-center gap-2 min-w-0 overflow-x-auto no-scrollbar">
                 <button
                   type="button"
                   onClick={() => onNavigate(previousPage || 'home')}
@@ -511,14 +538,12 @@ export default function TopBarAndNav({
                 <button
                   type="button"
                   onClick={() => onNavigate('home')}
-                  className="hover:text-[var(--text-primary)] whitespace-nowrap cursor-pointer"
+                  className="hover:text-[var(--text-primary)] whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   Home
                 </button>
                 <span aria-hidden="true">/</span>
-                <span className="whitespace-nowrap">{currentMeta.section}</span>
-                <span aria-hidden="true">/</span>
-                <span className="font-semibold text-[var(--text-primary)] whitespace-nowrap">
+                <span className="font-semibold text-[var(--text-primary)] truncate">
                   {currentMeta.title}
                 </span>
               </div>
@@ -529,19 +554,46 @@ export default function TopBarAndNav({
                 className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-brand hover:underline whitespace-nowrap shrink-0 cursor-pointer"
               >
                 <Award className="w-3.5 h-3.5" />
-                <span>Verify a Certificate</span>
+                <span>Verify Certificate</span>
               </button>
             </div>
           </div>
         )}
 
-        {/* Accessible Mobile & Tablet Navigation Drawer */}
+        {/* Accessible Mobile & Tablet Navigation Drawer (Constrained to 100% viewport width, zero horizontal clipping) */}
         {mobileMenuOpen && (
           <div
             role="dialog"
             aria-label="Mobile Navigation Menu"
-            className="lg:hidden bg-white border-t border-[var(--border-subtle)] px-4 pt-4 pb-24 max-h-[calc(100vh-4rem)] overflow-y-auto shadow-xl space-y-5"
+            className="lg:hidden w-full max-w-full overflow-x-hidden bg-white border-t border-[var(--border-subtle)] px-3 sm:px-6 pt-4 pb-8 max-h-[calc(100vh-3.5rem)] overflow-y-auto shadow-xl space-y-5"
           >
+            {/* Primary Mobile Actions */}
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  onNavigate('contact');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full py-2.5 px-3 min-h-[44px] text-xs font-bold text-white bg-brand rounded-xl text-center cursor-pointer"
+              >
+                Enquire Now
+              </button>
+              {onOpenHelpChat && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenHelpChat();
+                  }}
+                  className="w-full py-2.5 px-3 min-h-[44px] text-xs font-bold text-white bg-[var(--brand-secondary)] rounded-xl inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 shrink-0" />
+                  <span>Help & WhatsApp</span>
+                </button>
+              )}
+            </div>
+
             {/* Primary Destinations */}
             <div>
               <p className="text-xs font-bold text-[var(--text-muted)] mb-2">
@@ -605,14 +657,16 @@ export default function TopBarAndNav({
                       item.action();
                       setMobileMenuOpen(false);
                     }}
-                    className={`p-3 rounded-xl text-left border transition-colors cursor-pointer min-h-[48px] ${
+                    className={`w-full p-3 rounded-xl text-left border transition-colors cursor-pointer min-h-[48px] ${
                       item.active
                         ? 'bg-brand-soft border-brand text-[var(--text-primary)]'
                         : 'bg-[var(--bg-primary)] border-[var(--border-subtle)] text-[var(--text-primary)] hover:bg-zinc-100'
                     }`}
                   >
-                    <span className="block text-sm font-bold">{item.label}</span>
-                    <span className="block text-xs text-[var(--text-muted)] mt-0.5">
+                    <span className="block text-sm font-bold break-words">
+                      {item.label}
+                    </span>
+                    <span className="block text-xs text-[var(--text-muted)] mt-0.5 break-words">
                       {item.sub}
                     </span>
                   </button>
@@ -620,12 +674,12 @@ export default function TopBarAndNav({
               </div>
             </div>
 
-            {/* Specialist Portals & Academy Pages */}
+            {/* Specialist Portals & Academy Pages (1 col on narrow mobile so labels never clip) */}
             <div className="pt-3 border-t border-[var(--border-subtle)]">
               <p className="text-xs font-bold text-[var(--text-muted)] mb-2">
                 Portals, Venue Hire & Resources
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {MORE_DESTINATIONS.map((item) => (
                   <button
                     key={item.id}
@@ -634,7 +688,7 @@ export default function TopBarAndNav({
                       onNavigate(item.id);
                       setMobileMenuOpen(false);
                     }}
-                    className={`px-3 py-2.5 rounded-lg text-left text-xs font-semibold border transition-colors cursor-pointer min-h-[44px] ${
+                    className={`w-full px-3 py-2.5 rounded-lg text-left text-xs font-semibold border transition-colors cursor-pointer min-h-[44px] break-words ${
                       activePage === item.id
                         ? 'bg-brand text-white border-brand'
                         : 'bg-white text-[var(--text-primary)] border-[var(--border-subtle)] hover:bg-zinc-50'
@@ -651,16 +705,16 @@ export default function TopBarAndNav({
               <p className="text-xs font-bold text-[var(--text-muted)]">
                 Tools & Preferences
               </p>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false);
                     onOpenCertificateVerify();
                   }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
                 >
-                  <Award className="w-4 h-4 text-brand" />
+                  <Award className="w-4 h-4 text-brand shrink-0" />
                   <span>Verify Certificate</span>
                 </button>
 
@@ -670,9 +724,9 @@ export default function TopBarAndNav({
                     setMobileMenuOpen(false);
                     onOpenTour();
                   }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
                 >
-                  <Compass className="w-4 h-4 text-brand" />
+                  <Compass className="w-4 h-4 text-brand shrink-0" />
                   <span>Guided Tour</span>
                 </button>
 
@@ -682,9 +736,9 @@ export default function TopBarAndNav({
                     onNavigate('sitemap');
                     setMobileMenuOpen(false);
                   }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 min-h-[44px] rounded-lg bg-[var(--bg-primary)] text-[var(--text-primary)] text-xs font-bold border border-[var(--border-subtle)] cursor-pointer"
                 >
-                  <FileText className="w-4 h-4 text-brand" />
+                  <FileText className="w-4 h-4 text-brand shrink-0" />
                   <span>Site Directory</span>
                 </button>
               </div>

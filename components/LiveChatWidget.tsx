@@ -222,10 +222,29 @@ function checkIsSastBusinessHours(): { isOpen: boolean; sastTimeStr: string } {
 
 interface LiveChatWidgetProps {
   onNavigate: (page: PageId) => void;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export default function LiveChatWidget({ onNavigate }: LiveChatWidgetProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+export default function LiveChatWidget({
+  onNavigate,
+  isOpen: controlledOpen,
+  onOpenChange,
+}: LiveChatWidgetProps) {
+  const [internalOpen, setInternalOpen] = useState<boolean>(false);
+  const isOpen =
+    controlledOpen !== undefined ? controlledOpen : internalOpen;
+
+  const setIsOpen = React.useCallback(
+    (next: boolean) => {
+      setInternalOpen(next);
+      if (onOpenChange) {
+        onOpenChange(next);
+      }
+    },
+    [onOpenChange]
+  );
+
   const [selectedDeptId, setSelectedDeptId] = useState<ChatDepartmentId>('sales');
   const [availabilityMode, setAvailabilityMode] = useState<'auto' | 'online' | 'after-hours'>('online');
   const [inputValue, setInputValue] = useState<string>('');
@@ -277,7 +296,7 @@ export default function LiveChatWidget({ onNavigate }: LiveChatWidgetProps) {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [isOpen]);
+  }, [isOpen, setIsOpen]);
 
   const handleSelectDepartment = (deptId: ChatDepartmentId) => {
     setSelectedDeptId(deptId);
@@ -479,9 +498,9 @@ ${lines}
 
   return (
     <>
-      {/* Single Coordinated Floating Help & WhatsApp Launcher (Positioned clear of mobile bottom bar) */}
+      {/* Desktop Floating Help & WhatsApp Launcher (Hidden on <768px mobile where Help is in the header so cards are never covered) */}
       {!isOpen && (
-        <div className="fixed bottom-20 md:bottom-6 right-3 sm:right-6 z-30">
+        <div className="hidden md:block fixed bottom-6 right-6 z-30">
           <button
             type="button"
             onClick={() => {
@@ -513,7 +532,7 @@ ${lines}
           role="dialog"
           aria-modal="true"
           aria-label="Training Africa Academy Live Support, WhatsApp and Department Routing"
-          className="fixed bottom-20 md:bottom-6 right-3 left-3 sm:left-auto sm:right-6 z-50 sm:w-[410px] max-h-[calc(100vh-6.5rem)] bg-white border border-[var(--border-subtle)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+          className="fixed inset-x-3 bottom-3 top-16 sm:inset-auto sm:bottom-6 sm:right-6 z-50 sm:w-[410px] sm:max-h-[calc(100vh-5rem)] bg-white border border-[var(--border-subtle)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         >
           {/* Top Header: Brand, Business Hours Status & Close Button */}
           <div className="bg-[var(--brand-secondary)] text-white px-4 py-3 shrink-0">

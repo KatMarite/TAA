@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { getCurrentFormattedDate } from '@/lib/utils';
 import { Course, PageId } from '@/lib/academy-data';
 import {
@@ -494,13 +495,23 @@ Date of Verification:   ${currentDate}
           {/* Visual Certificate Document Frame */}
           <div className="border-2 border-[#1C1B1B] rounded-xl p-6 sm:p-8 bg-[#FCF9F8] relative">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#E5E7EB]">
-              <div>
-                <p className="text-xs font-bold tracking-wider text-[#D91B24] uppercase">
-                  Training Africa Academy · Cleaning Africa Services (Pty) Ltd
-                </p>
-                <p className="text-xs text-[#52525B]">
-                  Northriding, Randburg Assessment Centre · Reg: 2000/018492/07
-                </p>
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/assets/aistudio/1_bff70370.svg"
+                  alt="Training Africa Academy Logo"
+                  width={44}
+                  height={44}
+                  referrerPolicy="no-referrer"
+                  className="w-11 h-11 object-contain shrink-0"
+                />
+                <div>
+                  <p className="text-xs font-bold tracking-wider text-[#D91B24] uppercase">
+                    Training Africa Academy · Cleaning Africa Services (Pty) Ltd
+                  </p>
+                  <p className="text-xs text-[#52525B]">
+                    Northriding, Randburg Assessment Centre · Reg: 2000/018492/07
+                  </p>
+                </div>
               </div>
               <div className="text-left sm:text-right font-mono text-xs text-[#1C1B1B]">
                 <span className="block font-bold">{certReference}</span>
@@ -749,9 +760,12 @@ export function MobileThumbBar({
   return (
     <nav
       aria-label="Mobile Quick Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-[var(--border-subtle)] px-2 py-1.5"
+      className="md:hidden bg-white border-t border-[var(--border-subtle)] px-3 py-3 mt-8"
     >
-      <div className="grid grid-cols-5 items-center gap-1">
+      <p className="text-[11px] font-bold text-[var(--text-muted)] mb-2 text-center">
+        Quick Mobile Navigation & Enrolment
+      </p>
+      <div className="grid grid-cols-5 items-center gap-1.5">
         {navItems.map((item) => {
           const isActive = activePage === item.id;
           return (
@@ -759,10 +773,10 @@ export function MobileThumbBar({
               key={item.id}
               type="button"
               onClick={() => onNavigate(item.id)}
-              className={`min-h-[44px] flex flex-col items-center justify-center rounded-lg transition-colors cursor-pointer ${
+              className={`min-h-[44px] flex flex-col items-center justify-center rounded-lg border transition-colors cursor-pointer ${
                 isActive
-                  ? 'text-brand font-bold'
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                  ? 'bg-brand-soft border-brand text-brand font-bold'
+                  : 'bg-[var(--bg-primary)] border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
             >
               {item.icon}

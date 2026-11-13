@@ -3,8 +3,6 @@
 import React, { useState, useMemo } from 'react';
 import {
   Course,
-  CourseCategory,
-  DeliveryMode,
   PageId,
 } from '@/lib/academy-data';
 import ResilientImage from './ResilientImage';
@@ -22,6 +20,8 @@ import {
   FileText,
   Scale,
   RotateCcw,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 
 interface CatalogueViewProps {
@@ -45,60 +45,261 @@ export function CatalogueView({
   onOpenBrochure,
   onNavigate,
 }: CatalogueViewProps) {
+  // 1. Keyword
   const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    initialScope === 'accredited'
-      ? 'Occupational Qualifications'
-      : initialScope === 'short'
-      ? 'Short Courses (All)'
-      : initialCategory
+  // 2. Subject / Industry
+  const [selectedSubject, setSelectedSubject] = useState<string>(
+    initialCategory !== 'All' ? initialCategory : 'All'
   );
-  const [selectedDelivery, setSelectedDelivery] = useState<string>('All');
+  // 3. Accreditation Status
+  const [selectedAccreditation, setSelectedAccreditation] = useState<string>(
+    initialScope === 'accredited'
+      ? 'Accredited (QCTO & Services SETA)'
+      : initialScope === 'short'
+      ? 'Non-Accredited (Certificate of Completion)'
+      : 'All'
+  );
+  // 4. Price (Max Individual Fee)
   const [maxPrice, setMaxPrice] = useState<number>(25000);
+  // 5. Learner Type
+  const [selectedLearnerType, setSelectedLearnerType] = useState<string>('All');
+  // 6. NQF Level (Where Applicable)
+  const [selectedNqfLevel, setSelectedNqfLevel] = useState<string>('All');
+  // 7. Format (Study Modality)
+  const [selectedFormat, setSelectedFormat] = useState<string>('All');
+  // 8. Location
+  const [selectedLocation, setSelectedLocation] = useState<string>('All');
+  // 9. Duration
+  const [selectedDuration, setSelectedDuration] = useState<string>('All');
+  // 10. Intake / Date
+  const [selectedIntake, setSelectedIntake] = useState<string>('All');
+
+  // Expandable All-Filters Panel State
+  const [showAllFilters, setShowAllFilters] = useState<boolean>(true);
   const [compareIds, setCompareIds] = useState<string[]>([]);
 
-  const categories: string[] = [
+  const subjectOptions: string[] = [
     'All',
     'Occupational Qualifications',
-    'Short Courses (All)',
     'Specialized Hygiene & Technical',
     'Foundational Cleaning Modules',
     'Business & Entrepreneurship',
   ];
 
-  const deliveryOptions: string[] = [
+  const accreditationOptions: string[] = [
+    'All',
+    'Accredited (QCTO & Services SETA)',
+    'Non-Accredited (Certificate of Completion)',
+  ];
+
+  const learnerTypeOptions: string[] = [
+    'All',
+    'Individual Learner',
+    'Corporate / Employer Cohort',
+    'Learnership Applicant',
+    'Entrepreneur / SMME',
+  ];
+
+  const nqfLevelOptions: string[] = [
+    'All',
+    'NQF Level 1',
+    'NQF Level 3',
+    'NQF Level 4',
+    'Non-Accredited Skills Short Course',
+  ];
+
+  const formatOptions: string[] = [
     'All',
     'Self-Paced Online',
     'Blended (Online + Practical)',
-    'Classroom & Assessment Bay (Randburg)',
-    'On-Site Client Premises',
+    'In-Person Practical / Classroom',
   ];
+
+  const locationOptions: string[] = [
+    'All',
+    'Nationwide (Online LMS)',
+    'Randburg Campus (Northriding)',
+    'On-Site at Client Premises',
+  ];
+
+  const durationOptions: string[] = [
+    'All',
+    'Short (1–2 Days)',
+    'Intensive (3–5 Days)',
+    'Qualification / Learnership (12 Months)',
+  ];
+
+  const intakeOptions: string[] = [
+    'All',
+    'Immediate Online Start',
+    'Weekly / Bi-Weekly Practical Intake',
+    'Monthly / Quarterly Cohort Intake',
+  ];
+
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+    if (searchQuery.trim()) count++;
+    if (selectedSubject !== 'All') count++;
+    if (selectedAccreditation !== 'All') count++;
+    if (maxPrice < 25000) count++;
+    if (selectedLearnerType !== 'All') count++;
+    if (selectedNqfLevel !== 'All') count++;
+    if (selectedFormat !== 'All') count++;
+    if (selectedLocation !== 'All') count++;
+    if (selectedDuration !== 'All') count++;
+    if (selectedIntake !== 'All') count++;
+    return count;
+  }, [
+    searchQuery,
+    selectedSubject,
+    selectedAccreditation,
+    maxPrice,
+    selectedLearnerType,
+    selectedNqfLevel,
+    selectedFormat,
+    selectedLocation,
+    selectedDuration,
+    selectedIntake,
+  ]);
+
+  const resetAllFilters = () => {
+    setSearchQuery('');
+    setSelectedSubject('All');
+    setSelectedAccreditation('All');
+    setMaxPrice(25000);
+    setSelectedLearnerType('All');
+    setSelectedNqfLevel('All');
+    setSelectedFormat('All');
+    setSelectedLocation('All');
+    setSelectedDuration('All');
+    setSelectedIntake('All');
+  };
 
   const filteredCourses = useMemo(() => {
     return courses.filter((c) => {
-      const matchesSearch =
-        !searchQuery.trim() ||
-        c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.careerOutcome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.shortSummary.toLowerCase().includes(searchQuery.toLowerCase());
+      // 1. Keyword
+      const q = searchQuery.trim().toLowerCase();
+      const matchesKeyword =
+        !q ||
+        c.title.toLowerCase().includes(q) ||
+        c.careerOutcome.toLowerCase().includes(q) ||
+        c.code.toLowerCase().includes(q) ||
+        c.saqaId.toLowerCase().includes(q) ||
+        c.shortSummary.toLowerCase().includes(q) ||
+        c.fullDescription.toLowerCase().includes(q);
 
-      const matchesCategory =
-        selectedCategory === 'All'
-          ? true
-          : selectedCategory === 'Short Courses (All)'
-          ? c.category !== 'Occupational Qualifications'
-          : c.category === selectedCategory;
+      // 2. Subject / Industry
+      const matchesSubject =
+        selectedSubject === 'All' || c.category === selectedSubject;
 
-      const matchesDelivery =
-        selectedDelivery === 'All' ||
-        c.deliveryModes.includes(selectedDelivery as DeliveryMode);
+      // 3. Accreditation Status
+      const isAccredited = c.category === 'Occupational Qualifications';
+      const matchesAccreditation =
+        selectedAccreditation === 'All' ||
+        (selectedAccreditation === 'Accredited (QCTO & Services SETA)' &&
+          isAccredited) ||
+        (selectedAccreditation ===
+          'Non-Accredited (Certificate of Completion)' &&
+          !isAccredited);
 
+      // 4. Price
       const matchesPrice = c.priceZAR <= maxPrice;
 
-      return matchesSearch && matchesCategory && matchesDelivery && matchesPrice;
+      // 5. Learner Type
+      const matchesLearnerType =
+        selectedLearnerType === 'All' ||
+        (selectedLearnerType === 'Individual Learner' &&
+          (c.targetAudience === 'Individual Learner' ||
+            c.targetAudience === 'Individual & Corporate')) ||
+        (selectedLearnerType === 'Corporate / Employer Cohort' &&
+          (c.targetAudience === 'Individual & Corporate' ||
+            c.targetAudience === 'Employer Teams' ||
+            c.targetAudience === 'Learnership Applicant')) ||
+        (selectedLearnerType === 'Learnership Applicant' &&
+          c.targetAudience === 'Learnership Applicant') ||
+        (selectedLearnerType === 'Entrepreneur / SMME' &&
+          (c.category === 'Business & Entrepreneurship' ||
+            c.id === 'nqf4-new-venture-creation'));
+
+      // 6. NQF Level
+      const matchesNqf =
+        selectedNqfLevel === 'All' || c.nqfLevel === selectedNqfLevel;
+
+      // 7. Format (Study Modality)
+      const matchesFormat =
+        selectedFormat === 'All' ||
+        (selectedFormat === 'Self-Paced Online' &&
+          c.deliveryModes.includes('Self-Paced Online')) ||
+        (selectedFormat === 'Blended (Online + Practical)' &&
+          c.deliveryModes.includes('Blended (Online + Practical)')) ||
+        (selectedFormat === 'In-Person Practical / Classroom' &&
+          (c.deliveryModes.includes('Classroom & Assessment Bay (Randburg)') ||
+            c.deliveryModes.includes('On-Site Client Premises')));
+
+      // 8. Location
+      const matchesLocation =
+        selectedLocation === 'All' ||
+        (selectedLocation === 'Nationwide (Online LMS)' &&
+          (c.onlineEligible ||
+            c.deliveryModes.includes('Self-Paced Online') ||
+            c.deliveryModes.includes('Blended (Online + Practical)'))) ||
+        (selectedLocation === 'Randburg Campus (Northriding)' &&
+          (c.deliveryModes.includes('Classroom & Assessment Bay (Randburg)') ||
+            c.deliveryModes.includes('Blended (Online + Practical)'))) ||
+        (selectedLocation === 'On-Site at Client Premises' &&
+          c.deliveryModes.includes('On-Site Client Premises'));
+
+      // 9. Duration
+      const dur = c.duration.toLowerCase();
+      const matchesDuration =
+        selectedDuration === 'All' ||
+        (selectedDuration === 'Short (1–2 Days)' && dur.includes('2 days')) ||
+        (selectedDuration === 'Intensive (3–5 Days)' &&
+          (dur.includes('3 days') || dur.includes('5 days'))) ||
+        (selectedDuration === 'Qualification / Learnership (12 Months)' &&
+          dur.includes('12 months'));
+
+      // 10. Intake / Date
+      const intake = c.nextIntake.toLowerCase();
+      const matchesIntake =
+        selectedIntake === 'All' ||
+        (selectedIntake === 'Immediate Online Start' &&
+          (intake.includes('immediate') ||
+            c.deliveryModes.includes('Self-Paced Online'))) ||
+        (selectedIntake === 'Weekly / Bi-Weekly Practical Intake' &&
+          (intake.includes('weekly') || intake.includes('every second monday'))) ||
+        (selectedIntake === 'Monthly / Quarterly Cohort Intake' &&
+          (intake.includes('monthly') ||
+            intake.includes('quarterly') ||
+            intake.includes('january') ||
+            intake.includes('february')));
+
+      return (
+        matchesKeyword &&
+        matchesSubject &&
+        matchesAccreditation &&
+        matchesPrice &&
+        matchesLearnerType &&
+        matchesNqf &&
+        matchesFormat &&
+        matchesLocation &&
+        matchesDuration &&
+        matchesIntake
+      );
     });
-  }, [courses, searchQuery, selectedCategory, selectedDelivery, maxPrice]);
+  }, [
+    courses,
+    searchQuery,
+    selectedSubject,
+    selectedAccreditation,
+    maxPrice,
+    selectedLearnerType,
+    selectedNqfLevel,
+    selectedFormat,
+    selectedLocation,
+    selectedDuration,
+    selectedIntake,
+  ]);
 
   const toggleCompare = (id: string) => {
     setCompareIds((prev) =>
@@ -118,13 +319,13 @@ export function CatalogueView({
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-[#E5E7EB]">
         <div>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-brand-soft text-brand text-xs font-bold border border-brand-soft mb-3">
-            SETA Accredited & Industry Short Courses · Transparent ZAR Fees
+            SETA Accredited & Industry Short Courses · 10-Dimension Course Finder
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#1C1B1B] max-w-2xl">
             Accredited Qualifications, Specialized Hygiene & Enterprise Courses
           </h1>
           <p className="mt-3 text-base text-[#52525B] max-w-2xl">
-            Filter by career outcome, NQF level, delivery format, or training budget. Every course displays full single-learner and corporate cohort rates upfront.
+            Filter across all 10 RFQ criteria—subject/industry, learner type, accreditation status, NQF level, format, location, price, duration, intake/date, and keyword.
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
@@ -138,13 +339,17 @@ export function CatalogueView({
         </div>
       </div>
 
-      {/* Interactive Filter Controls */}
-      <div className="mt-8 bg-white border border-[#E5E7EB] rounded-xl p-6 shadow-2xs">
+      {/* Interactive 10-Dimension Filter Bar (Primary Row + Expandable All-Filters Panel) */}
+      <div className="mt-8 bg-white border border-[#E5E7EB] rounded-xl p-6 shadow-2xs space-y-5">
+        {/* Primary Row: Keyword, Subject/Industry, Accreditation Status, Price Slider */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-          {/* Search Input */}
-          <div className="md:col-span-5">
-            <label htmlFor="catalogue-search" className="block text-xs font-bold text-[#1C1B1B] mb-1.5">
-              Search by Outcome, Job Role, Course Title or SAQA ID
+          {/* 1. Keyword Search */}
+          <div className="md:col-span-4">
+            <label
+              htmlFor="catalogue-search"
+              className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+            >
+              01. Keyword (Title, Outcome, SAQA ID)
             </label>
             <div className="relative">
               <Search className="w-4 h-4 text-[#52525B] absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -159,34 +364,60 @@ export function CatalogueView({
             </div>
           </div>
 
-          {/* Delivery Mode Dropdown */}
-          <div className="md:col-span-4">
-            <label htmlFor="delivery-select" className="block text-xs font-bold text-[#1C1B1B] mb-1.5">
-              Preferred Delivery Mode
+          {/* 2. Subject / Industry */}
+          <div className="md:col-span-3">
+            <label
+              htmlFor="filter-subject"
+              className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+            >
+              02. Subject / Industry
             </label>
             <select
-              id="delivery-select"
-              value={selectedDelivery}
-              onChange={(e) => setSelectedDelivery(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
+              id="filter-subject"
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="w-full px-3 py-2.5 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
             >
-              {deliveryOptions.map((mode) => (
-                <option key={mode} value={mode}>
-                  {mode === 'All' ? 'All Delivery Formats' : mode}
+              {subjectOptions.map((subj) => (
+                <option key={subj} value={subj}>
+                  {subj === 'All' ? 'All Subjects & Industries' : subj}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* Budget Slider */}
+          {/* 3. Accreditation Status */}
           <div className="md:col-span-3">
+            <label
+              htmlFor="filter-accreditation"
+              className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+            >
+              03. Accreditation Status
+            </label>
+            <select
+              id="filter-accreditation"
+              value={selectedAccreditation}
+              onChange={(e) => setSelectedAccreditation(e.target.value)}
+              className="w-full px-3 py-2.5 text-sm bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
+            >
+              {accreditationOptions.map((acc) => (
+                <option key={acc} value={acc}>
+                  {acc === 'All' ? 'All Accreditation Types' : acc}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 4. Price (Max Individual Fee) */}
+          <div className="md:col-span-2">
             <div className="flex items-center justify-between text-xs font-bold text-[#1C1B1B] mb-1.5">
-              <span>Max Individual Fee</span>
+              <label htmlFor="filter-price">04. Price</label>
               <span className="font-mono font-bold text-brand tabular-nums">
                 R{maxPrice.toLocaleString('en-ZA')}
               </span>
             </div>
             <input
+              id="filter-price"
               type="range"
               min={1400}
               max={25000}
@@ -199,16 +430,153 @@ export function CatalogueView({
           </div>
         </div>
 
-        {/* Category Filter Tabs */}
-        <div className="mt-4 pt-4 border-t border-[#E5E7EB] flex flex-wrap items-center justify-between gap-3">
+        {/* Expandable All-Filters Panel: Learner Type, NQF Level, Format, Location, Duration, Intake/Date */}
+        {showAllFilters && (
+          <div className="pt-4 border-t border-[#E5E7EB] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5">
+            {/* 5. Learner Type */}
+            <div>
+              <label
+                htmlFor="filter-learner-type"
+                className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+              >
+                05. Learner Type
+              </label>
+              <select
+                id="filter-learner-type"
+                value={selectedLearnerType}
+                onChange={(e) => setSelectedLearnerType(e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
+              >
+                {learnerTypeOptions.map((lt) => (
+                  <option key={lt} value={lt}>
+                    {lt === 'All' ? 'All Learner Types' : lt}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* 6. NQF Level (Where Applicable) */}
+            <div>
+              <label
+                htmlFor="filter-nqf"
+                className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+              >
+                06. NQF Level
+              </label>
+              <select
+                id="filter-nqf"
+                value={selectedNqfLevel}
+                onChange={(e) => setSelectedNqfLevel(e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
+              >
+                {nqfLevelOptions.map((nqf) => (
+                  <option key={nqf} value={nqf}>
+                    {nqf === 'All' ? 'All NQF Levels' : nqf}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* 7. Format */}
+            <div>
+              <label
+                htmlFor="filter-format"
+                className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+              >
+                07. Format
+              </label>
+              <select
+                id="filter-format"
+                value={selectedFormat}
+                onChange={(e) => setSelectedFormat(e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
+              >
+                {formatOptions.map((fmt) => (
+                  <option key={fmt} value={fmt}>
+                    {fmt === 'All' ? 'All Study Formats' : fmt}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* 8. Location */}
+            <div>
+              <label
+                htmlFor="filter-location"
+                className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+              >
+                08. Location
+              </label>
+              <select
+                id="filter-location"
+                value={selectedLocation}
+                onChange={(e) => setSelectedLocation(e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
+              >
+                {locationOptions.map((loc) => (
+                  <option key={loc} value={loc}>
+                    {loc === 'All' ? 'All Training Locations' : loc}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* 9. Duration */}
+            <div>
+              <label
+                htmlFor="filter-duration"
+                className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+              >
+                09. Duration
+              </label>
+              <select
+                id="filter-duration"
+                value={selectedDuration}
+                onChange={(e) => setSelectedDuration(e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
+              >
+                {durationOptions.map((dur) => (
+                  <option key={dur} value={dur}>
+                    {dur === 'All' ? 'All Durations' : dur}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* 10. Intake / Date */}
+            <div>
+              <label
+                htmlFor="filter-intake"
+                className="block text-xs font-bold text-[#1C1B1B] mb-1.5"
+              >
+                10. Intake / Date
+              </label>
+              <select
+                id="filter-intake"
+                value={selectedIntake}
+                onChange={(e) => setSelectedIntake(e.target.value)}
+                className="w-full px-3 py-2 text-xs bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg focus:outline-none focus:border-brand text-[#1C1B1B]"
+              >
+                {intakeOptions.map((intk) => (
+                  <option key={intk} value={intk}>
+                    {intk === 'All' ? 'All Intakes & Dates' : intk}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
+
+        {/* Quick Subject Tabs + Expandable Drawer Toggle + Result Counter */}
+        <div className="pt-4 border-t border-[#E5E7EB] flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-1.5 p-1 bg-[#FCF9F8] border border-[#E5E7EB] rounded-lg">
-            {categories.map((cat) => (
+            {subjectOptions.map((cat) => (
               <button
                 key={cat}
                 type="button"
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => setSelectedSubject(cat)}
                 className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                  selectedCategory === cat
+                  selectedSubject === cat
                     ? 'bg-brand text-white shadow-xs'
                     : 'text-[#52525B] hover:text-[#1C1B1B]'
                 }`}
@@ -218,23 +586,40 @@ export function CatalogueView({
             ))}
           </div>
 
-          <div className="flex items-center gap-3 text-xs text-[#52525B]">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-[#52525B]">
+            <button
+              type="button"
+              onClick={() => setShowAllFilters((prev) => !prev)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E5E7EB] bg-[#FCF9F8] hover:border-brand text-[#1C1B1B] font-bold cursor-pointer"
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5 text-brand" />
+              <span>
+                {showAllFilters ? 'Hide Advanced Filters' : 'Show All 10 Filters'}
+              </span>
+              {activeFilterCount > 0 && (
+                <span className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-brand text-white tabular-nums">
+                  {activeFilterCount}
+                </span>
+              )}
+              {showAllFilters ? (
+                <ChevronUp className="w-3.5 h-3.5" />
+              ) : (
+                <ChevronDown className="w-3.5 h-3.5" />
+              )}
+            </button>
+
             <span className="tabular-nums font-bold text-[#1C1B1B]">
               Showing {filteredCourses.length} of {courses.length} programmes
             </span>
-            {(searchQuery || selectedCategory !== 'All' || selectedDelivery !== 'All' || maxPrice < 25000) && (
+
+            {activeFilterCount > 0 && (
               <button
                 type="button"
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedCategory('All');
-                  setSelectedDelivery('All');
-                  setMaxPrice(25000);
-                }}
+                onClick={resetAllFilters}
                 className="inline-flex items-center gap-1 text-brand hover:underline font-bold cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Reset Filters</span>
+                <span>Reset All Filters</span>
               </button>
             )}
           </div>
@@ -261,7 +646,10 @@ export function CatalogueView({
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {comparedCourses.map((c) => (
-              <div key={c.id} className="bg-white/5 border border-white/10 rounded-lg p-4 flex flex-col justify-between">
+              <div
+                key={c.id}
+                className="bg-white/5 border border-white/10 rounded-lg p-4 flex flex-col justify-between"
+              >
                 <div>
                   <p className="text-xs text-amber-400 font-mono">
                     {c.code} · {c.nqfLevel} · {c.credits} Credits
@@ -294,88 +682,119 @@ export function CatalogueView({
         </div>
       )}
 
-      {/* 3-Column Elevated Course Grid (gap: 2rem) */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredCourses.map((course) => {
-          const isCompared = compareIds.includes(course.id);
-          const isAccreditedQual =
-            course.category === 'Occupational Qualifications';
-          const badgeLabel = isAccreditedQual
-            ? `QCTO & Services SETA Accredited (${course.nqfLevel})`
-            : 'Non-Accredited Skills Short Course';
-          const secondaryBadge = isAccreditedQual
-            ? `${course.credits} Credits`
-            : 'Certificate of Completion';
+      {/* Empty State Recovery if 0 courses match */}
+      {filteredCourses.length === 0 ? (
+        <div className="mt-8 bg-white border border-[#E5E7EB] rounded-xl p-10 text-center space-y-3">
+          <p className="text-base font-bold text-[#1C1B1B]">
+            No courses match your current combination of filters.
+          </p>
+          <p className="text-xs text-[#52525B] max-w-md mx-auto">
+            Try broadening your NQF level, location, or fee range—or reset all 10 filters to view the full Training Africa Academy catalogue.
+          </p>
+          <button
+            type="button"
+            onClick={resetAllFilters}
+            className="mt-2 px-5 py-2.5 text-xs font-bold text-white bg-brand rounded-lg inline-flex items-center gap-1.5 cursor-pointer"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Reset All 10 Filters</span>
+          </button>
+        </div>
+      ) : (
+        /* 3-Column Elevated Course Grid (gap: 2rem) */
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredCourses.map((course) => {
+            const isCompared = compareIds.includes(course.id);
+            const isAccreditedQual =
+              course.category === 'Occupational Qualifications';
+            const badgeLabel = isAccreditedQual
+              ? `QCTO & Services SETA Accredited (${course.nqfLevel})`
+              : 'Non-Accredited Skills Short Course';
+            const secondaryBadge = isAccreditedQual
+              ? `${course.credits} Credits`
+              : 'Certificate of Completion';
 
-          return (
-            <article
-              key={course.id}
-              className="course-card-elevated overflow-hidden flex flex-col justify-between"
-            >
-              <div>
-                {/* Consistent 16:9 Image Container */}
-                <div className="relative aspect-video w-full bg-zinc-100 overflow-hidden">
-                  <ResilientImage
-                    src={course.image}
-                    alt={course.title}
-                    fallbackTitle={course.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                  <div className="absolute top-3 left-3 right-3 flex flex-wrap items-center gap-1.5">
-                    <span
-                      className={`px-2.5 py-1 rounded-md text-white text-[11px] font-bold shadow-xs ${
-                        isAccreditedQual ? 'bg-brand' : 'bg-[#18181B]/95 border border-white/15'
-                      }`}
-                    >
-                      {badgeLabel}
-                    </span>
-                    <span className="px-2 py-1 rounded-md bg-[#18181B]/90 text-amber-300 text-[11px] font-mono font-semibold">
-                      {secondaryBadge}
-                    </span>
+            return (
+              <article
+                key={course.id}
+                className="course-card-elevated overflow-hidden flex flex-col justify-between"
+              >
+                <div>
+                  {/* Consistent 16:9 Image Container */}
+                  <div className="relative aspect-video w-full bg-zinc-100 overflow-hidden">
+                    <ResilientImage
+                      src={course.image}
+                      alt={course.title}
+                      fallbackTitle={course.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                    <div className="absolute top-3 left-3 right-3 flex flex-wrap items-center gap-1.5">
+                      <span
+                        className={`px-2.5 py-1 rounded-md text-white text-[11px] font-bold shadow-xs ${
+                          isAccreditedQual
+                            ? 'bg-brand'
+                            : 'bg-[#18181B]/95 border border-white/15'
+                        }`}
+                      >
+                        {badgeLabel}
+                      </span>
+                      <span className="px-2 py-1 rounded-md bg-[#18181B]/90 text-amber-300 text-[11px] font-mono font-semibold">
+                        {secondaryBadge}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white text-xs font-mono">
+                      <span>{course.code}</span>
+                      <span>{course.duration}</span>
+                    </div>
                   </div>
-                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white text-xs font-mono">
-                    <span>{course.code}</span>
-                    <span>{course.duration}</span>
+
+                  <div className="p-6">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                      <p className="text-xs font-bold text-brand">
+                        {course.category}
+                      </p>
+                      <span className="text-[11px] font-mono text-[#52525B]">
+                        {isAccreditedQual
+                          ? course.saqaId
+                          : 'Certificate of Completion'}
+                      </span>
+                    </div>
+
+                    <h2 className="text-lg font-bold text-[#1C1B1B] leading-snug">
+                      <button
+                        type="button"
+                        onClick={() => onSelectCourse(course.id)}
+                        className="text-left hover:text-brand transition-colors cursor-pointer"
+                      >
+                        {course.title}
+                      </button>
+                    </h2>
+
+                    <p className="mt-2 text-sm text-[#52525B] line-clamp-2 leading-relaxed">
+                      {course.shortSummary}
+                    </p>
+
+                    <div className="mt-4 pt-4 border-t border-[#E5E7EB] space-y-1.5 text-xs text-[#52525B]">
+                      <p>
+                        <strong className="text-[#1C1B1B]">Outcome:</strong>{' '}
+                        {course.careerOutcome}
+                      </p>
+                      <p>
+                        <strong className="text-[#1C1B1B]">Learner Type:</strong>{' '}
+                        {course.targetAudience}
+                      </p>
+                      <p>
+                        <strong className="text-[#1C1B1B]">Format & Location:</strong>{' '}
+                        {course.deliveryModes.slice(0, 2).join(' · ')}
+                      </p>
+                      <p>
+                        <strong className="text-[#1C1B1B]">Next Intake:</strong>{' '}
+                        {course.nextIntake}
+                      </p>
+                    </div>
                   </div>
                 </div>
-
-                <div className="p-6">
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
-                    <p className="text-xs font-bold text-brand">
-                      {course.category}
-                    </p>
-                    <span className="text-[11px] font-mono text-[#52525B]">
-                      {isAccreditedQual ? course.saqaId : 'Certificate of Completion'}
-                    </span>
-                  </div>
-
-                  <h2 className="text-lg font-bold text-[#1C1B1B] leading-snug">
-                    <button
-                      type="button"
-                      onClick={() => onSelectCourse(course.id)}
-                      className="text-left hover:text-brand transition-colors cursor-pointer"
-                    >
-                      {course.title}
-                    </button>
-                  </h2>
-
-                  <p className="mt-2 text-sm text-[#52525B] line-clamp-2 leading-relaxed">
-                    {course.shortSummary}
-                  </p>
-
-                  <div className="mt-4 pt-4 border-t border-[#E5E7EB] space-y-1.5 text-xs text-[#52525B]">
-                    <p>
-                      <strong className="text-[#1C1B1B]">Outcome:</strong>{' '}
-                      {course.careerOutcome}
-                    </p>
-                    <p>
-                      <strong className="text-[#1C1B1B]">Delivery:</strong>{' '}
-                      {course.deliveryModes.slice(0, 2).join(' · ')}
-                    </p>
-                  </div>
-                </div>
-              </div>
 
               <div className="px-6 pb-6 pt-4 bg-[#FCF9F8] border-t border-[#E5E7EB]">
                 {course.quoteOnly ? (
@@ -466,10 +885,11 @@ export function CatalogueView({
                   )}
                 </div>
               </div>
-            </article>
-          );
-        })}
-      </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

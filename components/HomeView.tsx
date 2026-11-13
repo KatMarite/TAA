@@ -134,51 +134,23 @@ export function HomeView({
                     setAudienceMode('learner');
                     onNavigateCourseFilter('all');
                   }}
-                  className={`group p-5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[168px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] ${
-                    audienceMode === 'learner'
-                      ? 'bg-[var(--brand-secondary)] text-white border-[var(--brand-secondary)] shadow-sm'
-                      : 'bg-white text-[var(--text-primary)] border-[var(--border-subtle)] hover:border-brand'
-                  }`}
+                  className="group p-5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between min-h-[168px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)] bg-[#ffffff] text-[var(--text-primary)] border-[#e72424] hover:border-brand"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
-                      <span
-                        className={`text-xs font-bold ${
-                          audienceMode === 'learner'
-                            ? 'text-amber-400'
-                            : 'text-brand'
-                        }`}
-                      >
+                      <span className="text-xs font-bold text-brand">
                         For Individual Learners
                       </span>
-                      <GraduationCap
-                        className={`w-5 h-5 shrink-0 ${
-                          audienceMode === 'learner'
-                            ? 'text-amber-400'
-                            : 'text-brand'
-                        }`}
-                      />
+                      <GraduationCap className="w-5 h-5 shrink-0 text-brand" />
                     </div>
                     <h2 className="text-xl font-extrabold tracking-tight">
                       I want to study
                     </h2>
-                    <p
-                      className={`text-sm mt-1.5 leading-relaxed ${
-                        audienceMode === 'learner'
-                          ? 'text-zinc-200'
-                          : 'text-[var(--text-muted)]'
-                      }`}
-                    >
+                    <p className="text-sm mt-1.5 leading-relaxed text-[var(--text-muted)]">
                       Compare accredited qualifications (NQF 1–4) and 2–5 day short courses from R1,450. Enrol online or study at our Randburg campus.
                     </p>
                   </div>
-                  <div
-                    className={`mt-4 pt-3 border-t flex items-center justify-between text-xs font-bold ${
-                      audienceMode === 'learner'
-                        ? 'border-white/15 text-amber-400'
-                        : 'border-[var(--border-subtle)] text-brand'
-                    }`}
-                  >
+                  <div className="mt-4 pt-3 border-t flex items-center justify-between text-xs font-bold border-[var(--border-subtle)] text-brand">
                     <span>Explore Courses & Fees</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                   </div>
